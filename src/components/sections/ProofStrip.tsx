@@ -13,12 +13,12 @@ const gradientBorder = "linear-gradient(130deg, rgba(184,149,92,.22), rgba(30,77
 
 export default function ProofStrip() {
   return (
-    <section id="proof" style={{ padding: "20px 28px 12px" }}>
+    <section id="proof" style={{ padding: "20px 40px 12px" }}>
       <p style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", textAlign: "center", marginBottom: 14 }}>
         PROOF STRIP
       </p>
 
-      <div style={{ maxWidth: 920, margin: "0 auto", background: "#F5F8F7", boxShadow: neuIn, borderRadius: 26, padding: 14 }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", background: "#F5F8F7", boxShadow: neuIn, borderRadius: 26, padding: 14 }}>
         <div
           className="proof-grid"
           style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, alignItems: "stretch" }}
