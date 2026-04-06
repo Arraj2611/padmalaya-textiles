@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { glass, neuIn } from "@/lib/design-tokens";
 import { submitEnquiry } from "@/app/actions/enquiry";
 
 const schema = z.object({
@@ -28,6 +27,15 @@ const productList = [
   "Custom / Private Label",
   "Other",
 ];
+
+const glass16: React.CSSProperties = {
+  background: "rgba(255,255,255,0.42)",
+  backdropFilter: "blur(16px)",
+  WebkitBackdropFilter: "blur(16px)",
+  border: "1px solid rgba(255,255,255,0.58)",
+};
+
+const neuIn = "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(255,255,255,.75)";
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -87,15 +95,7 @@ export default function ContactSection() {
 
   return (
     <section id="contact" style={{ padding: "0 28px 64px" }}>
-      <div
-        style={{
-          maxWidth: 860,
-          margin: "0 auto",
-          ...glass(16),
-          borderRadius: 32,
-          padding: "48px 48px 40px",
-        }}
-      >
+      <div style={{ maxWidth: 860, margin: "0 auto", ...glass16, borderRadius: 32, padding: "48px 48px 40px" }}>
         {/* Heading */}
         <div style={{ marginBottom: 32 }}>
           <p style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", marginBottom: 10 }}>
@@ -111,15 +111,7 @@ export default function ContactSection() {
         </div>
 
         {status === "success" ? (
-          <div
-            style={{
-              background: "#F0F4F2",
-              boxShadow: neuIn,
-              borderRadius: 20,
-              padding: "40px 32px",
-              textAlign: "center",
-            }}
-          >
+          <div style={{ background: "#F0F4F2", boxShadow: neuIn, borderRadius: 20, padding: "40px 32px", textAlign: "center" }}>
             <div style={{ fontSize: 36, marginBottom: 16 }}>✓</div>
             <h3 style={{ fontFamily: "var(--font-fraunces), serif", fontSize: 22, color: "#14221e", marginBottom: 10 }}>
               Enquiry received!
@@ -130,23 +122,13 @@ export default function ContactSection() {
             </p>
             <button
               onClick={() => setStatus("idle")}
-              style={{
-                background: "#0d281f",
-                color: "#fff",
-                border: "none",
-                padding: "12px 28px",
-                borderRadius: 50,
-                fontWeight: 700,
-                fontSize: 13,
-                cursor: "pointer",
-              }}
+              style={{ background: "#0d281f", color: "#fff", border: "none", padding: "12px 28px", borderRadius: 50, fontWeight: 700, fontSize: 13, cursor: "pointer" }}
             >
               Send another enquiry
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            {/* Row 1: Name + Email */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }} className="form-row">
               <div>
                 <label style={labelStyle}>Name *</label>
@@ -160,7 +142,6 @@ export default function ContactSection() {
               </div>
             </div>
 
-            {/* Row 2: Company + Phone */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }} className="form-row">
               <div>
                 <label style={labelStyle}>Company</label>
@@ -172,7 +153,6 @@ export default function ContactSection() {
               </div>
             </div>
 
-            {/* Product interest */}
             <div style={{ marginBottom: 16 }}>
               <label style={labelStyle}>Product interest *</label>
               <select
@@ -187,7 +167,6 @@ export default function ContactSection() {
               {errors.product_interest && <span style={errorStyle}>{errors.product_interest.message}</span>}
             </div>
 
-            {/* Message */}
             <div style={{ marginBottom: 28 }}>
               <label style={labelStyle}>Message *</label>
               <textarea
@@ -199,7 +178,6 @@ export default function ContactSection() {
               {errors.message && <span style={errorStyle}>{errors.message.message}</span>}
             </div>
 
-            {/* Actions */}
             <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
               <button
                 type="submit"
