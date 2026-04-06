@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Padmalaya Textiles — Design Concepts v5 (Royal Luxury)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0a; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideRight { from { width: 0; } to { width: 60px; } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+@keyframes goldShimmer { 0% { background-position: -100% 0; } 100% { background-position: 200% 0; } }
+@keyframes borderReveal { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes breathe { 0%,100% { box-shadow: 0 0 0 0 rgba(139,92,246,0.15); } 50% { box-shadow: 0 0 0 16px rgba(139,92,246,0); } }
+@keyframes slideInLeft { from { opacity: 0; transform: translateX(-32px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideInRight { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes lineGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes diamondSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes subtleGlow { 0%,100% { box-shadow: 0 4px 20px rgba(0,0,0,0.06); } 50% { box-shadow: 0 8px 40px rgba(0,0,0,0.12); } }
+.mq-track { display: flex; animation: marquee 28s linear infinite; white-space: nowrap; }
+.hover-lift { transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s cubic-bezier(0.23,1,0.32,1); }
+.hover-lift:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(0,0,0,0.1); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const nav = ["Home", "Products", "About", "Process", "Contact"];
+const products = [
+  { name: "Classic Terry Bath Towel", size: "70×140 cm", weight: "500 GSM", tag: "Bestseller", desc: "Our signature bath towel — plush, absorbent, and built to last through hundreds of washes." },
+  { name: "Premium Face Towel Set", size: "30×30 cm", weight: "450 GSM", tag: "New", desc: "Ultra-soft face towels, gentle on skin. Perfect for hotels and spa settings." },
+  { name: "Luxury Hand Towel", size: "40×70 cm", weight: "550 GSM", tag: "Premium", desc: "Extra-thick hand towels with double-loop terry weave for maximum absorbency." },
+  { name: "Hotel Bath Sheet", size: "90×180 cm", weight: "600 GSM", tag: "Bulk", desc: "Oversized bath sheets designed for 5-star hospitality. Private labeling available." },
+  { name: "Terry Kitchen Napkin", size: "45×65 cm", weight: "350 GSM", tag: "Popular", desc: "Durable terry napkins for commercial kitchens. Lint-free, quick-dry cotton." },
+  { name: "Spa Wrap Towel", size: "80×150 cm", weight: "480 GSM", tag: "Luxury", desc: "Full-body spa wraps with secure tuck closure. Available in 22 colours." },
+];
+
+const designs = [
+  {
+    id: 21, name: "Burgundy Monarch",
+    philosophy: "Ivory + Deep Burgundy + Champagne Gold",
+    description: "Warm ivory base (#FAF8F5) with deep burgundy (#6B1533) and champagne gold (#C5A24D). Rich serif typography, gold shimmer on headings, floating ornamental diamonds, cards with burgundy top accents. Feels like entering a Grand Heritage Palace hotel lobby.",
+  },
+  {
+    id: 22, name: "Sapphire Atrium",
+    philosophy: "Cream + Royal Sapphire + Antique Gold",
+    description: "Soft cream (#FDFBF7) with royal sapphire (#1E3A6E) and antique gold (#B8943E). Split hero layout, animated gold divider lines, staggered card reveals, sapphire stat blocks. The elegance of a London bespoke tailor — refined, confident, distinguished.",
+  },
+  {
+    id: 23, name: "Emerald Regent",
+    philosophy: "Pearl White + Emerald + Rose Gold",
+    description: "Pearl white (#FAFAF8) with deep emerald (#0B4D3C) and rose gold (#C07C5A). Organic rounded cards, gradient emerald hero badge, breathing CTA button, floating rose-gold circles. Like walking through a botanical conservatory at a palace.",
+  },
+  {
+    id: 24, name: "Amethyst Salon",
+    philosophy: "Lavender Cream + Royal Purple + Gold",
+    description: "Lavender cream (#FAF7FF) with royal amethyst (#5B21A0) and warm gold (#C9A035). Gradient text headings, pulsing accent dots, glass-morphic stat cards with purple tint, animated gradient CTA. Regal, contemporary, unmistakably premium.",
+  },
+  {
+    id: 25, name: "Ivory & Obsidian",
+    philosophy: "Warm Ivory + Rich Black + Burnished Gold",
+    description: "Warm ivory (#FBF9F4) with near-black (#141210) and burnished gold (#B89B4A). Maximum contrast, gold shimmer headings, minimal animations — just precise line-grow reveals and card lifts. The ultimate in quiet, confident luxury. Think Hermès, Aman Resorts.",
+  },
+];
+
+/* ═══════════════════════════════════════════
+   DESIGN 21 — BURGUNDY MONARCH
+   Ivory + Deep Burgundy + Champagne Gold
+   ═══════════════════════════════════════════ */
+function Design21() {
+  const bg = "#FAF8F5";
+  const burg = "#6B1533";
+  const burgL = "#8B2040";
+  const gold = "#C5A24D";
+  const goldL = "#D4B76A";
+  const dk = "#1E1210";
+  const warm = "#F3EDE6";
+  const diamondPat = `url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0 L30 15 L15 30 L0 15Z' fill='none' stroke='%23C5A24D' stroke-width='0.4' opacity='0.12'/%3E%3C/svg%3E")`;
+  return (
+    <div style={{ background: bg, color: dk, fontFamily: "'DM Sans', sans-serif", minHeight: "100%" }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 52px", animation: "fadeIn 0.7s ease" }}>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 700, color: burg, letterSpacing: 2 }}>
+          <span style={{ color: gold }}>✦</span> PADMALAYA
+        </div>
+        <div style={{ display: "flex", gap: 30 }}>{nav.map(n => <span key={n} style={{ fontSize: 13, cursor: "pointer", fontWeight: 500, color: "#8A7A70", letterSpacing: 1, textTransform: "uppercase", transition: "color 0.3s" }}>{n}</span>)}</div>
+        <button style={{ background: burg, color: "#fff", border: "none", padding: "13px 32px", fontSize: 13, fontWeight: 600, cursor: "pointer", letterSpacing: 1, borderRadius: 50, boxShadow: `0 6px 24px ${burg}30` }}>Request Quote</button>
+      </nav>
+
+      {/* Hero */}
+      <div style={{ padding: "80px 52px 64px", position: "relative" }}>
+        <div style={{ position: "absolute", top: 40, right: 52, width: 200, height: 200, backgroundImage: diamondPat, backgroundSize: "30px 30px", opacity: 0.6, animation: "fadeIn 2s ease" }} />
+        <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 72, alignItems: "center" }}>
+          <div style={{ animation: "slideInLeft 0.9s ease" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, border: `1px solid ${gold}50`, padding: "8px 20px", fontSize: 11, fontWeight: 600, color: gold, letterSpacing: 3, textTransform: "uppercase", marginBottom: 32 }}>
+              <span style={{ width: 6, height: 6, background: gold, transform: "rotate(45deg)", display: "inline-block" }} /> Since Generations
+            </div>
+            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 60, fontWeight: 700, lineHeight: 1.06, marginBottom: 24, color: dk }}>
+              The royal art of<br/>
+              <span style={{ color: burg, fontStyle: "italic" }}>exquisite</span>{" "}
+              <span style={{ background: `linear-gradient(90deg, ${gold}, ${goldL}, ${gold})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundSize: "200% 100%", animation: "goldShimmer 3.5s linear infinite" }}>terry</span>
+            </h1>
+            <div style={{ width: 60, height: 2, background: `linear-gradient(90deg, ${burg}, ${gold})`, marginBottom: 24, animation: "lineGrow 1.2s ease both 0.4s", transformOrigin: "left" }} />
+            <p style={{ fontSize: 16, color: "#6D5D55", lineHeight: 1.85, maxWidth: 460, marginBottom: 40 }}>India's most distinguished cotton terry manufacturer. Crafted for the world's finest hotels, spas, and luxury retailers since generations.</p>
+            <div style={{ display: "flex", gap: 16 }}>
+              <button style={{ background: burg, color: "#fff", border: "none", padding: "17px 40px", fontSize: 14, fontWeight: 600, cursor: "pointer", letterSpacing: 0.5, borderRadius: 50, boxShadow: `0 8px 32px ${burg}25`, transition: "all 0.3s" }}>View Collection</button>
+              <button style={{ background: "transparent", color: dk, border: `1.5px solid ${gold}45`, padding: "17px 40px", fontSize: 14, fontWeight: 500, cursor: "pointer", letterSpacing: 0.5, borderRadius: 50 }}>Our Heritage</button>
+            </div>
+          </div>
+          <div style={{ animation: "slideInRight 1s ease" }}>
+            <div style={{ background: warm, padding: 36, position: "relative", borderRadius: 24, border: `1px solid ${gold}25` }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+                {[{ n: "25+", l: "Years Heritage" }, { n: "500+", l: "Hotel Partners" }, { n: "50L+", l: "Towels Annually" }, { n: "100%", l: "Indian Cotton" }].map((s, i) => (
+                  <div key={i} style={{ textAlign: "center", padding: "24px 12px", animation: `fadeInUp ${0.6 + i * 0.15}s ease both` }}>
+                    <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: burg }}>{s.n}</div>
+                    <div style={{ fontSize: 11, color: "#9A8A80", letterSpacing: 2, marginTop: 6, textTransform: "uppercase" }}>{s.l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Burgundy marquee */}
+      <div style={{ background: burg, padding: "14px 0", overflow: "hidden", margin: "0 52px", borderRadius: 16 }}>
+        <div className="mq-track">
+          {[...Array(2)].map((_, j) => (
+            <span key={j} style={{ display: "flex", gap: 40, paddingRight: 40 }}>
+              {["100% Cotton", "✦", "ISO 9001", "✦", "OEKO-TEX Certified", "✦", "Made in India", "✦", "Custom Orders", "✦", "Private Labeling", "✦"].map((t, i) => (
+                <span key={i} style={{ fontSize: 12, letterSpacing: 3, textTransform: "uppercase", whiteSpace: "nowrap", fontWeight: 500, color: t === "✦" ? gold : "rgba(255,255,255,0.7)" }}>{t}</span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Products */}
+      <div style={{ padding: "64px 52px" }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <span style={{ fontSize: 11, color: gold, letterSpacing: 4, textTransform: "uppercase", fontWeight: 500 }}>✦ The Collection ✦</span>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, marginTop: 10, color: dk }}>Our Terry Range</h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 22 }}>
+          {products.map((p, i) => (
+            <div key={i} className="hover-lift" style={{ background: "#fff", overflow: "hidden", borderRadius: 20, boxShadow: "0 2px 16px rgba(0,0,0,0.04)", animation: `fadeInUp ${0.3 + i * 0.1}s ease both` }}>
+              <div style={{ width: "100%", height: 4, background: `linear-gradient(90deg, ${burg}, ${gold})`, borderRadius: "20px 20px 0 0" }} />
+              <div style={{ width: "100%", height: 160, background: warm, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                <div style={{ position: "absolute", inset: 0, backgroundImage: diamondPat, backgroundSize: "20px 20px", opacity: 0.4 }} />
+                <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 56, fontWeight: 700, opacity: 0.06, color: burg, position: "relative", zIndex: 1 }}>{String(i+1).padStart(2,'0')}</span>
+              </div>
+              <div style={{ padding: "24px 26px 28px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: "#fff", background: burg, padding: "5px 14px", borderRadius: 50, textTransform: "uppercase" }}>{p.tag}</span>
+                  <span style={{ fontSize: 11, color: "#B5A89E" }}>{p.weight}</span>
+                </div>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 600, marginBottom: 8 }}>{p.name}</h3>
+                <p style={{ fontSize: 12, color: "#8A7A70", lineHeight: 1.65, marginBottom: 18 }}>{p.desc}</p>
+                <button style={{ background: "transparent", color: burg, border: `1.5px solid ${burg}30`, padding: "11px 24px", fontSize: 12, fontWeight: 600, cursor: "pointer", width: "100%", transition: "all 0.3s", letterSpacing: 0.5, borderRadius: 50 }}>Send Enquiry →</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ margin: "0 52px 52px", display: "grid", gridTemplateColumns: "1.6fr 1fr", borderRadius: 24, overflow: "hidden" }}>
+        <div style={{ background: burg, color: "#fff", padding: "56px 52px", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", inset: 0, backgroundImage: diamondPat, backgroundSize: "30px 30px", opacity: 0.15 }} />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <span style={{ fontSize: 11, color: gold, letterSpacing: 4, textTransform: "uppercase" }}>Partner with Excellence</span>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700, marginTop: 12, marginBottom: 14, lineHeight: 1.2 }}>Custom manufacturing,<br/>crafted to your <span style={{ color: gold, fontStyle: "italic" }}>vision</span></h2>
+            <p style={{ fontSize: 15, opacity: 0.65, marginBottom: 32 }}>Private labeling · Bespoke weaves · Min. 500 pieces · Worldwide delivery</p>
+            <button style={{ background: gold, color: dk, border: "none", padding: "17px 44px", fontSize: 14, fontWeight: 700, cursor: "pointer", letterSpacing: 0.5, borderRadius: 50 }}>Start a Conversation →</button>
+          </div>
+        </div>
+        <div style={{ background: `linear-gradient(180deg, ${gold}, ${goldL})`, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "40px 32px" }}>
+          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 56, fontWeight: 700, color: "#fff", background: `linear-gradient(90deg, #fff, #ffffffcc, #fff)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundSize: "200% 100%", animation: "goldShimmer 3s linear infinite" }}>500+</div>
+          <div style={{ fontSize: 12, letterSpacing: 3, marginTop: 8, textTransform: "uppercase", color: dk, opacity: 0.7, fontWeight: 600 }}>Global Hotel Partners</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   DESIGN 22 — SAPPHIRE ATRIUM
+   Cream + Royal Sapphire + Antique Gold
+   ═══════════════════════════════════════════ */
+function Design22() {
+  const bg = "#FDFBF7";
+  const sapphire = "#1E3A6E";
+  const sapphireL = "#2A4E8E";
+  const gold = "#B8943E";
+  const goldL = "#D4AC55";
+  const dk = "#0F1A2E";
+  const cream = "#F0EBE1";
+  return (
+    <div style={{ background: bg, color: dk, fontFamily: "'EB Garamond', serif", minHeight: "100%" }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 52px", borderBottom: `1px solid ${gold}20`, animation: "fadeIn 0.7s ease" }}>
+        <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: 3, color: sapphire }}>PADMALAYA</div>
+        <div style={{ display: "flex", gap: 32 }}>{nav.map(n => <span key={n} style={{ fontSize: 14, cursor: "pointer", fontWeight: 500, color: "#7A8A9E", letterSpacing: 1.5, textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif" }}>{n}</span>)}</div>
+        <button style={{ background: sapphire, color: "#fff", border: "none", padding: "13px 30px", fontSize: 13, fontWeight: 600, cursor: "pointer", letterSpacing: 1, fontFamily: "'DM Sans', sans-serif", borderRadius: 50, boxShadow: `0 4px 20px ${sapphire}25` }}>Enquire Now</button>
+      </nav>
+
+      {/* Hero — split layout */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 480, margin: "0 52px", borderRadius: 24, overflow: "hidden" }}>
+        <div style={{ padding: "80px 52px 60px", display: "flex", flexDirection: "column", justifyContent: "center", animation: "slideInLeft 0.9s ease" }}>
+          <div style={{ width: 48, height: 2, background: gold, marginBottom: 28, animation: "lineGrow 1s ease both 0.3s", transformOrigin: "left" }} />
+          <h1 style={{ fontSize: 54, fontWeight: 700, lineHeight: 1.08, marginBottom: 22, letterSpacing: -0.5 }}>
+            Where heritage<br/>meets{" "}
+            <span style={{ color: sapphire, fontStyle: "italic" }}>excellence</span>
+          </h1>
+          <p style={{ fontSize: 17, color: "#5E6E80", lineHeight: 1.85, maxWidth: 440, marginBottom: 40, fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>India's premier cotton terry manufacturer — weaving luxury for the world's finest hotels and brands since over two decades.</p>
+          <div style={{ display: "flex", gap: 14 }}>
+            <button style={{ background: sapphire, color: "#fff", border: "none", padding: "17px 38px", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", borderRadius: 50, boxShadow: `0 8px 30px ${sapphire}20` }}>View Collection</button>
+            <button style={{ background: "transparent", color: dk, border: `1.5px solid ${gold}40`, padding: "17px 38px", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", borderRadius: 50 }}>Our Story</button>
+          </div>
+        </div>
+        {/* Right panel — sapphire with stats */}
+        <div style={{ background: sapphire, color: "#fff", padding: "60px 48px", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", overflow: "hidden", animation: "fadeIn 1s ease" }}>
+          <div style={{ position: "absolute", top: -80, right: -80, width: 250, height: 250, borderRadius: "50%", border: `1px solid ${gold}20`, animation: "float 8s ease infinite" }} />
+          <div style={{ position: "absolute", bottom: -40, left: -40, width: 160, height: 160, borderRadius: "50%", border: `1px solid ${gold}15`, animation: "float 6s ease infinite 2s" }} />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <span style={{ fontSize: 12, letterSpacing: 4, textTransform: "uppercase", color: gold, fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>By the Numbers</span>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28, marginTop: 32 }}>
+              {[{ n: "25+", l: "Years Heritage" }, { n: "500+", l: "Hotel Partners" }, { n: "50L+", l: "Towels / Year" }, { n: "100%", l: "Indian Cotton" }].map((s, i) => (
+                <div key={i} style={{ animation: `fadeInUp ${0.6 + i * 0.15}s ease both` }}>
+                  <div style={{ fontSize: 42, fontWeight: 700, color: gold, lineHeight: 1 }}>{s.n}</div>
+                  <div style={{ fontSize: 12, letterSpacing: 2, marginTop: 6, textTransform: "uppercase", opacity: 0.5, fontFamily: "'DM Sans', sans-serif" }}>{s.l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Gold line divider */}
+      <div style={{ height: 3, background: `linear-gradient(90deg, ${gold}, ${goldL}, ${gold})`, animation: "goldShimmer 3s linear infinite", backgroundSize: "200% 100%" }} />
+
+      {/* Products */}
+      <div style={{ padding: "64px 52px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 44 }}>
+          <div>
+            <span style={{ fontSize: 12, color: gold, letterSpacing: 3, textTransform: "uppercase", fontWeight: 600, fontFamily: "'DM Sans', sans-serif" }}>The Collection</span>
+            <h2 style={{ fontSize: 36, fontWeight: 700, marginTop: 8 }}>Our Terry Range</h2>
+          </div>
+          <span style={{ fontSize: 13, color: sapphire, cursor: "pointer", fontWeight: 600, fontFamily: "'DM Sans', sans-serif" }}>View All →</span>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 22 }}>
+          {products.map((p, i) => (
+            <div key={i} className="hover-lift" style={{ background: "#fff", overflow: "hidden", border: `1px solid #E8E2D8`, borderRadius: 20, animation: `scaleIn ${0.3 + i * 0.1}s ease both` }}>
+              <div style={{ width: "100%", height: 160, background: `linear-gradient(135deg, ${cream}, ${sapphire}06)`, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                <span style={{ fontSize: 52, fontWeight: 700, opacity: 0.05, color: sapphire }}>{String(i+1).padStart(2,'0')}</span>
+              </div>
+              <div style={{ padding: "24px 26px 28px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: "#fff", background: sapphire, padding: "5px 14px", borderRadius: 50, textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif" }}>{p.tag}</span>
+                  <span style={{ fontSize: 11, color: "#B0A898", fontFamily: "'DM Sans', sans-serif" }}>{p.weight}</span>
+                </div>
+                <h3 style={{ fontSize: 19, fontWeight: 600, marginBottom: 8 }}>{p.name}</h3>
+                <p style={{ fontSize: 13, color: "#7A8A9E", lineHeight: 1.65, marginBottom: 18, fontFamily: "'DM Sans', sans-serif" }}>{p.desc}</p>
+                <button style={{ background: `${sapphire}08`, color: sapphire, border: `1.5px solid ${sapphire}20`, padding: "11px 24px", fontSize: 12, fontWeight: 600, cursor: "pointer", width: "100%", fontFamily: "'DM Sans', sans-serif", borderRadius: 50, transition: "all 0.3s" }}>Send Enquiry →</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ margin: "0 52px 52px", background: sapphire, padding: "56px 52px", borderRadius: 24, display: "flex", justifyContent: "space-between", alignItems: "center", color: "#fff", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: "50%", border: `1px solid ${gold}15`, animation: "float 7s ease infinite" }} />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <span style={{ fontSize: 11, color: gold, letterSpacing: 4, textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>Custom Manufacturing</span>
+          <h2 style={{ fontSize: 30, fontWeight: 700, marginTop: 10, marginBottom: 10 }}>Let us weave your <span style={{ color: gold, fontStyle: "italic" }}>vision</span></h2>
+          <p style={{ fontSize: 15, opacity: 0.55, fontFamily: "'DM Sans', sans-serif" }}>Private labeling · Bespoke weaves · Min. 500 pieces</p>
+        </div>
+        <button style={{ background: gold, color: dk, border: "none", padding: "17px 44px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", whiteSpace: "nowrap", borderRadius: 50, position: "relative", zIndex: 1 }}>Start Conversation →</button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   DESIGN 23 — EMERALD REGENT
+   Pearl White + Emerald + Rose Gold
+   ═══════════════════════════════════════════ */
+function Design23() {
+  const bg = "#FAFAF8";
+  const em = "#0B4D3C";
+  const emL = "#0E6B52";
+  const rose = "#C07C5A";
+  const roseL = "#D4956E";
+  const dk = "#0E1F1A";
+  const pearl = "#F2EFE8";
+  return (
+    <div style={{ background: bg, color: dk, fontFamily: "'Outfit', sans-serif", minHeight: "100%" }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 52px", animation: "fadeIn 0.6s ease" }}>
+        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: em }}>Padmalaya</div>
+        <div style={{ display: "flex", gap: 30 }}>{nav.map(n => <span key={n} style={{ fontSize: 13, cursor: "pointer", fontWeight: 500, color: "#6E8A7E", letterSpacing: 1, textTransform: "uppercase" }}>{n}</span>)}</div>
+        <button style={{ background: em, color: "#fff", border: "none", padding: "13px 30px", fontSize: 13, fontWeight: 600, cursor: "pointer", borderRadius: 50, boxShadow: `0 6px 24px ${em}25` }}>Get a Quote</button>
+      </nav>
+
+      {/* Hero — centered */}
+      <div style={{ padding: "80px 52px 48px", textAlign: "center", position: "relative" }}>
+        {/* Floating circles */}
+        <div style={{ position: "absolute", top: 60, left: "10%", width: 100, height: 100, borderRadius: "50%", background: `radial-gradient(circle, ${rose}15, transparent)`, animation: "float 6s ease infinite" }} />
+        <div style={{ position: "absolute", bottom: 20, right: "12%", width: 140, height: 140, borderRadius: "50%", background: `radial-gradient(circle, ${em}10, transparent)`, animation: "float 8s ease infinite 2s" }} />
+        <div style={{ position: "relative", zIndex: 1, animation: "fadeInUp 0.8s ease" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `${em}08`, border: `1px solid ${em}15`, padding: "10px 22px", borderRadius: 50, fontSize: 12, fontWeight: 600, color: em, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 32 }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: em, animation: "pulse 2s ease infinite" }} /> Premium Cotton Manufacturer
+          </div>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 62, fontWeight: 700, lineHeight: 1.05, marginBottom: 22 }}>
+            The finest terry,<br/>
+            from <span style={{ color: em, fontStyle: "italic" }}>India's heart</span>
+          </h1>
+          <p style={{ fontSize: 17, color: "#6E8A7E", lineHeight: 1.8, maxWidth: 520, margin: "0 auto 40px" }}>Woven with care for the world's most distinguished hotels, spas, and luxury brands. Every towel tells a story of heritage and craft.</p>
+          <div style={{ display: "flex", gap: 14, justifyContent: "center" }}>
+            <button style={{ background: em, color: "#fff", border: "none", padding: "17px 40px", fontSize: 15, fontWeight: 600, cursor: "pointer", borderRadius: 50, boxShadow: `0 8px 32px ${em}25`, transition: "all 0.3s" }}>Explore Collection</button>
+            <button style={{ background: "transparent", color: dk, border: `1.5px solid ${rose}40`, padding: "17px 40px", fontSize: 15, fontWeight: 500, cursor: "pointer", borderRadius: 50 }}>Our Heritage</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats row */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, padding: "20px 52px 48px" }}>
+        {[{ n: "25+", l: "Years Heritage", c: em }, { n: "500+", l: "Hotel Partners", c: rose }, { n: "50L+", l: "Towels Annually", c: emL }, { n: "100%", l: "Indian Cotton", c: "#0C6B52" }].map((s, i) => (
+          <div key={i} className="hover-lift" style={{ background: "#fff", padding: "32px 24px", borderRadius: 20, boxShadow: "0 2px 16px rgba(0,0,0,0.04)", textAlign: "center", animation: `scaleIn ${0.4 + i * 0.12}s ease both` }}>
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 38, fontWeight: 700, color: s.c }}>{s.n}</div>
+            <div style={{ fontSize: 11, color: "#8AA09A", letterSpacing: 1.5, marginTop: 6, textTransform: "uppercase" }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Emerald process strip */}
+      <div style={{ margin: "0 52px", background: em, borderRadius: 20, padding: "32px 44px", display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 8, color: "#fff" }}>
+        {["Sourcing", "Spinning", "Weaving", "Dyeing", "Finishing", "Delivery"].map((s, i) => (
+          <div key={i} style={{ textAlign: "center", padding: "12px 8px", animation: `fadeInUp ${0.5 + i * 0.1}s ease both` }}>
+            <div style={{ width: 36, height: 36, borderRadius: "50%", background: `${rose}30`, margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: roseL }}>{String(i+1).padStart(2,'0')}</div>
+            <div style={{ fontSize: 12, letterSpacing: 1, opacity: 0.75, textTransform: "uppercase" }}>{s}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Products */}
+      <div style={{ padding: "56px 52px" }}>
+        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 700, marginBottom: 40, textAlign: "center" }}>The Terry Collection</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+          {products.map((p, i) => {
+            const accents = [em, rose, emL, "#0C6B52", rose, em];
+            const acc = accents[i];
+            return (
+              <div key={i} className="hover-lift" style={{ background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: "0 2px 16px rgba(0,0,0,0.04)", animation: `fadeInUp ${0.3 + i * 0.1}s ease both` }}>
+                <div style={{ width: "100%", height: 150, background: `linear-gradient(135deg, ${pearl}, ${acc}08)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 52, fontWeight: 700, opacity: 0.06, color: acc }}>{String(i+1).padStart(2,'0')}</span>
+                </div>
+                <div style={{ padding: "22px 24px 26px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1.5, color: "#fff", background: acc, padding: "5px 14px", borderRadius: 50, textTransform: "uppercase" }}>{p.tag}</span>
+                    <span style={{ fontSize: 11, color: "#B0C0B8" }}>{p.weight}</span>
+                  </div>
+                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, marginBottom: 8 }}>{p.name}</h3>
+                  <p style={{ fontSize: 12, color: "#6E8A7E", lineHeight: 1.65, marginBottom: 18 }}>{p.desc}</p>
+                  <button style={{ background: `${acc}08`, color: acc, border: `1.5px solid ${acc}25`, padding: "11px 24px", fontSize: 12, fontWeight: 600, cursor: "pointer", borderRadius: 50, width: "100%", transition: "all 0.3s" }}>Send Enquiry →</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ margin: "0 52px 52px", padding: "56px", background: `linear-gradient(135deg, ${em}, ${emL})`, borderRadius: 24, display: "flex", justifyContent: "space-between", alignItems: "center", color: "#fff", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: -50, right: -50, width: 180, height: 180, borderRadius: "50%", background: `${rose}15`, animation: "float 6s ease infinite" }} />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, fontWeight: 700, marginBottom: 10 }}>Let's weave <span style={{ color: roseL, fontStyle: "italic" }}>luxury</span> together</h2>
+          <p style={{ fontSize: 15, opacity: 0.7 }}>Custom manufacturing · Private labeling · Min. 500 pieces</p>
+        </div>
+        <button style={{ background: rose, color: "#fff", border: "none", padding: "17px 44px", fontSize: 14, fontWeight: 700, cursor: "pointer", borderRadius: 50, whiteSpace: "nowrap", position: "relative", zIndex: 1, boxShadow: `0 6px 24px ${rose}30` }}>Start Conversation →</button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   DESIGN 24 — AMETHYST SALON
+   Lavender Cream + Royal Purple + Gold
+   ═══════════════════════════════════════════ */
+function Design24() {
+  const bg = "#FAF7FF";
+  const purple = "#5B21A0";
+  const purpleL = "#7C3AED";
+  const gold = "#C9A035";
+  const goldL = "#D9B64E";
+  const dk = "#1A0E30";
+  const lav = "#EDE5F7";
+  return (
+    <div style={{ background: bg, color: dk, fontFamily: "'DM Sans', sans-serif", minHeight: "100%", position: "relative" }}>
+      {/* Decorative bg dots */}
+      {[
+        { t: 120, l: "5%", s: 8, c: `${purpleL}20`, d: 7 },
+        { t: 300, l: "90%", s: 10, c: `${gold}25`, d: 5 },
+        { t: 500, l: "75%", s: 6, c: `${purpleL}15`, d: 8 },
+      ].map((dot, i) => (
+        <div key={i} style={{ position: "absolute", top: dot.t, left: dot.l, width: dot.s, height: dot.s, borderRadius: "50%", background: dot.c, animation: `float ${dot.d}s ease infinite ${i}s`, zIndex: 0 }} />
+      ))}
+
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 52px", position: "relative", zIndex: 2, animation: "fadeIn 0.6s ease" }}>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 700, color: purple }}>
+          PADMALAYA <span style={{ color: gold, fontSize: 16 }}>✦</span>
+        </div>
+        <div style={{ display: "flex", gap: 28 }}>{nav.map(n => <span key={n} style={{ fontSize: 13, cursor: "pointer", fontWeight: 500, color: "#9B85C0", letterSpacing: 1, textTransform: "uppercase" }}>{n}</span>)}</div>
+        <button style={{ background: `linear-gradient(135deg, ${purple}, ${purpleL})`, color: "#fff", border: "none", padding: "13px 30px", fontSize: 13, fontWeight: 600, cursor: "pointer", borderRadius: 10, boxShadow: `0 6px 24px ${purple}30`, animation: "breathe 3s ease infinite" }}>Request Quote</button>
+      </nav>
+
+      {/* Hero */}
+      <div style={{ position: "relative", zIndex: 2, padding: "80px 52px 56px", display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 64, alignItems: "center" }}>
+        <div style={{ animation: "slideInLeft 0.9s ease" }}>
+          <div style={{ display: "inline-block", background: lav, padding: "10px 22px", borderRadius: 50, fontSize: 12, fontWeight: 600, color: purple, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 28 }}>✦ Premium Cotton Terry</div>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 58, fontWeight: 700, lineHeight: 1.06, marginBottom: 22 }}>
+            Regal comfort,<br/>
+            <span style={{ background: `linear-gradient(135deg, ${purple}, ${purpleL}, ${gold})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundSize: "300% 300%", animation: "gradientShift 5s ease infinite" }}>woven royally</span>
+          </h1>
+          <p style={{ fontSize: 16, color: "#7E6E98", lineHeight: 1.85, maxWidth: 450, marginBottom: 40 }}>India's distinguished terry manufacturer — crafting towels that grace the world's finest suites and sanctuaries.</p>
+          <div style={{ display: "flex", gap: 14 }}>
+            <button style={{ background: purple, color: "#fff", border: "none", padding: "17px 38px", fontSize: 14, fontWeight: 600, cursor: "pointer", borderRadius: 10, boxShadow: `0 8px 30px ${purple}25` }}>Explore Collection</button>
+            <button style={{ background: "transparent", color: dk, border: `1.5px solid ${gold}40`, padding: "17px 38px", fontSize: 14, fontWeight: 500, cursor: "pointer", borderRadius: 10 }}>Our Legacy</button>
+          </div>
+        </div>
+        {/* Stats — glassmorphic */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, animation: "slideInRight 1s ease" }}>
+          {[{ n: "25+", l: "Years of Mastery", c: purple }, { n: "500+", l: "Hotel Partners", c: gold }, { n: "50L+", l: "Towels Annually", c: purpleL }, { n: "100%", l: "Indian Cotton", c: "#7C3AED" }].map((s, i) => (
+            <div key={i} className="hover-lift" style={{ background: `${lav}aa`, backdropFilter: "blur(12px)", border: `1px solid ${purple}10`, padding: "32px 20px", borderRadius: 16, textAlign: "center", animation: `scaleIn ${0.5 + i * 0.12}s ease both` }}>
+              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: s.c }}>{s.n}</div>
+              <div style={{ fontSize: 11, color: "#9B85C0", letterSpacing: 1.5, marginTop: 6, textTransform: "uppercase" }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Purple gradient marquee */}
+      <div style={{ background: `linear-gradient(135deg, ${purple}, ${purpleL})`, padding: "14px 0", overflow: "hidden", position: "relative", zIndex: 2 }}>
+        <div className="mq-track">
+          {[...Array(2)].map((_, j) => (
+            <span key={j} style={{ display: "flex", gap: 40, paddingRight: 40 }}>
+              {["100% Cotton", "✦", "ISO 9001", "✦", "OEKO-TEX", "✦", "Made in India", "✦", "Custom Orders", "✦", "Premium Quality", "✦"].map((t, i) => (
+                <span key={i} style={{ fontSize: 12, letterSpacing: 3, textTransform: "uppercase", whiteSpace: "nowrap", fontWeight: 500, color: t === "✦" ? gold : "rgba(255,255,255,0.7)" }}>{t}</span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Products */}
+      <div style={{ padding: "64px 52px", position: "relative", zIndex: 2 }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <span style={{ fontSize: 11, color: gold, letterSpacing: 4, textTransform: "uppercase", fontWeight: 600 }}>✦ The Collection ✦</span>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, marginTop: 10 }}>Our Terry Range</h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+          {products.map((p, i) => {
+            const accents = [purple, gold, purpleL, "#6D28D9", gold, purple];
+            const acc = accents[i];
+            return (
+              <div key={i} className="hover-lift" style={{ background: "#fff", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 16px rgba(0,0,0,0.04)", animation: `fadeInUp ${0.3 + i * 0.1}s ease both` }}>
+                <div style={{ width: "100%", height: 155, background: `linear-gradient(135deg, ${lav}, ${acc}08)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 52, fontWeight: 700, opacity: 0.06, color: acc }}>{String(i+1).padStart(2,'0')}</span>
+                </div>
+                <div style={{ padding: "22px 24px 26px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1.5, color: "#fff", background: acc, padding: "5px 14px", borderRadius: 50, textTransform: "uppercase" }}>{p.tag}</span>
+                    <span style={{ fontSize: 11, color: "#C0B0D8" }}>{p.weight}</span>
+                  </div>
+                  <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 600, marginBottom: 8 }}>{p.name}</h3>
+                  <p style={{ fontSize: 12, color: "#8A7AA0", lineHeight: 1.65, marginBottom: 18 }}>{p.desc}</p>
+                  <button style={{ background: `${acc}08`, color: acc, border: `1.5px solid ${acc}25`, padding: "11px 24px", fontSize: 12, fontWeight: 600, cursor: "pointer", borderRadius: 8, width: "100%", transition: "all 0.3s" }}>Send Enquiry →</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ margin: "0 52px 52px", padding: "56px", background: `linear-gradient(135deg, ${purple}, ${purpleL})`, borderRadius: 20, display: "flex", justifyContent: "space-between", alignItems: "center", color: "#fff", position: "relative", zIndex: 2, overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: -40, right: -40, width: 160, height: 160, borderRadius: "50%", background: `${gold}12`, animation: "float 6s ease infinite" }} />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 30, fontWeight: 700, marginBottom: 10 }}>Partner with <span style={{ color: gold, fontStyle: "italic" }}>royalty</span></h2>
+          <p style={{ fontSize: 15, opacity: 0.7 }}>Custom manufacturing · Private labeling · Min. 500 pieces</p>
+        </div>
+        <button style={{ background: gold, color: dk, border: "none", padding: "17px 44px", fontSize: 14, fontWeight: 700, cursor: "pointer", borderRadius: 10, whiteSpace: "nowrap", position: "relative", zIndex: 1 }}>Begin Conversation →</button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   DESIGN 25 — IVORY & OBSIDIAN
+   Warm Ivory + Rich Black + Burnished Gold
+   ═══════════════════════════════════════════ */
+function Design25() {
+  const bg = "#FBF9F4";
+  const bk = "#141210";
+  const gold = "#B89B4A";
+  const goldL = "#CCAE5E";
+  const dk = "#1A1816";
+  const ivory = "#F0ECE2";
+  return (
+    <div style={{ background: bg, color: dk, fontFamily: "'Inter', sans-serif", minHeight: "100%" }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "24px 56px", animation: "fadeIn 0.6s ease" }}>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, letterSpacing: 4, color: bk }}>PADMALAYA</div>
+        <div style={{ display: "flex", gap: 32 }}>{nav.map(n => <span key={n} style={{ fontSize: 12, cursor: "pointer", fontWeight: 500, color: "#888", letterSpacing: 2, textTransform: "uppercase", transition: "color 0.3s" }}>{n}</span>)}</div>
+        <button style={{ background: bk, color: bg, border: "none", padding: "13px 32px", fontSize: 12, fontWeight: 600, cursor: "pointer", letterSpacing: 1.5, textTransform: "uppercase", borderRadius: 50 }}>Enquire</button>
+      </nav>
+
+      {/* Hero — maximum restraint */}
+      <div style={{ padding: "100px 56px 80px", maxWidth: 800 }}>
+        <div style={{ animation: "fadeInUp 0.9s ease" }}>
+          <div style={{ width: 60, height: 2, background: `linear-gradient(90deg, ${gold}, ${goldL})`, marginBottom: 36, animation: "lineGrow 1.2s ease both 0.3s", transformOrigin: "left" }} />
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 64, fontWeight: 700, lineHeight: 1.05, marginBottom: 28, letterSpacing: -1 }}>
+            The definitive<br/>standard in{" "}
+            <span style={{ background: `linear-gradient(90deg, ${gold}, ${goldL}, ${gold})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundSize: "200% 100%", animation: "goldShimmer 4s linear infinite" }}>terry</span>
+          </h1>
+          <p style={{ fontSize: 17, color: "#6A645C", lineHeight: 1.9, maxWidth: 520, marginBottom: 44 }}>India's most exacting cotton terry manufacturer. Two decades of uncompromising craft — for the world's most discerning hospitality brands.</p>
+          <div style={{ display: "flex", gap: 16 }}>
+            <button style={{ background: bk, color: bg, border: "none", padding: "18px 42px", fontSize: 13, fontWeight: 600, cursor: "pointer", letterSpacing: 1, textTransform: "uppercase", borderRadius: 50, boxShadow: "0 8px 32px rgba(0,0,0,0.15)", transition: "all 0.3s" }}>The Collection</button>
+            <button style={{ background: "transparent", color: dk, border: `1.5px solid ${gold}50`, padding: "18px 42px", fontSize: 13, fontWeight: 600, cursor: "pointer", letterSpacing: 1, textTransform: "uppercase", borderRadius: 50 }}>Our Heritage</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats — black bar */}
+      <div style={{ background: bk, color: bg, padding: "40px 56px", borderRadius: 20, margin: "0 56px", display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 40 }}>
+        {[{ n: "25+", l: "Years Heritage" }, { n: "500+", l: "Hotel Partners" }, { n: "50L+", l: "Towels/Year" }, { n: "100%", l: "Indian Cotton" }].map((s, i) => (
+          <div key={i} style={{ textAlign: "center", animation: `fadeInUp ${0.5 + i * 0.12}s ease both` }}>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 40, fontWeight: 700, color: gold }}>{s.n}</div>
+            <div style={{ fontSize: 11, letterSpacing: 3, marginTop: 6, textTransform: "uppercase", opacity: 0.4 }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+      {/* Gold line */}
+      <div style={{ height: 2, background: `linear-gradient(90deg, transparent, ${gold}, transparent)` }} />
+
+      {/* Products */}
+      <div style={{ padding: "72px 56px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 48 }}>
+          <div>
+            <div style={{ width: 32, height: 2, background: gold, marginBottom: 14 }} />
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700, letterSpacing: -0.5 }}>The Collection</h2>
+          </div>
+          <span style={{ fontSize: 12, color: gold, letterSpacing: 2, cursor: "pointer", fontWeight: 600, textTransform: "uppercase" }}>View All →</span>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+          {products.map((p, i) => (
+            <div key={i} className="hover-lift" style={{ background: "#fff", overflow: "hidden", borderRadius: 20, boxShadow: "0 2px 12px rgba(0,0,0,0.04)", animation: `fadeInUp ${0.3 + i * 0.12}s ease both` }}>
+              <div style={{ width: "100%", height: 4, background: `linear-gradient(90deg, ${bk}, ${gold})`, borderRadius: "20px 20px 0 0" }} />
+              <div style={{ width: "100%", height: 160, background: ivory, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 56, fontWeight: 700, opacity: 0.04, color: bk }}>{String(i+1).padStart(2,'0')}</span>
+              </div>
+              <div style={{ padding: "26px 28px 30px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: bg, background: bk, padding: "5px 14px", borderRadius: 50, textTransform: "uppercase" }}>{p.tag}</span>
+                  <span style={{ fontSize: 11, color: "#B0A89E" }}>{p.weight}</span>
+                </div>
+                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 600, marginBottom: 10 }}>{p.name}</h3>
+                <p style={{ fontSize: 12, color: "#7A746C", lineHeight: 1.7, marginBottom: 20 }}>{p.desc}</p>
+                <button style={{ background: "transparent", color: bk, border: `1px solid ${bk}20`, padding: "12px 24px", fontSize: 12, fontWeight: 600, cursor: "pointer", width: "100%", letterSpacing: 1, textTransform: "uppercase", borderRadius: 50, transition: "all 0.3s" }}>Enquire →</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ margin: "0 56px 56px", display: "grid", gridTemplateColumns: "1.8fr 1fr", borderRadius: 24, overflow: "hidden" }}>
+        <div style={{ background: bk, color: bg, padding: "60px 56px" }}>
+          <div style={{ width: 40, height: 2, background: gold, marginBottom: 28 }} />
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 34, fontWeight: 700, marginBottom: 14, lineHeight: 1.15 }}>Custom manufacturing,<br/>uncompromising <span style={{ color: gold }}>quality</span></h2>
+          <p style={{ fontSize: 15, opacity: 0.4, marginBottom: 36 }}>Private labeling · Bespoke weaves · Min. 500 pieces · Worldwide delivery</p>
+          <button style={{ background: gold, color: bk, border: "none", padding: "18px 44px", fontSize: 13, fontWeight: 700, cursor: "pointer", letterSpacing: 1, textTransform: "uppercase", borderRadius: 50 }}>Begin Conversation →</button>
+        </div>
+        <div style={{ background: gold, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "40px 32px" }}>
+          <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 56, fontWeight: 700, color: bk }}>500+</div>
+          <div style={{ fontSize: 11, letterSpacing: 3, marginTop: 10, textTransform: "uppercase", color: bk, opacity: 0.6, fontWeight: 600 }}>Global Hotel Partners</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const renderers = [Design21, Design22, Design23, Design24, Design25];
+
+function App() {
+  const [active, setActive] = useState(0);
+  const d = designs[active];
+  return (
+    <div style={{ fontFamily: "'DM Sans', sans-serif", background: "#0a0a0a", color: "#fff", minHeight: "100vh" }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(10,10,10,0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 24px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, maxWidth: 1300, margin: "0 auto", height: 56 }}>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", marginRight: 10, letterSpacing: 1.5 }}>DESIGN:</span>
+          {designs.map((dd, i) => (
+            <button key={i} onClick={() => setActive(i)}
+              style={{ background: active === i ? "rgba(255,255,255,0.1)" : "transparent", color: active === i ? "#fff" : "rgba(255,255,255,0.4)", border: active === i ? "1px solid rgba(255,255,255,0.15)" : "1px solid transparent", padding: "6px 14px", fontSize: 12, cursor: "pointer", borderRadius: 6, transition: "all 0.2s", whiteSpace: "nowrap" }}>
+              {dd.id}. {dd.name}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div style={{ maxWidth: 1300, margin: "0 auto", padding: "20px 24px 14px" }}>
+        <h2 style={{ fontSize: 22, fontWeight: 600, marginBottom: 4 }}>{d.name}</h2>
+        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.35)", marginBottom: 6 }}>{d.philosophy}</p>
+        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", maxWidth: 750, lineHeight: 1.6 }}>{d.description}</p>
+      </div>
+      <div style={{ maxWidth: 1300, margin: "0 auto", padding: "0 24px 40px" }}>
+        <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)" }}>
+          {React.createElement(renderers[active])}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

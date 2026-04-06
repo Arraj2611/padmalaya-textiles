@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Padmalaya Textiles — Design Concepts v6 (Gold · Cream · Chocolate)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Instrument+Serif:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes goldFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes floatSlow{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-8px) rotate(1deg)}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(196,164,100,.25)}50%{box-shadow:0 0 0 18px rgba(196,164,100,0)}}
+@keyframes lineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:scale(1)}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:translateX(0)}}
+@keyframes borderShimmer{0%{border-color:rgba(196,164,100,.15)}50%{border-color:rgba(196,164,100,.5)}100%{border-color:rgba(196,164,100,.15)}}
+@keyframes goldOrb{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(20px,-15px) scale(1.05)}50%{transform:translate(-10px,-25px) scale(.97)}75%{transform:translate(-20px,10px) scale(1.03)}}
+@keyframes revealLine{from{width:0}to{width:80px}}
+@keyframes neuPulse{0%,100%{box-shadow:8px 8px 16px rgba(0,0,0,.06),-8px -8px 16px rgba(255,255,255,.8)}50%{box-shadow:10px 10px 20px rgba(0,0,0,.08),-10px -10px 20px rgba(255,255,255,.9)}}
+.mq-track{display:flex;animation:marquee 30s linear infinite;white-space:nowrap}
+.hover-lift{transition:transform .45s cubic-bezier(.23,1,.32,1),box-shadow .45s cubic-bezier(.23,1,.32,1)}
+.hover-lift:hover{transform:translateY(-8px);box-shadow:0 28px 56px rgba(60,40,15,.1)}
+.hover-scale{transition:transform .35s ease}.hover-scale:hover{transform:scale(1.02)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const{useState}=React;
+
+const nav=["Home","Products","About","Process","Contact"];
+const products=[
+  {name:"Classic Terry Bath Towel",size:"70×140 cm",weight:"500 GSM",tag:"Bestseller",desc:"Our signature bath towel — plush, absorbent, and built to last through hundreds of washes."},
+  {name:"Premium Face Towel Set",size:"30×30 cm",weight:"450 GSM",tag:"New",desc:"Ultra-soft face towels, gentle on skin. Perfect for hotels and spa settings."},
+  {name:"Luxury Hand Towel",size:"40×70 cm",weight:"550 GSM",tag:"Premium",desc:"Extra-thick hand towels with double-loop terry weave for maximum absorbency."},
+  {name:"Hotel Bath Sheet",size:"90×180 cm",weight:"600 GSM",tag:"Bulk",desc:"Oversized bath sheets designed for 5-star hospitality. Private labeling available."},
+  {name:"Terry Kitchen Napkin",size:"45×65 cm",weight:"350 GSM",tag:"Popular",desc:"Durable terry napkins for commercial kitchens. Lint-free, quick-dry cotton."},
+  {name:"Spa Wrap Towel",size:"80×150 cm",weight:"480 GSM",tag:"Luxury",desc:"Full-body spa wraps with secure tuck closure. Available in 22 colours."},
+];
+
+const designs=[
+  {id:26,name:"Velvet Neumorphism",
+   philosophy:"Neumorphism + Minimalism — Warm Cream + Gold + Chocolate",
+   description:"Soft neumorphic surfaces on a warm cream (#F4EDE0) background. Cards appear pressed into or raised from the surface with dual shadows. Rich chocolate (#3C2415) text, liquid gold (#C4A464) accents, subtle breathing animations on CTAs. Every element is rounded and tactile — feels like touching silk."},
+  {id:27,name:"Golden Editorial",
+   philosophy:"Editorial Typography + Flat Color — Ivory + Gold + Espresso",
+   description:"Magazine-style editorial layout with oversized Cormorant Garamond headings, asymmetric hero, flat color blocks in espresso brown and warm gold. Staggered card entries, flowing gold shimmer on key words. Think Vogue meets Hermès — typographic drama with calm, flat surfaces."},
+  {id:28,name:"Swiss Cocoa",
+   philosophy:"Swiss Style + Minimalism — Cream + Chocolate + Copper Gold",
+   description:"Strict Swiss grid precision on a warm cream canvas. Space Grotesk type, bold chocolate accent bars, copper-gold monospace numbers. Information hierarchy through size and weight — no decorative tricks. Clean, rational, confident. Müller-Brockmann in a silk robe."},
+  {id:29,name:"Crème Brûlée",
+   philosophy:"Neumorphism + Editorial — Warm Vanilla + Caramel + Deep Brown",
+   description:"Lush vanilla cream (#F8F0E3) with caramel gold gradients and deep brown accents. Neumorphic stat cards with inner shadows, editorial serif headings, flowing gold gradient hero text. Animated gold orbs float in the background. Rich, indulgent, unmistakably premium."},
+  {id:30,name:"Aurum",
+   philosophy:"Minimalism + Flat + Swiss Grid — Pure Cream + Liquid Gold + Obsidian",
+   description:"Extreme minimal: pearl cream base, liquid gold accents that shimmer, obsidian black for text. Generous whitespace, Playfair Display at large sizes, flat card surfaces with gold top borders. Every animation is restrained — just gold shimmer and soft fade-ins. The gold does all the talking."},
+];
+
+/* ═══════════════════════════════════════════
+   DESIGN 26 — VELVET NEUMORPHISM
+   Neumorphism + Minimalism
+   Warm Cream + Gold + Chocolate
+   ═══════════════════════════════════════════ */
+function Design26(){
+  const bg="#F4EDE0";
+  const choc="#3C2415";
+  const chocL="#5C3D28";
+  const gold="#C4A464";
+  const goldL="#D4B87A";
+  const goldG=`linear-gradient(135deg,${gold},${goldL},${gold})`;
+  const neu="8px 8px 18px rgba(60,36,21,.08), -8px -8px 18px rgba(255,255,255,.75)";
+  const neuIn="inset 4px 4px 10px rgba(60,36,21,.06), inset -4px -4px 10px rgba(255,255,255,.6)";
+  const neuHover="12px 12px 24px rgba(60,36,21,.1), -12px -12px 24px rgba(255,255,255,.85)";
+  return(
+    <div style={{background:bg,color:choc,fontFamily:"'DM Sans', sans-serif",minHeight:"100%"}}>
+      {/* Nav */}
+      <nav style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"24px 56px",animation:"fadeIn .7s ease"}}>
+        <div style={{fontFamily:"'Cormorant Garamond', serif",fontSize:28,fontWeight:600,color:choc,letterSpacing:1}}>Padmalaya</div>
+        <div style={{display:"flex",gap:32}}>{nav.map(n=><span key={n} style={{fontSize:13,cursor:"pointer",fontWeight:500,color:chocL+"90",letterSpacing:1,textTransform:"uppercase",transition:"color .3s"}}>{n}</span>)}</div>
+        <button style={{background:bg,boxShadow:neu,color:choc,border:"none",padding:"13px 32px",fontSize:13,fontWeight:600,cursor:"pointer",borderRadius:50,letterSpacing:.5,transition:"all .3s"}}>Request Quote</button>
+      </nav>
+
+      {/* Hero */}
+      <div style={{padding:"72px 56px 56px",display:"grid",gridTemplateColumns:"1.3fr 1fr",gap:72,alignItems:"center"}}>
+        <div style={{animation:"slideInLeft .9s ease"}}>
+          <div style={{display:"inline-block",background:bg,boxShadow:neuIn,padding:"10px 24px",borderRadius:50,fontSize:11,fontWeight:600,color:gold,letterSpacing:2.5,textTransform:"uppercase",marginBottom:32}}>✦ Premium Cotton Terry</div>
+          <h1 style={{fontFamily:"'Cormorant Garamond', serif",fontSize:60,fontWeight:500,lineHeight:1.06,marginBottom:24,letterSpacing:-1}}>
+            The gentle art of<br/>
+            <span style={{fontWeight:700,fontStyle:"italic",background:`linear-gradient(90deg,${gold},${goldL},${gold})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundSize:"200% 100%",animation:"shimmer 4s linear infinite"}}>exceptional</span> terry
+          </h1>
+          <div style={{width:80,height:3,background:goldG,borderRadius:50,marginBottom:24,animation:"lineGrow 1.2s ease both .4s",transformOrigin:"left"}}/>
+          <p style={{fontSize:16,color:chocL+"aa",lineHeight:1.9,maxWidth:440,marginBottom:40}}>India's most distinguished cotton terry manufacturer. Crafted for the world's finest hotels, spas, and luxury retailers — woven with intention since generations.</p>
+          <div style={{display:"flex",gap:16}}>
+            <button style={{background:goldG,color:choc,border:"none",padding:"18px 42px",fontSize:14,fontWeight:600,cursor:"pointer",borderRadius:50,boxShadow:`0 8px 28px ${gold}35`,transition:"all .3s",animation:"breathe 3.5s ease infinite"}}>View Collection</button>
+            <button style={{background:bg,boxShadow:neu,color:choc,border:"none",padding:"18px 42px",fontSize:14,fontWeight:500,cursor:"pointer",borderRadius:50}}>Our Heritage</button>
+          </div>
+        </div>
+
+        {/* Neumorphic stat grid */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,animation:"slideInRight 1s ease"}}>
+          {[{n:"25+",l:"Years Heritage"},{n:"500+",l:"Hotel Partners"},{n:"50L+",l:"Towels Annually"},{n:"100%",l:"Indian Cotton"}].map((s,i)=>(
+            <div key={i} className="hover-scale" style={{background:bg,boxShadow:neu,padding:"36px 24px",borderRadius:24,textAlign:"center",animation:`scaleIn ${.5+i*.15}s ease both`,transition:"box-shadow .3s"}}>
+              <div style={{fontFamily:"'Cormorant Garamond', serif",fontSize:40,fontWeight:700,color:gold,lineHeight:1}}>{s.n}</div>
+              <div style={{fontSize:11,color:chocL+"80",letterSpacing:2,marginTop:8,textTransform:"uppercase"}}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Gold marquee */}
+      <div style={{background:bg,boxShadow:neuIn,margin:"0 56px",borderRadius:20,padding:"16px 0",overflow:"hidden"}}>
+        <div className="mq-track">
+          {[...Array(2)].map((_,j)=>(
+            <span key={j} style={{display:"flex",gap:36,paddingRight:36}}>
+              {["100% Cotton","·","ISO 9001","·","OEKO-TEX","·","Made in India","·","Custom Orders","·","Private Labeling","·"].map((t,i)=>(
+                <span key={i} style={{fontSize:12,letterSpacing:2.5,textTransform:"uppercase",whiteSpace:"nowrap",fontWeight:500,color:t==="·"?gold:chocL+"60"}}>{t}</span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Products */}
+      <div style={{padding:"64px 56px"}}>
+        <div style={{textAlign:"center",marginBottom:48}}>
+          <span style={{fontSize:11,color:gold,letterSpacing:4,textTransform:"uppercase",fontWeight:600}}>✦ The Collection ✦</span>
+          <h2 style={{fontFamily:"'Cormorant Garamond', serif",fontSize:38,fontWeight:600,marginTop:10}}>Our Terry Range</h2>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:24}}>
+          {products.map((p,i)=>(
+            <div key={i} className="hover-lift" style={{background:bg,boxShadow:neu,borderRadius:24,overflow:"hidden",animation:`fadeInUp ${.3+i*.1}s ease both`}}>
+              <div style={{width:"100%",height:160,background:`linear-gradient(135deg,${bg},${gold}08)`,display:"flex",alignItems:"center",justifyContent:"center",borderRadius:"24px 24px 0 0",position:"relative"}}>
+                <div style={{position:"absolute",width:60,height:60,borderRadius:"50%",background:`radial-gradient(circle,${gold}12,transparent)`,animation:`float ${5+i}s ease infinite`}}/>
+                <span style={{fontFamily:"'Cormorant Garamond', serif",fontSize:56,fontWeight:700,opacity:.06,color:choc}}>{String(i+1).padStart(2,"0")}</span>
+              </div>
+              <div style={{padding:"24px 26px 28px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                  <span style={{fontSize:10,fontWeight:700,letterSpacing:2,color:choc,background:`${gold}25`,padding:"5px 16px",borderRadius:50,textTransform:"uppercase"}}>{p.tag}</span>
+                  <span style={{fontSize:11,color:chocL+"60"}}>{p.weight}</span>
+                </div>
+                <h3 style={{fontFamily:"'Cormorant Garamond', serif",fontSize:20,fontWeight:600,marginBottom:8}}>{p.name}</h3>
+                <p style={{fontSize:12,color:chocL+"88",lineHeight:1.7,marginBottom:18}}>{p.desc}</p>
+                <button style={{background:bg,boxShadow:neuIn,color:gold,border:"none",padding:"12px 24px",fontSize:12,fontWeight:600,cursor:"pointer",borderRadius:50,width:"100%",letterSpacing:.5,transition:"all .3s"}}>Send Enquiry →</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{margin:"0 56px 56px",background:choc,borderRadius:28,padding:"56px",display:"flex",justifyContent:"space-between",alignItems:"center",color:bg,position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:-50,right:-30,width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle,${gold}15,transparent)`,animation:"goldOrb 12s ease infinite"}}/>
+        <div style={{position:"absolute",bottom:-30,left:"40%",width:150,height:150,borderRadius:"50%",background:`radial-gradient(circle,${gold}10,transparent)`,animation:"goldOrb 10s ease infinite 3s"}}/>
+        <div style={{position:"relative",zIndex:1}}>
+          <span style={{fontSize:11,color:gold,letterSpacing:4,textTransform:"uppercase",fontWeight:600}}>Partner With Us</span>
+          <h2 style={{fontFamily:"'Cormorant Garamond', serif",fontSize:34,fontWeight:600,marginTop:10,marginBottom:12,lineHeight:1.15}}>Custom manufacturing,<br/>woven to your <span style={{color:gold,fontStyle:"italic"}}>vision</span></h2>
+          <p style={{fontSize:15,opacity:.5}}>Private labeling · Bespoke weaves · Min. 500 pieces</p>
+        </div>
+        <button style={{background:goldG,color:choc,border:"none",padding:"18px 48px",fontSize:14,fontWeight:700,cursor:"pointer",borderRadius:50,whiteSpace:"nowrap",position:"relative",zIndex:1,boxShadow:`0 8px 32px ${gold}40`}}>Start Conversation →</button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   DESIGN 27 — GOLDEN EDITORIAL
+   Editorial + Flat Color
+   Ivory + Gold + Espresso
+   ═══════════════════════════════════════════ */
+function Design27(){
+  const bg="#FBF8F2";
+  const esp="#2C1A0E";
+  const espL="#4A3020";
+  const gold="#C4A464";
+  const goldL="#D9BC7E";
+  const ivory="#F0E8D8";
+  return(
+    <div style={{background:bg,color:esp,fontFamily:"'DM Sans', sans-serif",minHeight:"100%"}}>
+      <nav style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"24px 56px",animation:"fadeIn .6s ease"}}>
+        <div style={{fontFamily:"'Playfair Display', serif",fontSize:26,fontWeight:700,letterSpacing:2,color:esp}}>PADMALAYA</div>
+        <div style={{display:"flex",gap:32}}>{nav.map(n=><span key={n} style={{fontSize:12,cursor:"pointer",fontWeight:600,color:espL+"80",letterSpacing:2,textTransform:"uppercase"}}>{n}</span>)}</div>
+        <button style={{background:esp,color:bg,border:"none",padding:"13px 32px",fontSize:12,fontWeight:600,cursor:"pointer",borderRadius:50,letterSpacing:1}}>Enquire Now</button>
+      </nav>
+
+      {/* Asymmetric Editorial Hero */}
+      <div style={{padding:"48px 56px 0",display:"grid",gridTemplateColumns:"1fr 1.1fr",gap:0,minHeight:520}}>
+        {/* Left — big type */}
+        <div style={{padding:"48px 40px 48px 0",display:"flex",flexDirection:"column",justifyContent:"center",animation:"slideInLeft .9s ease"}}>
+          <div style={{fontFamily:"'Cormorant Garamond', serif",fontSize:13,fontWeight:500,color:gold,letterSpacing:4,textTransform:"uppercase",marginBottom:28}}>Premium Cotton Terry · Est. Since Generations</div>
+          <h1 style={{fontFamily:"'Playfair Display', serif",fontSize:72,fontWeight:700,lineHeight:.95,marginBottom:28,letterSpacing:-2}}>
+            Woven<br/>
+            <span style={{fontStyle:"italic",fontWeight:500,background:`linear-gradient(90deg,${gold},${goldL},${gold})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundSize:"200% 100%",animation:"shimmer 3.5s linear infinite"}}>with grace</span>
+          </h1>
+          <p style={{fontSize:16,color:espL+"99",lineHeight:1.9,maxWidth:400,marginBottom:40}}>India's finest terry — crafted for the world's most distinguished hotels and luxury brands.</p>
+          <div style={{display:"flex",gap:14}}>
+            <button style={{background:esp,color:bg,border:"none",padding:"17px 40px",fontSize:14,fontWeight:600,cursor:"pointer",borderRadius:50,boxShadow:`0 6px 24px ${esp}20`}}>The Collection</button>
+            <button style={{background:"transparent",color:esp,border:`1.5px solid ${gold}50`,padding:"17px 40px",fontSize:14,fontWeight:500,cursor:"pointer",borderRadius:50}}>Our Story</button>
+          </div>
+        </div>
+        {/* Right — gold/espresso flat block with stats */}
+        <div style={{background:esp,borderRadius:"28px 28px 0 0",padding:"56px 48px",color:bg,display:"flex",flexDirection:"column",justifyContent:"center",position:"relative",overflow:"hidden",animation:"fadeIn 1s ease"}}>
+          <div style={{position:"absolute",top:-60,right:-40,width:220,height:220,borderRadius:"50%",background:`radial-gradient(circle,${gold}12,transparent)`,animation:"goldOrb 14s ease infinite"}}/>
+          <span style={{fontSize:11,color:gold,letterSpacing:4,textTransform:"uppercase",fontWeight:600,position:"relative",zIndex:1}}>By the Numbers</span>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:32,marginTop:36,position:"relative",zIndex:1}}>
+            {[{n:"25+",l:"Years Heritage"},{n:"500+",l:"Hotel Partners"},{n:"50L+",l:"Towels/Year"},{n:"100%",l:"Indian Cotton"}].map((s,i)=>(
+              <div key={i} style={{animation:`fadeInUp ${.6+i*.15}s ease both`}}>
+                <div style={{fontFamily:"'Playfair Display', serif",fontSize:44,fontWeight:700,color:gold,lineHeight:1}}>{s.n}</div>
+                <div style={{fontSize:11,letterSpacing:2,marginTop:8,textTransform:"uppercase",opacity:.4}}>{s.l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Gold flowing divider */}
+      <div style={{height:4,background:`linear-gradient(90deg,${gold},${goldL},${gold})`,backgroundSize:"200% 100%",animation:"goldFlow 4s ease infinite"}}/>
+
+      {/* Products — editorial grid */}
+      <div style={{padding:"64px 56px"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:48}}>
+          <div>
+            <div style={{width:60,height:3,background:gold,borderRadius:50,marginBottom:16,animation:"lineGrow 1s ease both"}}/>
+            <h2 style={{fontFamily:"'Playfair Display', serif",fontSize:36,fontWeight:700}}>The Collection</h2>
+          </div>
+          <span style={{fontSize:12,color:gold,cursor:"pointer",fontWeight:600,letterSpacing:1.5}}>View All →</span>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:22}}>
+          {products.map((p,i)=>(
+            <div key={i} className="hover-lift" style={{background:bg,borderRadius:24,overflow:"hidden",border:`1px solid ${gold}15`,animation:`fadeInUp ${.3+i*.1}s ease both`}}>
+              <div style={{width:"100%",height:160,background:ivory,display:"flex",alignItems:"center",justifyContent:"center",position:"relative"}}>
+                <div style={{position:"absolute",width:80,height:80,borderRadius:"50%",background:`radial-gradient(circle,${gold}10,transparent)`,animation:`floatSlow ${6+i}s ease infinite`}}/>
+                <span style={{fontFamily:"'Playfair Display', serif",fontSize:60,fontWeight:800,opacity:.04,color:esp}}>{String(i+1).padStart(2,"0")}</span>
+              </div>
+              <div style={{padding:"24px 26px 28px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                  <span style={{fontSize:10,fontWeight:700,letterSpacing:2,color:esp,background:`${gold}20`,padding:"5px 16px",borderRadius:50,textTransform:"uppercase"}}>{p.tag}</span>
+                  <span style={{fontSize:11,color:espL+"55"}}>{p.weight}</span>
+                </div>
+                <h3 style={{fontFamily:"'Playfair Display', serif",fontSize:19,fontWeight:600,marginBottom:8}}>{p.name}</h3>
+                <p style={{fontSize:12,color:espL+"77",lineHeight:1.7,marginBottom:18}}>{p.desc}</p>
+                <button style={{background:`${gold}12`,color:esp,border:`1px solid ${gold}25`,padding:"12px 24px",fontSize:12,fontWeight:600,cursor:"pointer",borderRadius:50,width:"100%",transition:"all .3s"}}>Send Enquiry →</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{margin:"0 56px 56px",borderRadius:28,overflow:"hidden",display:"grid",gridTemplateColumns:"1.6fr 1fr"}}>
+        <div style={{background:esp,color:bg,padding:"56px 52px",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",top:-40,right:-40,width:180,height:180,borderRadius:"50%",background:`radial-gradient(circle,${gold}10,transparent)`,animation:"goldOrb 10s ease infinite"}}/>
+          <div style={{position:"relative",zIndex:1}}>
+            <span style={{fontSize:11,color:gold,letterSpacing:4,textTransform:"uppercase",fontWeight:600}}>Custom Manufacturing</span>
+            <h2 style={{fontFamily:"'Playfair Display', serif",fontSize:32,fontWeight:700,marginTop:12,marginBottom:14,lineHeight:1.15}}>Crafted to your<br/><span style={{color:gold,fontStyle:"italic"}}>exact vision</span></h2>
+            <p style={{fontSize:15,opacity:.45,marginBottom:32}}>Private labeling · Bespoke weaves · Min. 500 pieces</p>
+            <button style={{background:`linear-gradient(135deg,${gold},${goldL})`,color:esp,border:"none",padding:"18px 44px",fontSize:14,fontWeight:700,cursor:"pointer",borderRadius:50,boxShadow:`0 6px 24px ${gold}35`}}>Begin Conversation →</button>
+          </div>
+        </div>
+        <div style={{background:`linear-gradient(180deg,${gold},${goldL})`,display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",textAlign:"center",padding:"40px 32px"}}>
+          <div style={{fontFamily:"'Playfair Display', serif",fontSize:60,fontWeight:700,color:esp}}>{/*shimmer num*/}
+            <span style={{background:`linear-gradient(90deg,${esp},${espL},${esp})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundSize:"200% 100%",animation:"shimmer 3s linear infinite"}}>500+</span>
+          </div>
+          <div style={{fontSize:12,letterSpacing:3,marginTop:10,textTransform:"uppercase",color:esp,opacity:.6,fontWeight:600}}>Global Hotel Partners</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   DESIGN 28 — SWISS COCOA
+   Swiss Style + Minimalism
+   Cream + Chocolate + Copper Gold
+   ═══════════════════════════════════════════ */
+function Design28(){
+  const bg="#F5EFE4";
+  const choc="#2D1B0E";
+  const copper="#B8863E";
+  const copperL="#CCAA5C";
+  return(
+    <div style={{background:bg,color:choc,fontFamily:"'Space Grotesk', sans-serif",minHeight:"100%"}}>
+      <nav style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"22px 56px",animation:"fadeIn .6s ease"}}>
+        <div style={{fontSize:18,fontWeight:700,letterSpacing:6,textTransform:"uppercase"}}>Padmalaya</div>
+        <div style={{display:"flex",gap:30}}>{nav.map(n=><span key={n} style={{fontSize:12,cursor:"pointer",fontWeight:500,color:choc+"70",letterSpacing:2,textTransform:"uppercase"}}>{n}</span>)}</div>
+        <button style={{background:choc,color:bg,border:"none",padding:"12px 28px",fontSize:12,fontWeight:600,cursor:"pointer",borderRadius:50,letterSpacing:1}}>Enquire</button>
+      </nav>
+
+      {/* Swiss Hero — asymmetric grid, type-led */}
+      <div style={{display:"grid",gridTemplateColumns:"auto 1fr auto",padding:"80px 56px 60px",gap:56,alignItems:"end"}}>
+        <div style={{writingMode:"vertical-lr",transform:"rotate(180deg)",fontSize:11,letterSpacing:4,color:copper,textTransform:"uppercase",fontWeight:500,animation:"fadeIn 1.2s ease"}}>Est. Since Generations</div>
+        <div style={{animation:"fadeInUp .8s ease"}}>
+          <h1 style={{fontSize:84,fontWeight:700,lineHeight:.9,letterSpacing:-3,textTransform:"uppercase"}}>
+            Premium<br/>
+            <span style={{background:`linear-gradient(90deg,${copper},${copperL},${copper})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundSize:"200% 100%",animation:"shimmer 3.5s linear infinite"}}>Terry</span><br/>
+            Towels
+          </h1>
+          <div style={{width:80,height:4,background:`linear-gradient(90deg,${copper},${copperL})`,borderRadius:50,margin:"32px 0",animation:"lineGrow 1.2s ease both .4s",transformOrigin:"left"}}/>
+          <p style={{fontSize:16,color:choc+"88",lineHeight:1.9,maxWidth:500}}>India's leading cotton terry manufacturer. From raw fiber to finished luxury — for hotels, spas, and retail worldwide.</p>
+          <div style={{display:"flex",gap:14,marginTop:36}}>
+            <button style={{background:choc,color:bg,border:"none",padding:"16px 38px",fontSize:13,fontWeight:600,cursor:"pointer",borderRadius:50,letterSpacing:.5}}>View Range →</button>
+            <button style={{background:"transparent",color:choc,border:`1.5px solid ${copper}50`,padding:"16px 38px",fontSize:13,fontWeight:500,cursor:"pointer",borderRadius:50}}>Our Process</button>
+          </div>
+        </div>
+        <div style={{textAlign:"right",animation:"slideInRight 1s ease"}}>
+          <div style={{fontFamily:"'Space Mono', monospace",fontSize:80,fontWeight:700,color:copper,lineHeight:1}}>25</div>
+          <div style={{fontSize:11,letterSpacing:3,color:choc+"60",textTransform:"uppercase",marginTop:4}}>Years</div>
+        </div>
+      </div>
+
+      {/* Copper bar */}
+      <div style={{background:`linear-gradient(90deg,${copper},${copperL},${copper})`,backgroundSize:"200% 100%",animation:"goldFlow 4s ease infinite",padding:"14px 0",margin:"0 56px",borderRadius:16,overflow:"hidden"}}>
+        <div className="mq-track">
+          {[...Array(2)].map((_,j)=>(
+            <span key={j} style={{display:"flex",gap:40,paddingRight:40}}>
+              {["100% Cotton","·","ISO 9001","·","OEKO-TEX Certified","·","Made in India","·","Custom Orders","·","Bulk Supply","·"].map((t,i)=>(
+                <span key={i} style={{fontSize:11,letterSpacing:3,textTransform:"uppercase",whiteSpace:"nowrap",fontWeight:600,color:t==="·"?choc+"40":"#fff"}}>{t}</span>
+              ))}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Products — Swiss grid */}
+      <div style={{padding:"64px 56px"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:44}}>
+          <h2 style={{fontSize:14,fontWeight:700,letterSpacing:4,textTransform:"uppercase"}}>Product Range</h2>
+          <span style={{fontSize:12,color:copper,letterSpacing:1.5,cursor:"pointer",fontWeight:600}}>View All →</span>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20}}>
+          {products.map((p,i)=>(
+            <div key={i} className="hover-lift" style={{background:"#fff",borderRadius:24,overflow:"hidden",boxShadow:"0 2px 16px rgba(45,27,14,.04)",animation:`fadeInUp ${.3+i*.1}s ease both`}}>
+              <div style={{width:"100%",height:150,background:`linear-gradient(135deg,${bg},${copper}06)`,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",borderRadius:"24px 24px 0 0"}}>
+                <span style={{fontFamily:"'Space Mono', monospace",fontSize:44,fontWeight:700,color:copper,opacity:.1}}>{String(i+1).padStart(2,"0")}</span>
+              </div>
+              <div style={{padding:"24px 26px 28px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                  <span style={{fontSize:10,fontWeight:700,letterSpacing:2,color:choc,background:`${copper}18`,padding:"5px 16px",borderRadius:50,textTransform:"uppercase"}}>{p.tag}</span>
+                  <span style={{fontFamily:"'Space Mono', monospace",fontSize:11,color:choc+"50"}}>{p.weight}</span>
+                </div>
+                <h3 style={{fontSize:17,fontWeight:700,marginBottom:8}}>{p.name}</h3>
+                <p style={{fontSize:12,color:choc+"70",lineHeight:1.7,marginBottom:18}}>{p.desc}</p>
+                <button style={{background:`${copper}10`,color:choc,border:`1px solid ${copper}20`,padding:"11px 24px",fontSize:12,fontWeight:600,cursor:"pointer",borderRadius:50,width:"100%",transition:"all .3s"}}>Enquire →</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA — constructivist split */}
+      <div style={{display:"grid",gridTemplateColumns:"2fr 1fr",margin:"0 56px 56px",borderRadius:24,overflow:"hidden"}}>
+        <div style={{background:choc,color:bg,padding:"56px 48px"}}>
+          <div style={{width:40,height:3,background:copper,borderRadius:50,marginBottom:24}}/>
+          <h2 style={{fontSize:32,fontWeight:700,lineHeight:1.1,textTransform:"uppercase",marginBottom:14}}>Custom<br/>Manufacturing</h2>
+          <p style={{fontSize:14,opacity:.45,marginBottom:32}}>Private labeling · Bespoke weaves · Min. 500 pcs</p>
+          <button style={{background:`linear-gradient(135deg,${copper},${copperL})`,color:choc,border:"none",padding:"16px 40px",fontSize:13,fontWeight:700,cursor:"pointer",borderRadius:50}}>Request Quote →</button>
+        </div>
+        <div style={{background:`linear-gradient(180deg,${copper},${copperL})`,color:"#fff",padding:"56px 36px",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",textAlign:"center"}}>
+          <div style={{fontFamily:"'Space Mono', monospace",fontSize:52,fontWeight:700,lineHeight:1}}>500+</div>
+          <div style={{fontSize:11,letterSpacing:3,marginTop:10,textTransform:"uppercase",opacity:.75}}>Hotel Partners</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   DESIGN 29 — CRÈME BRÛLÉE
+   Neumorphism + Editorial
+   Vanilla + Caramel Gold + Deep Brown
+   ═══════════════════════════════════════════ */
+function Design29(){
+  const bg="#F8F0E3";
+  const brown="#2A1810";
+  const brownL="#4E3425";
+  const caramel="#C4A050";
+  const caramelL="#D8B868";
+  const caramelG=`linear-gradient(135deg,${caramel},${caramelL},${caramel})`;
+  const neu="8px 8px 20px rgba(42,24,16,.07), -8px -8px 20px rgba(255,255,255,.7)";
+  const neuIn="inset 4px 4px 10px rgba(42,24,16,.05), inset -4px -4px 10px rgba(255,255,255,.5)";
+  return(
+    <div style={{background:bg,color:brown,fontFamily:"'Outfit', sans-serif",minHeight:"100%",position:"relative",overflow:"hidden"}}>
+      {/* Floating gold orbs */}
+      <div style={{position:"absolute",top:80,left:"8%",width:180,height:180,borderRadius:"50%",background:`radial-gradient(circle,${caramel}12,transparent)`,animation:"goldOrb 15s ease infinite",zIndex:0}}/>
+      <div style={{position:"absolute",top:350,right:"5%",width:140,height:140,borderRadius:"50%",background:`radial-gradient(circle,${caramel}10,transparent)`,animation:"goldOrb 12s ease infinite 4s",zIndex:0}}/>
+      <div style={{position:"absolute",bottom:200,left:"35%",width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle,${caramel}08,transparent)`,animation:"goldOrb 18s ease infinite 2s",zIndex:0}}/>
+
+      <nav style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"24px 56px",position:"relative",zIndex:2,animation:"fadeIn .6s ease"}}>
+        <div style={{fontFamily:"'EB Garamond', serif",fontSize:28,fontWeight:700,color:brown,letterSpacing:1}}>Padmalaya</div>
+        <div style={{display:"flex",gap:30}}>{nav.map(n=><span key={n} style={{fontSize:13,cursor:"pointer",fontWeight:500,color:brownL+"88",letterSpacing:1,textTransform:"uppercase"}}>{n}</span>)}</div>
+        <button style={{background:bg,boxShadow:neu,color:brown,border:"none",padding:"13px 32px",fontSize:13,fontWeight:600,cursor:"pointer",borderRadius:50,animation:"neuPulse 4s ease infinite"}}>Request Quote</button>
+      </nav>
+
+      {/* Hero — centered editorial */}
+      <div style={{position:"relative",zIndex:2,padding:"80px 56px 56px",textAlign:"center"}}>
+        <div style={{animation:"fadeInUp .8s ease"}}>
+          <div style={{display:"inline-block",background:bg,boxShadow:neuIn,padding:"10px 24px",borderRadius:50,fontSize:11,fontWeight:600,color:caramel,letterSpacing:2.5,textTransform:"uppercase",marginBottom:32}}>✦ Premium Cotton Terry ✦</div>
+          <h1 style={{fontFamily:"'EB Garamond', serif",fontSize:68,fontWeight:700,lineHeight:1.02,marginBottom:24}}>
+            The indulgence of<br/>
+            <span style={{fontStyle:"italic",background:`linear-gradient(90deg,${caramel},${caramelL},${caramel})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundSize:"200% 100%",animation:"shimmer 3.5s linear infinite"}}>pure cotton</span>
+          </h1>
+          <p style={{fontSize:17,color:brownL+"88",lineHeight:1.85,maxWidth:520,margin:"0 auto 40px"}}>Crafted in India since generations — for the world's finest hotels, spas, and luxury brands. Every thread woven with care.</p>
+          <div style={{display:"flex",gap:16,justifyContent:"center"}}>
+            <button style={{background:caramelG,color:brown,border:"none",padding:"18px 44px",fontSize:15,fontWeight:600,cursor:"pointer",borderRadius:50,boxShadow:`0 8px 32px ${caramel}30`,animation:"breathe 3.5s ease infinite"}}>Explore Collection</button>
+            <button style={{background:bg,boxShadow:neu,color:brown,border:"none",padding:"18px 44px",fontSize:15,fontWeight:500,cursor:"pointer",borderRadius:50}}>Our Story</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Neumorphic Stats Row */}
+      <div style={{display:"flex",justifyContent:"center",gap:24,padding:"20px 56px 48px",position:"relative",zIndex:2,flexWrap:"wrap"}}>
+        {[{n:"25+",l:"Years Heritage"},{n:"500+",l:"Hotel Partners"},{n:"50L+",l:"Towels/Year"},{n:"100%",l:"Indian Cotton"}].map((s,i)=>(
+          <div key={i} className="hover-scale" style={{background:bg,boxShadow:neu,padding:"28px 40px",borderRadius:24,textAlign:"center",animation:`scaleIn ${.4+i*.12}s ease both`}}>
+            <div style={{fontFamily:"'EB Garamond', serif",fontSize:36,fontWeight:700,color:caramel}}>{s.n}</div>
+            <div style={{fontSize:11,color:brownL+"70",letterSpacing:2,marginTop:6,textTransform:"uppercase"}}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Products */}
+      <div style={{padding:"32px 56px 64px",position:"relative",zIndex:2}}>
+        <h2 style={{fontFamily:"'EB Garamond', serif",fontSize:38,fontWeight:700,textAlign:"center",marginBottom:44}}>Our Terry Collection</h2>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:22}}>
+          {products.map((p,i)=>(
+            <div key={i} className="hover-lift" style={{background:bg,boxShadow:neu,borderRadius:24,overflow:"hidden",animation:`fadeInUp ${.3+i*.1}s ease both`}}>
+              <div style={{width:"100%",height:155,background:`linear-gradient(135deg,${bg},${caramel}06)`,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",borderRadius:"24px 24px 0 0"}}>
+                <div style={{position:"absolute",width:50,height:50,borderRadius:"50%",background:`radial-gradient(circle,${caramel}10,transparent)`,animation:`float ${5+i*.8}s ease infinite`}}/>
+                <span style={{fontFamily:"'EB Garamond', serif",fontSize:52,fontWeight:700,opacity:.05,color:brown}}>{String(i+1).padStart(2,"0")}</span>
+              </div>
+              <div style={{padding:"22px 24px 26px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                  <span style={{fontSize:10,fontWeight:700,letterSpacing:2,color:brown,background:`${caramel}22`,padding:"5px 16px",borderRadius:50,textTransform:"uppercase"}}>{p.tag}</span>
+                  <span style={{fontSize:11,color:brownL+"50"}}>{p.weight}</span>
+                </div>
+                <h3 style={{fontFamily:"'EB Garamond', serif",fontSize:19,fontWeight:600,marginBottom:8}}>{p.name}</h3>
+                <p style={{fontSize:12,color:brownL+"77",lineHeight:1.7,marginBottom:18}}>{p.desc}</p>
+                <button style={{background:bg,boxShadow:neuIn,color:caramel,border:"none",padding:"12px 24px",fontSize:12,fontWeight:600,cursor:"pointer",borderRadius:50,width:"100%",transition:"all .3s"}}>Send Enquiry →</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{margin:"0 56px 56px",background:brown,borderRadius:28,padding:"56px",display:"flex",justifyContent:"space-between",alignItems:"center",color:bg,position:"relative",overflow:"hidden",zIndex:2}}>
+        <div style={{position:"absolute",top:-50,right:-30,width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle,${caramel}15,transparent)`,animation:"goldOrb 12s ease infinite"}}/>
+        <div style={{position:"relative",zIndex:1}}>
+          <span style={{fontSize:11,color:caramel,letterSpacing:4,textTransform:"uppercase",fontWeight:600}}>Partner With Excellence</span>
+          <h2 style={{fontFamily:"'EB Garamond', serif",fontSize:32,fontWeight:700,marginTop:10,marginBottom:12,lineHeight:1.15}}>Bespoke manufacturing,<br/>indulgently <span style={{color:caramel,fontStyle:"italic"}}>crafted</span></h2>
+          <p style={{fontSize:15,opacity:.45}}>Private labeling · Custom weaves · Min. 500 pieces</p>
+        </div>
+        <button style={{background:caramelG,color:brown,border:"none",padding:"18px 48px",fontSize:14,fontWeight:700,cursor:"pointer",borderRadius:50,whiteSpace:"nowrap",position:"relative",zIndex:1,boxShadow:`0 8px 32px ${caramel}35`}}>Start Conversation →</button>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   DESIGN 30 — AURUM
+   Minimalism + Flat + Swiss Grid
+   Pearl Cream + Liquid Gold + Obsidian
+   ═══════════════════════════════════════════ */
+function Design30(){
+  const bg="#FAF8F3";
+  const bk="#121110";
+  const gold="#B89B4A";
+  const goldL="#CCAE5E";
+  const goldG=`linear-gradient(90deg,${gold},${goldL},${gold})`;
+  const cream="#F0EAE0";
+  return(
+    <div style={{background:bg,color:bk,fontFamily:"'DM Sans', sans-serif",minHeight:"100%"}}>
+      <nav style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"28px 64px",animation:"fadeIn .6s ease"}}>
+        <div style={{fontFamily:"'Playfair Display', serif",fontSize:22,fontWeight:700,letterSpacing:4}}>PADMALAYA</div>
+        <div style={{display:"flex",gap:36}}>{nav.map(n=><span key={n} style={{fontSize:11,cursor:"pointer",fontWeight:600,color:bk+"55",letterSpacing:2.5,textTransform:"uppercase",transition:"color .3s"}}>{n}</span>)}</div>
+        <button style={{background:bk,color:bg,border:"none",padding:"13px 34px",fontSize:12,fontWeight:600,cursor:"pointer",borderRadius:50,letterSpacing:1.5}}>Enquire</button>
+      </nav>
+
+      {/* Minimal hero — large type, generous whitespace */}
+      <div style={{padding:"100px 64px 80px",maxWidth:850}}>
+        <div style={{animation:"fadeInUp .9s ease"}}>
+          <div style={{width:80,height:3,background:goldG,backgroundSize:"200% 100%",animation:"goldFlow 4s ease infinite",borderRadius:50,marginBottom:40}}/>
+          <h1 style={{fontFamily:"'Playfair Display', serif",fontSize:72,fontWeight:700,lineHeight:1.02,marginBottom:28,letterSpacing:-2}}>
+            Simply the finest{" "}
+            <span style={{fontStyle:"italic",background:goldG,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundSize:"200% 100%",animation:"shimmer 4s linear infinite"}}>terry</span>
+          </h1>
+          <p style={{fontSize:18,color:bk+"66",lineHeight:1.95,maxWidth:540,marginBottom:48,fontWeight:300}}>India's most exacting cotton terry manufacturer. Two decades of uncompromising craft for the world's most discerning hospitality brands.</p>
+          <div style={{display:"flex",gap:16}}>
+            <button style={{background:bk,color:bg,border:"none",padding:"18px 44px",fontSize:14,fontWeight:600,cursor:"pointer",borderRadius:50,boxShadow:"0 8px 32px rgba(0,0,0,.12)",transition:"all .3s"}}>The Collection</button>
+            <button style={{background:"transparent",color:bk,border:`1.5px solid ${gold}45`,padding:"18px 44px",fontSize:14,fontWeight:500,cursor:"pointer",borderRadius:50}}>Our Heritage</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats — flat gold/cream bar */}
+      <div style={{margin:"0 64px",background:cream,borderRadius:24,padding:"40px 48px",display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:24}}>
+        {[{n:"25+",l:"Years Heritage"},{n:"500+",l:"Hotel Partners"},{n:"50L+",l:"Towels/Year"},{n:"100%",l:"Indian Cotton"}].map((s,i)=>(
+          <div key={i} style={{textAlign:"center",animation:`fadeInUp ${.5+i*.12}s ease both`}}>
+            <div style={{fontFamily:"'Playfair Display', serif",fontSize:42,fontWeight:700,background:goldG,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundSize:"200% 100%",animation:"shimmer 4s linear infinite"}}>{s.n}</div>
+            <div style={{fontSize:11,color:bk+"55",letterSpacing:2.5,marginTop:8,textTransform:"uppercase"}}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Gold flowing line */}
+      <div style={{height:3,background:goldG,backgroundSize:"200% 100%",animation:"goldFlow 4s ease infinite",margin:"48px 64px 0",borderRadius:50}}/>
+
+      {/* Products */}
+      <div style={{padding:"56px 64px 64px"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:48}}>
+          <h2 style={{fontFamily:"'Playfair Display', serif",fontSize:34,fontWeight:700,letterSpacing:-.5}}>The Collection</h2>
+          <span style={{fontSize:12,background:goldG,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundSize:"200% 100%",animation:"shimmer 3s linear infinite",cursor:"pointer",fontWeight:600,letterSpacing:2}}>View All →</span>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:24}}>
+          {products.map((p,i)=>(
+            <div key={i} className="hover-lift" style={{background:"#fff",borderRadius:24,overflow:"hidden",boxShadow:"0 2px 16px rgba(18,17,16,.03)",animation:`fadeInUp ${.3+i*.1}s ease both`}}>
+              <div style={{width:"100%",height:4,background:goldG,backgroundSize:"200% 100%",animation:"goldFlow 4s ease infinite",borderRadius:"24px 24px 0 0"}}/>
+              <div style={{width:"100%",height:160,background:cream,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <span style={{fontFamily:"'Playfair Display', serif",fontSize:60,fontWeight:800,opacity:.03,color:bk}}>{String(i+1).padStart(2,"0")}</span>
+              </div>
+              <div style={{padding:"26px 28px 30px"}}>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                  <span style={{fontSize:10,fontWeight:700,letterSpacing:2,color:bk,background:`${gold}18`,padding:"5px 16px",borderRadius:50,textTransform:"uppercase"}}>{p.tag}</span>
+                  <span style={{fontSize:11,color:bk+"40"}}>{p.weight}</span>
+                </div>
+                <h3 style={{fontFamily:"'Playfair Display', serif",fontSize:19,fontWeight:600,marginBottom:10}}>{p.name}</h3>
+                <p style={{fontSize:12,color:bk+"60",lineHeight:1.7,marginBottom:20}}>{p.desc}</p>
+                <button style={{background:`${gold}10`,color:bk,border:`1px solid ${gold}20`,padding:"12px 24px",fontSize:12,fontWeight:600,cursor:"pointer",borderRadius:50,width:"100%",transition:"all .3s"}}>Send Enquiry →</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{margin:"0 64px 64px",borderRadius:28,overflow:"hidden",display:"grid",gridTemplateColumns:"1.8fr 1fr"}}>
+        <div style={{background:bk,color:bg,padding:"64px 56px",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",top:-40,right:-40,width:200,height:200,borderRadius:"50%",background:`radial-gradient(circle,${gold}10,transparent)`,animation:"goldOrb 14s ease infinite"}}/>
+          <div style={{position:"relative",zIndex:1}}>
+            <div style={{width:48,height:3,background:goldG,backgroundSize:"200% 100%",animation:"goldFlow 4s ease infinite",borderRadius:50,marginBottom:28}}/>
+            <h2 style={{fontFamily:"'Playfair Display', serif",fontSize:36,fontWeight:700,marginBottom:14,lineHeight:1.1}}>Custom manufacturing,<br/>uncompromising{" "}
+              <span style={{background:goldG,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",backgroundSize:"200% 100%",animation:"shimmer 3.5s linear infinite",fontStyle:"italic"}}>quality</span>
+            </h2>
+            <p style={{fontSize:15,opacity:.4,marginBottom:36}}>Private labeling · Bespoke weaves · Min. 500 pieces · Worldwide delivery</p>
+            <button style={{background:goldG,backgroundSize:"200% 100%",animation:"goldFlow 4s ease infinite",color:bk,border:"none",padding:"18px 48px",fontSize:14,fontWeight:700,cursor:"pointer",borderRadius:50,boxShadow:`0 8px 28px ${gold}35`}}>Begin Conversation →</button>
+          </div>
+        </div>
+        <div style={{background:goldG,backgroundSize:"200% 100%",animation:"goldFlow 4s ease infinite",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",textAlign:"center",padding:"48px 32px"}}>
+          <div style={{fontFamily:"'Playfair Display', serif",fontSize:60,fontWeight:700,color:bk}}>500+</div>
+          <div style={{fontSize:11,letterSpacing:3,marginTop:10,textTransform:"uppercase",color:bk,opacity:.55,fontWeight:600}}>Global Hotel Partners</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const renderers=[Design26,Design27,Design28,Design29,Design30];
+
+function App(){
+  const[active,setActive]=useState(0);
+  const d=designs[active];
+  return(
+    <div style={{fontFamily:"'DM Sans', sans-serif",background:"#0a0a0a",color:"#fff",minHeight:"100vh"}}>
+      <div style={{position:"sticky",top:0,zIndex:100,background:"rgba(10,10,10,.95)",backdropFilter:"blur(12px)",borderBottom:"1px solid rgba(255,255,255,.06)",padding:"0 24px"}}>
+        <div style={{display:"flex",alignItems:"center",gap:6,maxWidth:1300,margin:"0 auto",height:56}}>
+          <span style={{fontSize:12,color:"rgba(255,255,255,.35)",marginRight:10,letterSpacing:1.5}}>DESIGN:</span>
+          {designs.map((dd,i)=>(
+            <button key={i} onClick={()=>setActive(i)}
+              style={{background:active===i?"rgba(255,255,255,.1)":"transparent",color:active===i?"#fff":"rgba(255,255,255,.4)",border:active===i?"1px solid rgba(255,255,255,.15)":"1px solid transparent",padding:"6px 14px",fontSize:12,cursor:"pointer",borderRadius:6,transition:"all .2s",whiteSpace:"nowrap"}}>
+              {dd.id}. {dd.name}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div style={{maxWidth:1300,margin:"0 auto",padding:"20px 24px 14px"}}>
+        <h2 style={{fontSize:22,fontWeight:600,marginBottom:4}}>{d.name}</h2>
+        <p style={{fontSize:13,color:"rgba(255,255,255,.35)",marginBottom:6}}>{d.philosophy}</p>
+        <p style={{fontSize:13,color:"rgba(255,255,255,.55)",maxWidth:750,lineHeight:1.6}}>{d.description}</p>
+      </div>
+      <div style={{maxWidth:1300,margin:"0 auto",padding:"0 24px 40px"}}>
+        <div style={{borderRadius:12,overflow:"hidden",border:"1px solid rgba(255,255,255,.06)"}}>
+          {React.createElement(renderers[active])}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

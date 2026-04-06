@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Padmalaya Textiles — 5 Design Concepts</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #111; font-family: system-ui, -apple-system, sans-serif; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const designs = [
+  {
+    id: 1, name: "Cotton & Craft", philosophy: "Warm Minimalism + Subtle Glassmorphism",
+    description: "Clean, airy layout with warm earth tones. Glassmorphic product cards float over soft textile textures. Parallax cotton field hero. Elegant but approachable — like walking into a premium linen store.",
+    palette: { bg: "#FAF7F2", card: "rgba(255,255,255,0.7)", primary: "#8B7355", accent: "#C4A882", text: "#3D3326", muted: "#9B8E7E", highlight: "#E8DFD3" },
+    font: "Georgia, serif", headingFont: "Georgia, serif",
+  },
+  {
+    id: 2, name: "Loom & Thread", philosophy: "Neumorphism + Organic Typography",
+    description: "Soft, tactile interface inspired by the texture of terry cloth. Raised neumorphic cards with subtle shadows create depth. Muted sage and cream palette. Scroll-triggered weaving animations. Feels handcrafted and premium.",
+    palette: { bg: "#E8E4DE", card: "#E8E4DE", primary: "#6B7F6B", accent: "#A3B18A", text: "#2D3A2D", muted: "#7A8078", highlight: "#D4DCCC" },
+    font: "'Palatino Linotype', Palatino, serif", headingFont: "'Palatino Linotype', Palatino, serif",
+  },
+  {
+    id: 3, name: "Pristine", philosophy: "Swiss Design + Frosted Glass",
+    description: "Grid-based, typographically driven layout with maximum whitespace. Frosted glass navigation bar. Bold serif headings, thin sans-serif body. Monochromatic with a single copper accent. Products photographed on pure white. Ultra-clean, luxury positioning.",
+    palette: { bg: "#FFFFFF", card: "rgba(245,245,245,0.8)", primary: "#1A1A1A", accent: "#B87333", text: "#1A1A1A", muted: "#888888", highlight: "#F5F0EB" },
+    font: "'Segoe UI', system-ui, sans-serif", headingFont: "Georgia, serif",
+  },
+  {
+    id: 4, name: "Indigo Mill", philosophy: "Bold Contrast + Layered Parallax",
+    description: "Deep indigo and warm ivory create a striking contrast inspired by traditional Indian textiles. Multi-layer parallax hero with cotton boll imagery. Cards with thick left borders and subtle shadows. Confident, manufacturing-heritage feel.",
+    palette: { bg: "#FAFAF5", card: "rgba(255,255,255,0.9)", primary: "#1B2A4A", accent: "#C9A962", text: "#1B2A4A", muted: "#5A6577", highlight: "#EDE8D8" },
+    font: "'Segoe UI', system-ui, sans-serif", headingFont: "Georgia, serif",
+  },
+  {
+    id: 5, name: "Terra Soft", philosophy: "Organic Curves + Gradient Mesh",
+    description: "Rounded, flowing shapes echo the softness of terry cloth. Warm gradient mesh backgrounds with organic blob shapes. Cards with generous border radius and soft drop shadows. Pastel terracotta and sage. Feels modern, gentle, and premium.",
+    palette: { bg: "#FDF8F4", card: "rgba(255,255,255,0.85)", primary: "#A0644A", accent: "#7D9B76", text: "#3A2E26", muted: "#9B8E82", highlight: "#F0E6DA" },
+    font: "'Segoe UI', system-ui, sans-serif", headingFont: "Georgia, serif",
+  },
+];
+
+const navItems = ["Home", "Products", "About", "Process", "Contact"];
+const products = [
+  { name: "Classic Terry Bath Towel", size: "70x140 cm", weight: "500 GSM", tag: "Bestseller" },
+  { name: "Premium Face Towel Set", size: "30x30 cm", weight: "450 GSM", tag: "New" },
+  { name: "Luxury Hand Towel", size: "40x70 cm", weight: "550 GSM", tag: "Premium" },
+  { name: "Hotel Collection Bath Sheet", size: "90x180 cm", weight: "600 GSM", tag: "Bulk" },
+  { name: "Terry Kitchen Napkin Set", size: "45x65 cm", weight: "350 GSM", tag: "Popular" },
+  { name: "Spa Wrap Towel", size: "80x150 cm", weight: "480 GSM", tag: "Luxury" },
+];
+
+function Design1({ p }) {
+  return (
+    <div style={{ background: p.bg, color: p.text, fontFamily: p.font, minHeight: "100%" }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 40px", background: "rgba(250,247,242,0.85)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(139,115,85,0.1)" }}>
+        <div style={{ fontSize: 22, fontWeight: 700, color: p.primary, letterSpacing: 2, fontFamily: p.headingFont }}>PADMALAYA</div>
+        <div style={{ display: "flex", gap: 28 }}>
+          {navItems.map(n => <span key={n} style={{ fontSize: 14, color: p.muted, cursor: "pointer", letterSpacing: 1, textTransform: "uppercase" }}>{n}</span>)}
+        </div>
+        <button style={{ background: p.primary, color: "#fff", border: "none", padding: "10px 24px", fontSize: 13, letterSpacing: 1, cursor: "pointer", textTransform: "uppercase" }}>Enquire Now</button>
+      </nav>
+      <div style={{ position: "relative", height: 420, overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, "+p.highlight+" 0%, "+p.bg+" 50%, "+p.highlight+" 100%)" }}>
+        <div style={{ position: "absolute", inset: 0, opacity: 0.06, backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(139,115,85,0.3) 20px, rgba(139,115,85,0.3) 21px)" }} />
+        <div style={{ textAlign: "center", zIndex: 1 }}>
+          <p style={{ fontSize: 13, letterSpacing: 4, color: p.accent, marginBottom: 16, textTransform: "uppercase" }}>Est. Since Generations</p>
+          <h1 style={{ fontSize: 52, fontWeight: 400, lineHeight: 1.1, marginBottom: 20, fontFamily: p.headingFont }}>Crafted in Cotton,<br/>Woven with Care</h1>
+          <p style={{ fontSize: 16, color: p.muted, maxWidth: 500, margin: "0 auto 32px" }}>Premium terry towels & napkins manufactured with the finest Indian cotton for hotels, spas, and homes worldwide.</p>
+          <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
+            <button style={{ background: p.primary, color: "#fff", border: "none", padding: "14px 36px", fontSize: 14, letterSpacing: 1, cursor: "pointer" }}>View Collection</button>
+            <button style={{ background: "transparent", color: p.primary, border: "1.5px solid "+p.primary, padding: "14px 36px", fontSize: 14, letterSpacing: 1, cursor: "pointer" }}>Send Enquiry</button>
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: "60px 40px", maxWidth: 1100, margin: "0 auto" }}>
+        <p style={{ fontSize: 13, letterSpacing: 3, color: p.accent, textTransform: "uppercase", marginBottom: 8 }}>Our Collection</p>
+        <h2 style={{ fontSize: 32, fontWeight: 400, marginBottom: 40, fontFamily: p.headingFont }}>Premium Terry Products</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+          {products.map((prod, i) => (
+            <div key={i} style={{ background: p.card, backdropFilter: "blur(10px)", border: "1px solid rgba(139,115,85,0.08)", padding: 28, cursor: "pointer" }}>
+              <div style={{ width: "100%", height: 160, background: p.highlight, marginBottom: 20, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 42, opacity: 0.3 }}>&#128183;</span></div>
+              <span style={{ fontSize: 11, letterSpacing: 2, color: p.accent, textTransform: "uppercase" }}>{prod.tag}</span>
+              <h3 style={{ fontSize: 18, fontWeight: 500, margin: "8px 0 12px", fontFamily: p.headingFont }}>{prod.name}</h3>
+              <p style={{ fontSize: 13, color: p.muted }}>{prod.size} · {prod.weight}</p>
+              <button style={{ marginTop: 16, background: "transparent", color: p.primary, border: "1px solid "+p.primary, padding: "8px 20px", fontSize: 12, letterSpacing: 1, cursor: "pointer", textTransform: "uppercase" }}>Enquire</button>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ background: p.primary, color: "#fff", padding: "50px 40px", textAlign: "center" }}>
+        <h2 style={{ fontSize: 28, fontWeight: 400, marginBottom: 12, fontFamily: p.headingFont }}>Looking for Bulk Orders?</h2>
+        <p style={{ fontSize: 15, opacity: 0.8, marginBottom: 28, maxWidth: 500, margin: "0 auto 28px" }}>We manufacture custom terry towels for hotels, hospitals, and retail brands. Get a quote today.</p>
+        <button style={{ background: "#fff", color: p.primary, border: "none", padding: "14px 40px", fontSize: 14, letterSpacing: 1, cursor: "pointer", fontWeight: 600 }}>Request Quote →</button>
+      </div>
+    </div>
+  );
+}
+
+function Design2({ p }) {
+  const neuShadow = "8px 8px 16px rgba(0,0,0,0.08), -8px -8px 16px rgba(255,255,255,0.6)";
+  const neuInset = "inset 4px 4px 8px rgba(0,0,0,0.06), inset -4px -4px 8px rgba(255,255,255,0.5)";
+  return (
+    <div style={{ background: p.bg, color: p.text, fontFamily: p.font, minHeight: "100%" }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 40px" }}>
+        <div style={{ fontSize: 20, fontWeight: 700, color: p.primary, letterSpacing: 3, fontFamily: p.headingFont }}>PADMALAYA<span style={{ fontSize: 11, fontWeight: 400, display: "block", letterSpacing: 1, color: p.muted }}>TEXTILES</span></div>
+        <div style={{ display: "flex", gap: 24 }}>{navItems.map(n => <span key={n} style={{ fontSize: 14, color: p.muted, cursor: "pointer" }}>{n}</span>)}</div>
+        <button style={{ background: p.bg, color: p.primary, border: "none", padding: "12px 28px", fontSize: 13, boxShadow: neuShadow, cursor: "pointer", letterSpacing: 1 }}>Get in Touch</button>
+      </nav>
+      <div style={{ padding: "80px 40px", maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ display: "inline-block", background: p.bg, boxShadow: neuInset, padding: "6px 20px", marginBottom: 24, fontSize: 12, color: p.accent, letterSpacing: 2, textTransform: "uppercase" }}>Handcrafted Since Generations</div>
+        <h1 style={{ fontSize: 48, fontWeight: 400, lineHeight: 1.2, marginBottom: 20, fontFamily: p.headingFont }}>Where Tradition Meets<br/>Modern Comfort</h1>
+        <p style={{ fontSize: 16, color: p.muted, maxWidth: 520, margin: "0 auto 40px", lineHeight: 1.7 }}>Premium cotton terry towels and napkins, woven with generations of craftsmanship for the world's finest hotels and homes.</p>
+        <div style={{ display: "flex", gap: 20, justifyContent: "center" }}>
+          <button style={{ background: p.primary, color: "#fff", border: "none", padding: "14px 36px", fontSize: 14, cursor: "pointer", borderRadius: 8 }}>Explore Products</button>
+          <button style={{ background: p.bg, color: p.primary, border: "none", padding: "14px 36px", fontSize: 14, boxShadow: neuShadow, cursor: "pointer", borderRadius: 8 }}>Our Story</button>
+        </div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center", gap: 40, padding: "0 40px 60px" }}>
+        {[{ n: "25+", l: "Years Experience" }, { n: "500+", l: "Hotel Partners" }, { n: "100%", l: "Indian Cotton" }, { n: "50L+", l: "Towels Annually" }].map((s, i) => (
+          <div key={i} style={{ background: p.bg, boxShadow: neuShadow, padding: "28px 36px", textAlign: "center", borderRadius: 12, minWidth: 140 }}>
+            <div style={{ fontSize: 28, fontWeight: 700, color: p.primary, fontFamily: p.headingFont }}>{s.n}</div>
+            <div style={{ fontSize: 12, color: p.muted, marginTop: 4, letterSpacing: 1 }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ padding: "40px 40px 60px", maxWidth: 1100, margin: "0 auto" }}>
+        <h2 style={{ fontSize: 28, fontWeight: 400, marginBottom: 32, textAlign: "center", fontFamily: p.headingFont }}>Our Terry Collection</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 }}>
+          {products.map((prod, i) => (
+            <div key={i} style={{ background: p.bg, boxShadow: neuShadow, padding: 28, borderRadius: 16, cursor: "pointer" }}>
+              <div style={{ width: "100%", height: 140, background: p.bg, boxShadow: neuInset, borderRadius: 12, marginBottom: 20, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 36, opacity: 0.25 }}>&#129526;</span></div>
+              <span style={{ fontSize: 11, color: p.accent, fontWeight: 600, letterSpacing: 1 }}>{prod.tag.toUpperCase()}</span>
+              <h3 style={{ fontSize: 17, fontWeight: 600, margin: "6px 0 10px", fontFamily: p.headingFont }}>{prod.name}</h3>
+              <p style={{ fontSize: 13, color: p.muted }}>{prod.size} · {prod.weight}</p>
+              <button style={{ marginTop: 16, background: p.bg, color: p.primary, border: "none", padding: "10px 22px", fontSize: 12, boxShadow: neuShadow, cursor: "pointer", borderRadius: 8, letterSpacing: 1 }}>Request Sample</button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Design3({ p }) {
+  return (
+    <div style={{ background: p.bg, color: p.text, fontFamily: p.font, minHeight: "100%" }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "24px 48px", background: "rgba(255,255,255,0.7)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
+        <div style={{ fontSize: 24, fontWeight: 400, letterSpacing: 6, fontFamily: p.headingFont }}>PADMALAYA</div>
+        <div style={{ display: "flex", gap: 32 }}>{navItems.map(n => <span key={n} style={{ fontSize: 13, color: p.muted, cursor: "pointer", letterSpacing: 2, textTransform: "uppercase" }}>{n}</span>)}</div>
+        <button style={{ background: "transparent", color: p.accent, border: "1.5px solid "+p.accent, padding: "10px 28px", fontSize: 12, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase" }}>Enquire</button>
+      </nav>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 500 }}>
+        <div style={{ padding: "80px 60px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ width: 40, height: 2, background: p.accent, marginBottom: 24 }} />
+          <h1 style={{ fontSize: 56, fontWeight: 400, lineHeight: 1.08, marginBottom: 24, fontFamily: p.headingFont }}>The Art<br/>of Terry<br/>Cloth</h1>
+          <p style={{ fontSize: 15, color: p.muted, lineHeight: 1.8, maxWidth: 400, marginBottom: 36 }}>Manufacturing premium cotton terry towels and napkins since generations. Every thread tells our story of quality.</p>
+          <button style={{ background: p.text, color: p.bg, border: "none", padding: "16px 40px", fontSize: 13, letterSpacing: 2, cursor: "pointer", textTransform: "uppercase", width: "fit-content" }}>View Collection</button>
+        </div>
+        <div style={{ background: p.highlight, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ width: 200, height: 280, border: "1px solid "+p.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, color: p.muted }}>[ Product Image ]</div>
+        </div>
+      </div>
+      <div style={{ background: p.text, color: p.bg, padding: "14px 0", fontSize: 12, letterSpacing: 4, textTransform: "uppercase", textAlign: "center", opacity: 0.9 }}>100% Cotton · Made in India · Custom Orders · Bulk Manufacturing · Hotel Supply · Spa & Wellness</div>
+      <div style={{ padding: "60px 48px", maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40 }}>
+          <div><div style={{ width: 40, height: 2, background: p.accent, marginBottom: 16 }} /><h2 style={{ fontSize: 36, fontWeight: 400, fontFamily: p.headingFont }}>Products</h2></div>
+          <span style={{ fontSize: 13, color: p.accent, letterSpacing: 2, cursor: "pointer" }}>VIEW ALL →</span>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2 }}>
+          {products.map((prod, i) => (
+            <div key={i} style={{ background: p.card, backdropFilter: "blur(10px)", padding: 32, cursor: "pointer" }}>
+              <div style={{ width: "100%", height: 180, background: p.highlight, marginBottom: 24, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 14, color: p.muted }}>[ Photo ]</span></div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div><h3 style={{ fontSize: 16, fontWeight: 500, marginBottom: 6, fontFamily: p.headingFont }}>{prod.name}</h3><p style={{ fontSize: 12, color: p.muted, letterSpacing: 1 }}>{prod.size} · {prod.weight}</p></div>
+                <span style={{ fontSize: 10, letterSpacing: 2, color: p.accent, border: "1px solid "+p.accent, padding: "4px 10px" }}>{prod.tag.toUpperCase()}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+        <div style={{ background: p.accent, padding: 60, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 400, color: "#fff", marginBottom: 16, fontFamily: p.headingFont }}>Custom Manufacturing</h2>
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.8)", marginBottom: 28, lineHeight: 1.7 }}>We produce custom towels for your brand. Minimum orders from 500 pieces.</p>
+          <button style={{ background: "#fff", color: p.text, border: "none", padding: "14px 36px", fontSize: 13, letterSpacing: 2, cursor: "pointer", width: "fit-content" }}>GET A QUOTE</button>
+        </div>
+        <div style={{ background: p.text, padding: 60, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 400, color: "#fff", marginBottom: 16, fontFamily: p.headingFont }}>Visit Our Mill</h2>
+          <p style={{ fontSize: 15, color: "rgba(255,255,255,0.5)", marginBottom: 28, lineHeight: 1.7 }}>See the craftsmanship firsthand. Book a mill tour and experience our process.</p>
+          <button style={{ background: "transparent", color: "#fff", border: "1.5px solid rgba(255,255,255,0.4)", padding: "14px 36px", fontSize: 13, letterSpacing: 2, cursor: "pointer", width: "fit-content" }}>BOOK A TOUR</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Design4({ p }) {
+  return (
+    <div style={{ background: p.bg, color: p.text, fontFamily: p.font, minHeight: "100%" }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 40px", background: p.primary }}>
+        <div style={{ fontSize: 20, fontWeight: 700, color: "#fff", letterSpacing: 3, fontFamily: p.headingFont }}>PADMALAYA<span style={{ color: p.accent, marginLeft: 8 }}>●</span></div>
+        <div style={{ display: "flex", gap: 28 }}>{navItems.map(n => <span key={n} style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", cursor: "pointer", letterSpacing: 1, textTransform: "uppercase" }}>{n}</span>)}</div>
+        <button style={{ background: p.accent, color: p.primary, border: "none", padding: "10px 28px", fontSize: 13, fontWeight: 600, letterSpacing: 1, cursor: "pointer" }}>Request Quote</button>
+      </nav>
+      <div style={{ background: "linear-gradient(135deg, "+p.primary+" 0%, #2A3D6A 100%)", padding: "80px 40px", color: "#fff", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", right: -100, top: -100, width: 400, height: 400, borderRadius: "50%", background: "rgba(201,169,98,0.08)" }} />
+        <div style={{ maxWidth: 700, position: "relative", zIndex: 1 }}>
+          <div style={{ display: "inline-block", background: "rgba(201,169,98,0.15)", border: "1px solid "+p.accent, padding: "6px 16px", marginBottom: 24, fontSize: 12, color: p.accent, letterSpacing: 2 }}>MANUFACTURER & EXPORTER</div>
+          <h1 style={{ fontSize: 52, fontWeight: 700, lineHeight: 1.1, marginBottom: 20, fontFamily: p.headingFont }}>India's Premium<br/>Terry Towel<br/>Manufacturer</h1>
+          <p style={{ fontSize: 16, opacity: 0.7, maxWidth: 500, marginBottom: 36, lineHeight: 1.7 }}>From raw cotton to finished luxury — we control every step of the process to deliver exceptional quality to brands worldwide.</p>
+          <div style={{ display: "flex", gap: 16 }}>
+            <button style={{ background: p.accent, color: p.primary, border: "none", padding: "14px 36px", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>View Products</button>
+            <button style={{ background: "transparent", color: "#fff", border: "1.5px solid rgba(255,255,255,0.3)", padding: "14px 36px", fontSize: 14, cursor: "pointer" }}>Our Process →</button>
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: "60px 40px", maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 40 }}>
+          <div style={{ width: 4, height: 40, background: p.accent }} />
+          <div><p style={{ fontSize: 12, letterSpacing: 3, color: p.accent, textTransform: "uppercase" }}>Our Range</p><h2 style={{ fontSize: 30, fontWeight: 600, fontFamily: p.headingFont }}>Product Catalogue</h2></div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+          {products.map((prod, i) => (
+            <div key={i} style={{ background: p.card, border: "1px solid rgba(27,42,74,0.06)", borderLeft: "4px solid "+p.accent, padding: 24, cursor: "pointer" }}>
+              <div style={{ width: "100%", height: 140, background: p.highlight, marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 14, color: p.muted }}>[ Photo ]</span></div>
+              <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 8, fontFamily: p.headingFont }}>{prod.name}</h3>
+              <div style={{ display: "flex", gap: 12, fontSize: 12, color: p.muted, marginBottom: 14 }}>
+                <span style={{ background: p.highlight, padding: "3px 10px" }}>{prod.size}</span>
+                <span style={{ background: p.highlight, padding: "3px 10px" }}>{prod.weight}</span>
+              </div>
+              <button style={{ background: p.primary, color: "#fff", border: "none", padding: "8px 20px", fontSize: 12, cursor: "pointer", letterSpacing: 1 }}>Enquire →</button>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ background: p.primary, color: "#fff", padding: "50px 40px" }}>
+        <div style={{ display: "flex", justifyContent: "space-around", maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+          {[{ n: "ISO 9001", l: "Certified" }, { n: "OEKO-TEX", l: "Standard 100" }, { n: "GOTS", l: "Organic Cotton" }, { n: "25+", l: "Years Legacy" }].map((s, i) => (
+            <div key={i}><div style={{ fontSize: 24, fontWeight: 700, color: p.accent, fontFamily: p.headingFont }}>{s.n}</div><div style={{ fontSize: 12, opacity: 0.6, marginTop: 4 }}>{s.l}</div></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Design5({ p }) {
+  return (
+    <div style={{ background: p.bg, color: p.text, fontFamily: p.font, minHeight: "100%" }}>
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 40px" }}>
+        <div style={{ fontSize: 22, fontWeight: 600, color: p.primary, letterSpacing: 1, fontFamily: p.headingFont }}>padmalaya</div>
+        <div style={{ display: "flex", gap: 24, background: "rgba(160,100,74,0.06)", padding: "10px 28px", borderRadius: 40 }}>{navItems.map(n => <span key={n} style={{ fontSize: 13, color: p.muted, cursor: "pointer" }}>{n}</span>)}</div>
+        <button style={{ background: p.primary, color: "#fff", border: "none", padding: "10px 28px", fontSize: 13, cursor: "pointer", borderRadius: 24 }}>Enquire</button>
+      </nav>
+      <div style={{ padding: "60px 40px 80px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", left: -80, top: 20, width: 300, height: 300, borderRadius: "50% 40% 60% 45%", background: "linear-gradient(135deg, "+p.highlight+", rgba(125,155,118,0.1))", filter: "blur(40px)" }} />
+        <div style={{ position: "absolute", right: -60, bottom: 0, width: 250, height: 250, borderRadius: "45% 55% 40% 60%", background: "linear-gradient(135deg, rgba(160,100,74,0.08), "+p.highlight+")", filter: "blur(40px)" }} />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <span style={{ display: "inline-block", fontSize: 12, letterSpacing: 2, color: p.accent, background: "rgba(125,155,118,0.1)", padding: "8px 20px", borderRadius: 20, marginBottom: 24, textTransform: "uppercase" }}>Cotton Terry Specialists</span>
+          <h1 style={{ fontSize: 50, fontWeight: 400, lineHeight: 1.15, marginBottom: 20, fontFamily: p.headingFont }}>Softness You Can<br/>Feel, Quality You<br/>Can Trust</h1>
+          <p style={{ fontSize: 16, color: p.muted, maxWidth: 480, margin: "0 auto 36px", lineHeight: 1.7 }}>We manufacture premium terry towels and napkins from the finest Indian cotton — for hospitality, wellness, and everyday luxury.</p>
+          <div style={{ display: "flex", gap: 14, justifyContent: "center" }}>
+            <button style={{ background: p.primary, color: "#fff", border: "none", padding: "14px 32px", fontSize: 14, cursor: "pointer", borderRadius: 28 }}>Browse Products</button>
+            <button style={{ background: "rgba(125,155,118,0.1)", color: p.accent, border: "none", padding: "14px 32px", fontSize: 14, cursor: "pointer", borderRadius: 28 }}>Our Story</button>
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: "20px 40px 60px", maxWidth: 1100, margin: "0 auto" }}>
+        <h2 style={{ fontSize: 28, fontWeight: 400, marginBottom: 32, textAlign: "center", fontFamily: p.headingFont }}>Our Collection</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+          {products.map((prod, i) => (
+            <div key={i} style={{ background: p.card, backdropFilter: "blur(12px)", padding: 24, borderRadius: 20, boxShadow: "0 4px 24px rgba(0,0,0,0.04)", cursor: "pointer" }}>
+              <div style={{ width: "100%", height: 150, background: "linear-gradient(135deg, "+p.highlight+", rgba(125,155,118,0.08))", borderRadius: 14, marginBottom: 18, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 14, color: p.muted }}>[ Photo ]</span></div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 500, fontFamily: p.headingFont }}>{prod.name}</h3>
+                <span style={{ fontSize: 10, background: "rgba(125,155,118,0.12)", color: p.accent, padding: "4px 10px", borderRadius: 10 }}>{prod.tag}</span>
+              </div>
+              <p style={{ fontSize: 13, color: p.muted, marginBottom: 14 }}>{prod.size} · {prod.weight}</p>
+              <button style={{ background: "rgba(160,100,74,0.08)", color: p.primary, border: "none", padding: "10px 22px", fontSize: 12, cursor: "pointer", borderRadius: 20, width: "100%" }}>Send Enquiry</button>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ padding: "50px 40px", maxWidth: 900, margin: "0 auto" }}>
+        <h2 style={{ fontSize: 28, fontWeight: 400, marginBottom: 36, textAlign: "center", fontFamily: p.headingFont }}>Our Process</h2>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          {["Raw Cotton Sourcing", "Spinning & Weaving", "Dyeing & Finishing", "Quality Control", "Global Shipping"].map((step, i) => (
+            <div key={i} style={{ textAlign: "center", flex: 1 }}>
+              <div style={{ width: 48, height: 48, borderRadius: "50%", background: "linear-gradient(135deg, "+p.primary+", "+p.accent+")", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px", fontSize: 18, fontWeight: 600 }}>{i + 1}</div>
+              <p style={{ fontSize: 12, color: p.muted, lineHeight: 1.4 }}>{step}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ margin: "20px 40px 40px", padding: 50, background: "linear-gradient(135deg, "+p.primary+", rgba(125,155,118,0.9))", borderRadius: 24, textAlign: "center", color: "#fff" }}>
+        <h2 style={{ fontSize: 28, fontWeight: 400, marginBottom: 12, fontFamily: p.headingFont }}>Ready to Partner With Us?</h2>
+        <p style={{ fontSize: 15, opacity: 0.8, marginBottom: 28, maxWidth: 450, margin: "0 auto 28px" }}>Custom manufacturing, private labeling, and bulk orders — let's talk about your needs.</p>
+        <button style={{ background: "#fff", color: "#A0644A", border: "none", padding: "14px 36px", fontSize: 14, cursor: "pointer", borderRadius: 24, fontWeight: 600 }}>Start a Conversation</button>
+      </div>
+    </div>
+  );
+}
+
+const renderers = [Design1, Design2, Design3, Design4, Design5];
+
+function App() {
+  const [active, setActive] = useState(0);
+  const d = designs[active];
+  const Comp = renderers[active];
+  return (
+    <div style={{ fontFamily: "system-ui, sans-serif", background: "#111", color: "#fff", minHeight: "100vh" }}>
+      <div style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(17,17,17,0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "0 24px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, maxWidth: 1200, margin: "0 auto", height: 56 }}>
+          <span style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginRight: 8, letterSpacing: 1 }}>DESIGN:</span>
+          {designs.map((dd, i) => (
+            <button key={i} onClick={() => setActive(i)} style={{ background: active === i ? "rgba(255,255,255,0.12)" : "transparent", color: active === i ? "#fff" : "rgba(255,255,255,0.5)", border: active === i ? "1px solid rgba(255,255,255,0.2)" : "1px solid transparent", padding: "6px 16px", fontSize: 13, cursor: "pointer", borderRadius: 6, transition: "all 0.2s" }}>
+              {i + 1}. {dd.name}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "24px 24px 16px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
+            <h2 style={{ fontSize: 24, fontWeight: 600, marginBottom: 4 }}>{d.name}</h2>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.4)", marginBottom: 8 }}>{d.philosophy}</p>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", maxWidth: 700, lineHeight: 1.6 }}>{d.description}</p>
+          </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            {Object.entries(d.palette).filter(([k]) => !k.includes("card")).map(([k, v]) => (
+              <div key={k} style={{ textAlign: "center" }}><div style={{ width: 36, height: 36, borderRadius: 8, background: v, border: "1px solid rgba(255,255,255,0.1)" }} /><span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", marginTop: 4, display: "block" }}>{k}</span></div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px 40px" }}>
+        <div style={{ borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", background: d.palette.bg }}>
+          <Comp p={d.palette} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

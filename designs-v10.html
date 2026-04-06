@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Padmalaya Textiles — Porcelain Canopy (full page · v10)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#F3F6F4}
+@keyframes silkDrift{0%,100%{background-position:0% 50%,100% 50%}50%{background-position:100% 50%,0% 50%}}
+@keyframes silkSheen{0%{background-position:-180% 0}100%{background-position:180% 0}}
+@keyframes breatheG{0%,100%{box-shadow:0 0 0 0 rgba(30,77,63,.18)}50%{box-shadow:0 0 0 14px rgba(30,77,63,0)}}
+.hover-lift{transition:transform .5s cubic-bezier(.23,1,.32,1),box-shadow .5s ease}
+.hover-lift:hover{transform:translateY(-5px);box-shadow:0 22px 50px rgba(13,40,31,.1)}
+.card-media{overflow:hidden;background:linear-gradient(145deg,#e8f0ec,#dfe8e4);position:relative}
+.card-media img{transition:transform .65s cubic-bezier(.23,1,.32,1)}
+.hover-lift:hover .card-media img{transform:scale(1.05)}
+.focus-ring:focus{outline:2px solid #2d5a4c;outline-offset:3px}
+.img-cover{width:100%;height:100%;object-fit:cover;display:block}
+.site-nav a{color:inherit;text-decoration:none}
+.site-nav a:hover{color:#1e4d3f}
+@media (max-width: 900px){
+  .grid-mill,.grid-process,.collection-grid{grid-template-columns:1fr!important}
+  .collection-grid > *{grid-column:span 1!important}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const U = "https://images.unsplash.com";
+const Q = "auto=format&fit=crop&w=960&h=720&q=85&ixlib=rb-4.0.3";
+const FALLBACK_IMG = `${U}/photo-1620799140408-ed5341c52bec?${Q}`;
+
+const products = [
+  { name: "Classic Terry Bath Towel", size: "70×140 cm", weight: "500 GSM", tag: "Bestseller", desc: "Plush, absorbent, and built to last through hundreds of washes — our signature weave.", img: `${U}/photo-1584622650111-993a426fbf0a?${Q}` },
+  { name: "Premium Face Towel Set", size: "30×30 cm", weight: "450 GSM", tag: "New", desc: "Ultra-soft face towels, gentle on skin. Ideal for hotels and spa settings.", img: `${U}/photo-1563291074-2bf8677ac8e5?${Q}` },
+  { name: "Luxury Hand Towel", size: "40×70 cm", weight: "550 GSM", tag: "Premium", desc: "Double-loop terry for maximum absorbency and a velvety hand feel.", img: `${U}/photo-1556228453-efd6c1ff04f6?${Q}` },
+  { name: "Hotel Bath Sheet", size: "90×180 cm", weight: "600 GSM", tag: "Bulk", desc: "Oversized bath sheets for 5-star hospitality. Private labeling available.", img: `${U}/photo-1600585154340-be6161a56a0c?${Q}` },
+  { name: "Terry Kitchen Napkin", size: "45×65 cm", weight: "350 GSM", tag: "Popular", desc: "Lint-free, quick-dry cotton for professional kitchens.", img: `${U}/photo-1556910103-1c02745aae4d?${Q}` },
+  { name: "Spa Wrap Towel", size: "80×150 cm", weight: "480 GSM", tag: "Luxury", desc: "Full-body spa wraps with secure tuck closure. Available in 22 colours.", img: `${U}/photo-1507652313519-d4e9174996dd?${Q}` },
+];
+
+const T = {
+  porcelain: "#F5F8F7",
+  pearl: "#F3F6F4",
+  mist: "#EEF3F1",
+  frost: "#F0F4F2",
+  cloud: "#F7F9F8",
+  ink: "#14221e",
+  inkSoft: "#2d4a42",
+  forest: "#0d281f",
+  moss: "#1e4d3f",
+  pine: "#243D36",
+  brass: "#b8955c",
+  brassDeep: "#7a5f32",
+};
+
+const goldG = `linear-gradient(135deg, ${T.brass}, #e8d4b0)`;
+
+function glass(blurPx, extra = {}) {
+  return {
+    background: "rgba(255, 255, 255, 0.46)",
+    WebkitBackdropFilter: `saturate(1.12) blur(${blurPx}px)`,
+    backdropFilter: `saturate(1.12) blur(${blurPx}px)`,
+    boxShadow: `inset 0 0 0 1px rgba(36, 61, 54, 0.12), inset 2px 3px 16px rgba(255,255,255,0.58), 0 18px 52px rgba(13, 40, 31, 0.055)`,
+    ...extra,
+  };
+}
+
+const neu = `12px 12px 28px rgba(13,40,31,.1), -10px -10px 26px rgba(255,255,255,.9)`;
+const neuSm = `6px 6px 18px rgba(13,40,31,.085), -6px -6px 18px rgba(255,255,255,.84)`;
+const neuIn = `inset 6px 6px 16px rgba(13,40,31,.085), inset -5px -5px 14px rgba(255,255,255,.6)`;
+
+function silkBase(extra = {}) {
+  return {
+    backgroundColor: T.pearl,
+    backgroundImage: `
+      linear-gradient(105deg, rgba(255,255,255,.92) 0%, rgba(238,243,241,.42) 25%, rgba(255,255,255,.88) 50%, rgba(230,240,236,.48) 75%, rgba(255,255,255,.94) 100%),
+      radial-gradient(ellipse 80% 60% at 18% 28%, rgba(30,77,63,.055) 0%, transparent 55%),
+      radial-gradient(ellipse 72% 52% at 86% 72%, rgba(184,149,92,.075) 0%, transparent 50%),
+      linear-gradient(180deg, ${T.mist} 0%, ${T.cloud} 100%)`,
+    backgroundSize: "200% 200%, 100% 100%, 100% 100%, 100% 100%",
+    animation: "silkDrift 20s ease-in-out infinite",
+    ...extra,
+  };
+}
+
+function ProductImg({ src, alt, style, className }) {
+  const [url, setUrl] = useState(src);
+  return (
+    <img
+      src={url}
+      alt={alt}
+      className={className || "img-cover"}
+      style={style}
+      loading="lazy"
+      decoding="async"
+      referrerPolicy="no-referrer"
+      onError={() => setUrl((u) => (u === FALLBACK_IMG ? u : FALLBACK_IMG))}
+    />
+  );
+}
+
+const navLinks = [
+  { label: "Home", href: "#hero" },
+  { label: "Products", href: "#collection" },
+  { label: "About", href: "#mill" },
+  { label: "Process", href: "#process" },
+  { label: "Contact", href: "#contact" },
+];
+
+/* Masonry: packed rows — no empty column (was: row2 only had 2× span1 → hole on right) */
+const masonryLayout = [
+  { col: "span 2", clip: "none", h: 232, p: products[0] },
+  { col: "span 1", clip: "polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 16%)", h: 292, p: products[1] },
+  { col: "span 1", clip: "circle(50% at 50% 48%)", h: 292, p: products[2] },
+  { col: "span 1", clip: "none", h: 268, p: products[3] },
+  { col: "span 1", clip: "polygon(0 0, 100% 0, 100% 92%, 88% 100%, 0 100%)", h: 268, p: products[4] },
+  { col: "span 1", clip: "none", h: 268, p: products[5] },
+  { col: "span 2", clip: "none", h: 268, p: null, cta: true },
+];
+
+function App() {
+  const bentoProof = [
+    { k: "25+", v: "Years weaving", blur: 8 },
+    { k: "500+", v: "Hotel programs", blur: 14 },
+    { k: "OEKO-TEX", v: "Certified yarns", blur: 18 },
+    { k: "MOQ", v: "From 500 pcs", blur: 11 },
+  ];
+  const millImg = `${U}/photo-1584622650111-993a426fbf0a?${Q}`;
+
+  return (
+    <div style={{ fontFamily: "'Outfit', sans-serif", color: T.ink, ...silkBase(), minHeight: "100vh" }}>
+      <header
+        className="site-nav site-header-blend"
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 300,
+          background: "transparent",
+          borderBottom: "1px solid rgba(13,40,31,.045)",
+        }}
+      >
+        <div style={{ maxWidth: 1120, margin: "0 auto", padding: "14px 28px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
+          <a href="#hero" style={{ ...glass(8), padding: "10px 22px", borderRadius: 60, fontFamily: "'Fraunces', serif", fontSize: 17, letterSpacing: 3, color: T.forest, display: "inline-block" }}>PADMALAYA</a>
+          <nav style={{ display: "flex", gap: 4, background: "rgba(255,255,255,.35)", boxShadow: neuIn, padding: "6px 8px", borderRadius: 50, flexWrap: "wrap", WebkitBackdropFilter: "blur(8px)", backdropFilter: "blur(8px)" }}>
+            {navLinks.map((n) => (
+              <a key={n.href} href={n.href} style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, color: T.inkSoft, borderRadius: 40 }}>{n.label}</a>
+            ))}
+          </nav>
+          <a href="#contact" className="focus-ring" style={{ background: T.forest, color: "#fff", border: "none", padding: "11px 26px", borderRadius: 50, fontWeight: 700, fontSize: 13, display: "inline-block" }}>Quote</a>
+        </div>
+      </header>
+
+      <main>
+        {/* —— Hero —— */}
+        <section id="hero" style={{ padding: "36px 28px 24px", position: "relative" }}>
+          <div style={{ position: "absolute", left: "max(28px, 6%)", top: 140, width: 4, height: 128, borderRadius: 4, background: goldG, opacity: 0.88, pointerEvents: "none" }} />
+          <div style={{ maxWidth: 860, margin: "0 auto 0 max(0px, 5%)", borderRadius: "132px 132px 40px 40px", position: "relative", ...glass(24), overflow: "visible", padding: 0 }}>
+            <div style={{ position: "absolute", inset: 0, borderRadius: "132px 132px 40px 40px", overflow: "hidden", pointerEvents: "none", background: "linear-gradient(122deg, rgba(255,255,255,.28) 0%, transparent 42%, rgba(30,77,63,.035) 100%)" }} />
+            <div style={{ position: "relative", zIndex: 1, padding: "52px 48px 58px" }}>
+              <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
+                <div
+                  style={{
+                    ...glass(10),
+                    borderRadius: 50,
+                    padding: "12px 22px 13px",
+                    lineHeight: 1.45,
+                    maxWidth: "100%",
+                  }}
+                >
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.5, color: T.moss, display: "block", whiteSpace: "nowrap" }}>Solapur, India</span>
+                  <span style={{ fontSize: 10, color: T.inkSoft, fontWeight: 500, display: "block", marginTop: 2 }}>Mill · export desk</span>
+                </div>
+              </div>
+              <p style={{ fontSize: 10, letterSpacing: 4.5, color: T.moss, fontWeight: 800, marginBottom: 18 }}>PORCELAIN CANOPY</p>
+              <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 600, lineHeight: 1.05, color: T.ink, textShadow: "1px 1px 0 rgba(255,255,255,.75), 0 3px 28px rgba(30,77,63,.06)", marginBottom: 20, maxWidth: 540 }}>
+                Terry, suspended in<br />
+                <span style={{ fontStyle: "italic", background: goldG, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundSize: "200% 100%", animation: "silkSheen 7s linear infinite" }}>quiet light</span>
+              </h1>
+              <p style={{ fontSize: 16, color: T.inkSoft, lineHeight: 1.72, maxWidth: 460, marginBottom: 30, fontWeight: 400 }}>Indian cotton, hotel-grade construction — folds first, frost second, facts where buyers expect them.</p>
+              <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+                <a href="#collection" className="focus-ring" style={{ background: goldG, color: T.ink, border: "none", padding: "16px 34px", borderRadius: 50, fontWeight: 800, cursor: "pointer", animation: "breatheG 3.5s ease infinite", fontSize: 14, display: "inline-block" }}>View range</a>
+                <a href="#contact" className="focus-ring" style={{ background: T.porcelain, boxShadow: neu, border: "none", padding: "16px 34px", borderRadius: 50, fontWeight: 700, color: T.forest, cursor: "pointer", fontSize: 14, display: "inline-block" }}>Book a call</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* —— Proof bento (equal-height cells) —— */}
+        <section id="proof" style={{ padding: "20px 28px 12px" }}>
+          <p style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: T.brassDeep, textAlign: "center", marginBottom: 14 }}>PROOF STRIP</p>
+          <div style={{ maxWidth: 920, margin: "0 auto", background: T.porcelain, boxShadow: neuIn, borderRadius: 26, padding: 14 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, alignItems: "stretch" }}>
+              {bentoProof.map((b) => (
+                <div key={b.k} style={{ borderRadius: 18, padding: 2, background: `linear-gradient(130deg, rgba(184,149,92,.22), rgba(30,77,63,.12))`, display: "flex" }}>
+                  <div style={{ ...glass(b.blur), borderRadius: 16, padding: "22px 18px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", minHeight: 118 }}>
+                    <p style={{ fontFamily: "'Fraunces', serif", fontSize: 26, fontWeight: 700, color: T.ink, lineHeight: 1.1 }}>{b.k}</p>
+                    <p style={{ fontSize: 12, color: T.inkSoft, marginTop: 10, fontWeight: 500, lineHeight: 1.4 }}>{b.v}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: 10, borderRadius: 18, padding: 2, background: `linear-gradient(130deg, rgba(184,149,92,.22), rgba(30,77,63,.12))` }}>
+              <div style={{ ...glass(20), borderRadius: 16, padding: "20px 22px", minHeight: 72, display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: T.pine }}>Export lead time</span>
+                <span style={{ fontSize: 14, color: T.inkSoft }}>4–6 weeks · FOB / CIF programs</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* —— Collection (gap-free grid) —— */}
+        <section id="collection" style={{ padding: "44px 28px 48px" }}>
+          <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 22 }}>
+              <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 30, color: T.pine, letterSpacing: -0.5 }}>Masonry range</h2>
+              <p style={{ fontSize: 13, color: T.inkSoft, maxWidth: 380, lineHeight: 1.55 }}>Packed rows — no empty column. Mixed clips; every SKU includes photography.</p>
+            </div>
+            <div className="collection-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, gridAutoFlow: "row" }}>
+              {masonryLayout.map((m, i) => {
+                if (m.cta) {
+                  return (
+                    <div key="cta" className="hover-lift" style={{ gridColumn: m.col, background: T.porcelain, boxShadow: neuIn, borderRadius: 26, padding: 28, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", minHeight: m.h }}>
+                      <p style={{ fontFamily: "'Fraunces', serif", fontSize: 22, marginBottom: 10, color: T.ink }}>Need a custom program?</p>
+                      <p style={{ fontSize: 13, color: T.inkSoft, lineHeight: 1.6, marginBottom: 18 }}>Private label, dye lots, and GSM specs — talk to the export desk.</p>
+                      <a href="#contact" className="focus-ring" style={{ background: T.forest, color: "#fff", padding: "12px 26px", borderRadius: 50, fontWeight: 700, fontSize: 13 }}>Contact</a>
+                    </div>
+                  );
+                }
+                return (
+                  <div key={m.p.name + i} className="hover-lift" style={{ gridColumn: m.col, background: T.porcelain, boxShadow: neuIn, borderRadius: 26, padding: 9, overflow: "hidden" }}>
+                    <div
+                      style={{
+                        borderRadius: m.clip === "none" ? 20 : 0,
+                        overflow: "hidden",
+                        clipPath: m.clip,
+                        height: m.h,
+                        boxShadow: `inset 0 0 0 1px rgba(36,61,54,.08)`,
+                      }}
+                      className="card-media"
+                    >
+                      <ProductImg src={m.p.img} alt={m.p.name} style={{ minHeight: m.h, width: "100%", height: "100%" }} />
+                    </div>
+                    <div style={{ padding: "18px 16px 20px" }}>
+                      <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: 1.2, color: T.brassDeep, textTransform: "uppercase" }}>{m.p.tag}</span>
+                      <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 18, margin: "8px 0 6px", color: T.ink, lineHeight: 1.2 }}>{m.p.name}</h3>
+                      <p style={{ fontSize: 12, color: T.inkSoft, lineHeight: 1.55, marginBottom: 10 }}>{m.p.desc.slice(0, 78)}…</p>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                        <span style={{ fontSize: 11, color: T.moss, fontWeight: 600 }}>{m.p.size} · {m.p.weight}</span>
+                        <a href="#contact" className="focus-ring" style={{ background: T.frost, boxShadow: neuSm, padding: "8px 16px", borderRadius: 40, fontWeight: 700, fontSize: 11, color: T.forest }}>Enquire</a>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* —— Mill / About —— */}
+        <section id="mill" style={{ padding: "52px 28px", background: `linear-gradient(180deg, ${T.mist} 0%, ${T.pearl} 100%)` }}>
+          <div className="grid-mill" style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1.05fr)", gap: 32, alignItems: "center" }}>
+            <div className="card-media" style={{ borderRadius: 28, minHeight: 320, boxShadow: neu }}>
+              <ProductImg src={millImg} alt="Terry towels in production context" style={{ minHeight: 320 }} />
+            </div>
+            <div>
+              <p style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: T.brassDeep, marginBottom: 12 }}>THE MILL</p>
+              <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 32, lineHeight: 1.15, color: T.ink, marginBottom: 18 }}>Woven in Solapur,<br />shipped with discipline.</h2>
+              <p style={{ fontSize: 15, color: T.inkSoft, lineHeight: 1.75, marginBottom: 16 }}>Padmalaya supplies terry towelling for hospitality, retail, and export — from face cloths to bath sheets, with consistent GSM control and lot traceability.</p>
+              <p style={{ fontSize: 15, color: T.inkSoft, lineHeight: 1.75, marginBottom: 22 }}>Our team works with procurement specs daily: bulk MOQs, packaging marks, and compliance documentation.</p>
+              <div style={{ ...glass(14), borderRadius: 20, padding: "20px 22px", display: "inline-block" }}>
+                <p style={{ fontSize: 12, fontWeight: 700, color: T.moss }}>ISO-aligned · OEKO-TEX yarn classes · India export</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* —— Process —— */}
+        <section id="process" style={{ padding: "52px 28px 60px" }}>
+          <div style={{ maxWidth: 920, margin: "0 auto", textAlign: "center" }}>
+            <p style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: T.brassDeep, marginBottom: 10 }}>PROCESS</p>
+            <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 28, color: T.pine, marginBottom: 36 }}>From yarn to carton</h2>
+            <div className="grid-process" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+              {[
+                { step: "01", title: "Spin & dye", body: "Cotton lots matched to your GSM and colour standard." },
+                { step: "02", title: "Weave terry", body: "Double-loop construction for absorbency and hand feel." },
+                { step: "03", title: "Finish & pack", body: "Inspection, folding, and export-ready cartons." },
+              ].map((s) => (
+                <div key={s.step} style={{ background: T.porcelain, boxShadow: neuIn, borderRadius: 24, padding: "28px 22px", textAlign: "left" }}>
+                  <span style={{ fontFamily: "'Fraunces', serif", fontSize: 36, color: T.brass, opacity: 0.85 }}>{s.step}</span>
+                  <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: 20, margin: "10px 0 12px", color: T.ink }}>{s.title}</h3>
+                  <p style={{ fontSize: 13, color: T.inkSoft, lineHeight: 1.65 }}>{s.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* —— Contact —— */}
+        <section id="contact" style={{ padding: "0 28px 48px" }}>
+          <div style={{ maxWidth: 920, margin: "0 auto", ...glass(16), borderRadius: 28, padding: "40px 36px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 24 }}>
+            <div>
+              <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 26, marginBottom: 10, color: T.ink }}>Request a quote</h2>
+              <p style={{ fontSize: 14, color: T.inkSoft, lineHeight: 1.65, maxWidth: 400 }}>Share SKU interest, volumes, and destination — we respond with pricing bands and lead times.</p>
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}>
+              <span style={{ background: T.porcelain, boxShadow: neuIn, padding: "14px 20px", borderRadius: 14, fontSize: 14, color: T.inkSoft }}>exports@padmalaya.example</span>
+              <button type="button" className="focus-ring" style={{ background: T.forest, color: "#fff", border: "none", padding: "14px 28px", borderRadius: 50, fontWeight: 700, cursor: "pointer" }}>Email us</button>
+            </div>
+          </div>
+        </section>
+
+        <footer style={{ padding: "32px 28px 40px", borderTop: "1px solid rgba(13,40,31,.05)", background: "transparent" }}>
+          <div style={{ maxWidth: 1000, margin: "0 auto", display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: 20, alignItems: "center" }}>
+            <p style={{ fontWeight: 600, color: T.inkSoft, fontSize: 14 }}>© 2026 Padmalaya Textiles · Solapur, India</p>
+            <nav className="site-nav" style={{ display: "flex", gap: 20, fontSize: 13, fontWeight: 600, color: T.moss }}>
+              <a href="#collection">Products</a>
+              <a href="#mill">About</a>
+              <a href="#contact">Contact</a>
+            </nav>
+          </div>
+        </footer>
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

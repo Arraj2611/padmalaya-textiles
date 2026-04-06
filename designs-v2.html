@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Padmalaya Textiles — Design Concepts v2 (6–10)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Sora:wght@300;400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0a; font-family: 'DM Sans', system-ui, sans-serif; }
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes borderGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(245,158,11,0.3), 0 0 20px rgba(245,158,11,0.1); }
+  50% { box-shadow: 0 0 20px rgba(245,158,11,0.7), 0 0 40px rgba(245,158,11,0.3); }
+}
+@keyframes radialPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.08); }
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #D4A843 0%, #F5D78A 30%, #D4A843 50%, #B8920E 70%, #D4A843 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+.float-anim { animation: float 4s ease-in-out infinite; }
+.fade-up { animation: fadeUp 0.7s ease forwards; }
+.scale-in { animation: scaleIn 0.5s ease forwards; }
+.border-glow { animation: borderGlow 2.5s ease-in-out infinite; }
+.marquee-track { animation: marquee 22s linear infinite; display: flex; white-space: nowrap; }
+.gradient-shift {
+  background: linear-gradient(-45deg, #0F0B2E, #1a0f4e, #2d1b69, #1a0f4e);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const navItems = ["Home", "Products", "About Us", "Our Process", "Contact"];
+
+const products = [
+  { name: "Classic Terry Bath Towel", size: "70×140 cm", weight: "500 GSM", tag: "Bestseller", desc: "Supremely absorbent and gentle on skin. Crafted from long-staple Indian cotton for lasting softness." },
+  { name: "Premium Face Towel Set", size: "30×30 cm", weight: "450 GSM", tag: "New Arrival", desc: "Ultra-soft face towels with a dense loop pile. Perfect for sensitive skin and daily skincare routines." },
+  { name: "Luxury Hand Towel", size: "40×70 cm", weight: "550 GSM", tag: "Premium", desc: "Heavy-weight luxury towel with a velvety feel. Ideal for hotels and premium hospitality properties." },
+  { name: "Hotel Collection Bath Sheet", size: "90×180 cm", weight: "600 GSM", tag: "Bulk Order", desc: "Oversized bath sheets favored by 5-star hotels. Exceptional absorbency and durability through hundreds of washes." },
+  { name: "Terry Kitchen Napkin Set", size: "45×65 cm", weight: "350 GSM", tag: "Popular", desc: "Versatile terry napkins for professional kitchens. High absorbency, easy care, and lint-free finish." },
+  { name: "Spa Wrap Towel", size: "80×150 cm", weight: "480 GSM", tag: "Luxury", desc: "Designed for spa and wellness environments. Combines softness with quick-dry properties for premium comfort." },
+];
+
+// ─── DESIGN 6: EMERALD MAJESTY ────────────────────────────────────────────────
+function Design6() {
+  const bg = "#052E16";
+  const cardBg = "rgba(5,74,38,0.6)";
+  const gold = "#D4A843";
+  const goldLight = "#F5D78A";
+  const green = "#10B981";
+  const muted = "rgba(255,255,255,0.5)";
+  const border = "rgba(212,168,67,0.2)";
+
+  return (
+    <div style={{ background: bg, color: "#fff", fontFamily: "'DM Sans', sans-serif", minHeight: "100%" }}>
+      {/* Nav */}
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 48px", borderBottom: "1px solid "+border, position: "relative" }}>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, letterSpacing: 3, color: gold }}>
+          PADMALAYA
+          <span style={{ display: "block", fontSize: 10, letterSpacing: 4, color: muted, fontFamily: "'DM Sans', sans-serif", fontWeight: 400 }}>FINE TEXTILES</span>
+        </div>
+        <div style={{ display: "flex", gap: 32 }}>
+          {navItems.map(n => <span key={n} style={{ fontSize: 13, color: muted, cursor: "pointer", letterSpacing: 1, textTransform: "uppercase", transition: "color 0.2s" }}>{n}</span>)}
+        </div>
+        <button style={{ background: "linear-gradient(135deg, "+gold+", #B8920E)", color: "#052E16", border: "none", padding: "11px 28px", fontSize: 13, fontWeight: 600, cursor: "pointer", letterSpacing: 1, textTransform: "uppercase" }}>Request Quote</button>
+      </nav>
+
+      {/* Marquee ticker */}
+      <div style={{ background: gold, padding: "9px 0", overflow: "hidden" }}>
+        <div className="marquee-track" style={{ color: "#052E16", fontSize: 12, fontWeight: 600, letterSpacing: 2, textTransform: "uppercase" }}>
+          {Array(4).fill(null).map((_, i) => (
+            <span key={i} style={{ marginRight: 60 }}>
+              ✦ 100% Indian Cotton &nbsp;&nbsp; ✦ ISO 9001 Certified &nbsp;&nbsp; ✦ OEKO-TEX Standard 100 &nbsp;&nbsp; ✦ GOTS Organic Certified &nbsp;&nbsp; ✦ Bulk Manufacturing &nbsp;&nbsp; ✦ Hotel &amp; Spa Supply &nbsp;&nbsp; ✦ Custom Branding Available &nbsp;&nbsp;
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Hero */}
+      <div style={{ padding: "90px 48px 80px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%)", animation: "radialPulse 5s ease-in-out infinite", pointerEvents: "none" }} />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 28 }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: green, display: "inline-block", animation: "pulse 2s ease-in-out infinite" }} />
+            <span style={{ fontSize: 12, color: green, letterSpacing: 3, textTransform: "uppercase", fontWeight: 500 }}>Est. Since Generations · Karur, Tamil Nadu</span>
+          </div>
+          <h1 className="shimmer-text" style={{ fontFamily: "'Playfair Display', serif", fontSize: 68, fontWeight: 700, lineHeight: 1.05, marginBottom: 28 }}>
+            Woven in Emerald,<br />Crafted in Gold
+          </h1>
+          <p style={{ fontSize: 17, color: muted, maxWidth: 560, margin: "0 auto 40px", lineHeight: 1.8 }}>
+            India's premier manufacturer of premium terry towels and napkins — supplying the world's finest hotels, spas, and luxury brands.
+          </p>
+          <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
+            <button style={{ background: "linear-gradient(135deg, "+gold+", #B8920E)", color: "#052E16", border: "none", padding: "15px 40px", fontSize: 14, fontWeight: 700, cursor: "pointer", letterSpacing: 1 }}>View Collection</button>
+            <button style={{ background: "transparent", color: gold, border: "1.5px solid "+gold, padding: "15px 40px", fontSize: 14, cursor: "pointer", letterSpacing: 1 }}>Our Story</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 0, borderTop: "1px solid "+border, borderBottom: "1px solid "+border, margin: "0 0 64px" }}>
+        {[{ n: "25+", l: "Years of Excellence" }, { n: "500+", l: "Hotel Partners" }, { n: "50L+", l: "Towels Per Year" }, { n: "40+", l: "Countries Exported" }].map((s, i) => (
+          <div key={i} style={{ flex: 1, textAlign: "center", padding: "36px 20px", borderRight: i < 3 ? "1px solid "+border : "none" }}>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 38, fontWeight: 700, color: gold }}>{s.n}</div>
+            <div style={{ fontSize: 12, color: muted, marginTop: 6, letterSpacing: 1, textTransform: "uppercase" }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Products */}
+      <div style={{ padding: "0 48px 80px", maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <p style={{ fontSize: 12, color: gold, letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>Our Collection</p>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 40, fontWeight: 600 }}>Premium Terry Products</h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+          {products.map((prod, i) => (
+            <div key={i} style={{ background: cardBg, border: "1px solid "+border, padding: 28, backdropFilter: "blur(12px)", cursor: "pointer", transition: "border-color 0.3s" }}>
+              <div style={{ width: "100%", height: 160, background: "rgba(16,185,129,0.06)", border: "1px solid rgba(212,168,67,0.1)", marginBottom: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 12, color: muted, letterSpacing: 1 }}>[ Product Photo ]</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <span style={{ fontSize: 10, color: gold, letterSpacing: 2, textTransform: "uppercase", fontWeight: 600 }}>{prod.tag}</span>
+                <span style={{ fontSize: 11, color: muted }}>{prod.weight}</span>
+              </div>
+              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 600, marginBottom: 8 }}>{prod.name}</h3>
+              <p style={{ fontSize: 13, color: muted, lineHeight: 1.6, marginBottom: 16 }}>{prod.desc}</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: 12, color: "rgba(212,168,67,0.6)" }}>{prod.size}</span>
+                <button style={{ background: "transparent", color: gold, border: "1px solid rgba(212,168,67,0.4)", padding: "7px 18px", fontSize: 11, cursor: "pointer", letterSpacing: 1, textTransform: "uppercase" }}>Enquire</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ margin: "0 48px 48px", padding: "60px 48px", background: "linear-gradient(135deg, rgba(212,168,67,0.12), rgba(16,185,129,0.08))", border: "1px solid "+border, textAlign: "center" }}>
+        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 34, fontWeight: 600, marginBottom: 14 }}>Ready to Place a Bulk Order?</h2>
+        <p style={{ fontSize: 15, color: muted, maxWidth: 500, margin: "0 auto 32px", lineHeight: 1.7 }}>Custom manufacturing, private labeling, and export logistics — all under one roof.</p>
+        <button style={{ background: "linear-gradient(135deg, "+gold+", #B8920E)", color: "#052E16", border: "none", padding: "15px 44px", fontSize: 14, fontWeight: 700, cursor: "pointer", letterSpacing: 1 }}>Start a Conversation →</button>
+      </div>
+
+      {/* Footer */}
+      <div style={{ borderTop: "1px solid "+border, padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: gold, letterSpacing: 2 }}>PADMALAYA TEXTILES</span>
+        <span style={{ fontSize: 12, color: muted }}>Karur, Tamil Nadu, India · Est. Since Generations</span>
+        <span style={{ fontSize: 12, color: muted }}>© 2025 Padmalaya Textiles</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── DESIGN 7: CORAL HORIZON ──────────────────────────────────────────────────
+function Design7() {
+  const bg = "#FFFAF5";
+  const coral = "#E8654A";
+  const coralDark = "#C44A30";
+  const text = "#1C1410";
+  const muted = "#8A7A70";
+  const highlight = "#FFF0E8";
+  const border = "rgba(232,101,74,0.12)";
+
+  return (
+    <div style={{ background: bg, color: text, fontFamily: "'Cormorant Garamond', serif", minHeight: "100%" }}>
+      {/* Nav */}
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 48px", background: "rgba(255,250,245,0.9)", backdropFilter: "blur(16px)", borderBottom: "1px solid "+border }}>
+        <div>
+          <div style={{ fontSize: 22, fontWeight: 600, letterSpacing: 4, color: text }}>PADMALAYA</div>
+          <div style={{ fontSize: 10, letterSpacing: 3, color: muted, fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase" }}>Fine Textiles</div>
+        </div>
+        <div style={{ display: "flex", gap: 32 }}>
+          {navItems.map(n => <span key={n} style={{ fontSize: 14, color: muted, cursor: "pointer", letterSpacing: 1, fontFamily: "'DM Sans', sans-serif" }}>{n}</span>)}
+        </div>
+        <button style={{ background: coral, color: "#fff", border: "none", padding: "12px 30px", fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", letterSpacing: 1 }}>Get Catalogue</button>
+      </nav>
+
+      {/* Hero — asymmetric editorial grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "55% 45%", minHeight: 520 }}>
+        <div style={{ padding: "80px 64px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ display: "inline-block", background: "rgba(232,101,74,0.08)", border: "1px solid rgba(232,101,74,0.2)", padding: "6px 18px", marginBottom: 28, fontSize: 12, color: coral, letterSpacing: 2, textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif", width: "fit-content" }}>
+            Manufacturer · Exporter · India
+          </div>
+          <h1 style={{ fontSize: 60, fontWeight: 600, lineHeight: 1.05, marginBottom: 26, fontStyle: "italic" }}>
+            The New Language<br />of Cotton Luxury
+          </h1>
+          <p style={{ fontSize: 17, color: muted, lineHeight: 1.8, maxWidth: 420, marginBottom: 36, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>
+            Premium terry towels and napkins crafted with generations of skill — for the world's leading hotels, resorts, and wellness brands.
+          </p>
+          <div style={{ display: "flex", gap: 14 }}>
+            <button style={{ background: coral, color: "#fff", border: "none", padding: "15px 38px", fontSize: 14, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", letterSpacing: 1 }}>Explore Products</button>
+            <button style={{ background: "transparent", color: coral, border: "1.5px solid "+coral, padding: "15px 38px", fontSize: 14, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Request Sample</button>
+          </div>
+        </div>
+        <div style={{ background: "linear-gradient(145deg, "+coral+" 0%, "+coralDark+" 60%, #A33820 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 40, position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", top: -60, right: -60, width: 240, height: 240, borderRadius: "50%", background: "rgba(255,255,255,0.06)" }} />
+          <div style={{ position: "absolute", bottom: -40, left: -40, width: 180, height: 180, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
+          <div style={{ width: 220, height: 300, border: "2px solid rgba(255,255,255,0.3)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", zIndex: 1 }}>
+            <span style={{ fontSize: 14, color: "rgba(255,255,255,0.6)", fontFamily: "'DM Sans', sans-serif" }}>[ Hero Image ]</span>
+          </div>
+          <div style={{ marginTop: 20, textAlign: "center", position: "relative", zIndex: 1 }}>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", letterSpacing: 2, textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif" }}>500 GSM · 100% Cotton</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Trust strip */}
+      <div style={{ background: text, padding: "16px 48px", display: "flex", justifyContent: "center", gap: 56, alignItems: "center" }}>
+        {["ISO 9001:2015", "OEKO-TEX® Standard 100", "GOTS Certified", "Made in India", "25+ Years Experience"].map((cert, i) => (
+          <span key={i} style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", letterSpacing: 2, textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif" }}>{cert}</span>
+        ))}
+      </div>
+
+      {/* Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", borderBottom: "1px solid "+border }}>
+        {[{ n: "25+", l: "Years Legacy" }, { n: "500+", l: "Hotel Partners" }, { n: "100%", l: "Indian Cotton" }, { n: "40+", l: "Nations Served" }].map((s, i) => (
+          <div key={i} style={{ padding: "44px 32px", textAlign: "center", borderRight: i < 3 ? "1px solid "+border : "none" }}>
+            <div style={{ fontSize: 44, fontWeight: 600, color: coral }}>{s.n}</div>
+            <div style={{ fontSize: 13, color: muted, marginTop: 6, fontFamily: "'DM Sans', sans-serif" }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Products — magazine style */}
+      <div style={{ padding: "68px 48px", maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 44 }}>
+          <div>
+            <p style={{ fontSize: 12, color: coral, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8, fontFamily: "'DM Sans', sans-serif" }}>Our Range</p>
+            <h2 style={{ fontSize: 42, fontWeight: 600, fontStyle: "italic" }}>The Terry Collection</h2>
+          </div>
+          <span style={{ fontSize: 13, color: coral, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", letterSpacing: 1, borderBottom: "1px solid "+coral, paddingBottom: 2 }}>View All Products →</span>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 2 }}>
+          {products.map((prod, i) => (
+            <div key={i} style={{ background: i % 2 === 0 ? "#fff" : highlight, padding: 30, cursor: "pointer", borderBottom: "1px solid "+border }}>
+              <div style={{ width: "100%", height: 180, background: "rgba(232,101,74,0.06)", marginBottom: 22, display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(232,101,74,0.08)" }}>
+                <span style={{ fontSize: 12, color: muted, fontFamily: "'DM Sans', sans-serif" }}>[ Photo ]</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+                <h3 style={{ fontSize: 19, fontWeight: 600, lineHeight: 1.2, maxWidth: "70%" }}>{prod.name}</h3>
+                <span style={{ fontSize: 10, color: coral, border: "1px solid rgba(232,101,74,0.3)", padding: "4px 10px", fontFamily: "'DM Sans', sans-serif", letterSpacing: 1, whiteSpace: "nowrap" }}>{prod.tag.toUpperCase()}</span>
+              </div>
+              <p style={{ fontSize: 13, color: muted, lineHeight: 1.6, marginBottom: 14, fontFamily: "'DM Sans', sans-serif" }}>{prod.desc}</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: 12, color: muted, fontFamily: "'DM Sans', sans-serif" }}>{prod.size} · {prod.weight}</span>
+                <button style={{ background: "transparent", color: coral, border: "none", fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", letterSpacing: 1, borderBottom: "1px solid "+coral, paddingBottom: 1 }}>Enquire →</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ background: coral, padding: "64px 48px", textAlign: "center", color: "#fff" }}>
+        <h2 style={{ fontSize: 38, fontWeight: 600, fontStyle: "italic", marginBottom: 14 }}>Custom Orders Welcome</h2>
+        <p style={{ fontSize: 16, opacity: 0.85, maxWidth: 500, margin: "0 auto 32px", fontFamily: "'DM Sans', sans-serif", fontWeight: 300, lineHeight: 1.7 }}>From 500 pieces with your brand label. Fast turnaround, global shipping, competitive pricing.</p>
+        <button style={{ background: "#fff", color: coral, border: "none", padding: "15px 44px", fontSize: 14, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, letterSpacing: 1 }}>Request a Quote</button>
+      </div>
+
+      {/* Footer */}
+      <div style={{ background: text, padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontSize: 18, fontStyle: "italic", color: "#fff", letterSpacing: 2 }}>Padmalaya Textiles</span>
+        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans', sans-serif" }}>Karur, Tamil Nadu · © 2025</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── DESIGN 8: MIDNIGHT ATELIER ───────────────────────────────────────────────
+function Design8() {
+  const bg = "#0C0A09";
+  const amber = "#F59E0B";
+  const amberLight = "#FCD34D";
+  const cardBg = "rgba(255,255,255,0.03)";
+  const muted = "rgba(255,255,255,0.45)";
+  const border = "rgba(245,158,11,0.15)";
+
+  return (
+    <div style={{ background: bg, color: "#fff", fontFamily: "'Sora', sans-serif", minHeight: "100%" }}>
+      {/* Nav */}
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "24px 52px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        <div style={{ fontFamily: "'Libre Baskerville', serif", fontSize: 20, letterSpacing: 4, color: "#fff" }}>
+          PADMALAYA
+          <span style={{ display: "block", fontSize: 9, letterSpacing: 5, color: amber, fontFamily: "'Sora', sans-serif", fontWeight: 300, textTransform: "uppercase" }}>TEXTILE ATELIER</span>
+        </div>
+        <div style={{ display: "flex", gap: 32 }}>
+          {navItems.map(n => <span key={n} style={{ fontSize: 12, color: muted, cursor: "pointer", letterSpacing: 2, textTransform: "uppercase" }}>{n}</span>)}
+        </div>
+        <button style={{ background: "transparent", color: amber, border: "1px solid "+border, padding: "11px 28px", fontSize: 12, cursor: "pointer", letterSpacing: 2, textTransform: "uppercase", transition: "all 0.3s" }}>Contact</button>
+      </nav>
+
+      {/* Hero with radial glow */}
+      <div style={{ position: "relative", padding: "100px 52px 90px", textAlign: "center", overflow: "hidden" }}>
+        {/* Radial glow */}
+        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 700, height: 500, background: "radial-gradient(ellipse, rgba(245,158,11,0.08) 0%, rgba(245,158,11,0.03) 40%, transparent 70%)", animation: "radialPulse 6s ease-in-out infinite", pointerEvents: "none", zIndex: 0 }} />
+        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 300, height: 300, background: "radial-gradient(circle, rgba(245,158,11,0.05) 0%, transparent 60%)", animation: "pulse 4s ease-in-out infinite", pointerEvents: "none", zIndex: 0 }} />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ fontSize: 11, letterSpacing: 5, color: amber, textTransform: "uppercase", marginBottom: 32, opacity: 0.8 }}>Est. Since Generations · Karur, Tamil Nadu</div>
+          <h1 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: 62, fontWeight: 700, lineHeight: 1.1, marginBottom: 12 }}>
+            Where Cotton
+          </h1>
+          <h1 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: 62, fontWeight: 400, fontStyle: "italic", lineHeight: 1.1, marginBottom: 12, color: amber }}>
+            Becomes Art
+          </h1>
+          <div style={{ width: 80, height: 1, background: "linear-gradient(90deg, transparent, "+amber+", transparent)", margin: "32px auto" }} />
+          <p style={{ fontSize: 15, color: muted, maxWidth: 520, margin: "0 auto 44px", lineHeight: 1.9, fontWeight: 300 }}>
+            We manufacture the world's most refined terry towels and napkins — from raw Indian cotton to finished luxury, every thread is ours.
+          </p>
+          <div style={{ display: "flex", gap: 18, justifyContent: "center" }}>
+            <button style={{ background: amber, color: "#0C0A09", border: "none", padding: "15px 42px", fontSize: 13, fontWeight: 600, cursor: "pointer", letterSpacing: 2, textTransform: "uppercase" }}>View Collection</button>
+            <button style={{ background: "transparent", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.15)", padding: "15px 42px", fontSize: 13, cursor: "pointer", letterSpacing: 2, textTransform: "uppercase" }}>Our Process</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats strip */}
+      <div style={{ display: "flex", borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        {[{ n: "25+", l: "Years" }, { n: "500+", l: "Hotel Partners" }, { n: "50L+", l: "Annual Units" }, { n: "40+", l: "Countries" }].map((s, i) => (
+          <div key={i} style={{ flex: 1, padding: "32px 20px", textAlign: "center", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
+            <div style={{ fontFamily: "'Libre Baskerville', serif", fontSize: 34, fontWeight: 700, color: amber }}>{s.n}</div>
+            <div style={{ fontSize: 11, color: muted, marginTop: 4, letterSpacing: 2, textTransform: "uppercase" }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Products — with animated border glow */}
+      <div style={{ padding: "72px 52px", maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 52 }}>
+          <div style={{ fontSize: 11, color: amber, letterSpacing: 4, textTransform: "uppercase", marginBottom: 12 }}>The Collection</div>
+          <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: 38, fontWeight: 400, fontStyle: "italic" }}>Premium Terry Goods</h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
+          {products.map((prod, i) => (
+            <div key={i} className="border-glow" style={{ background: cardBg, border: "1px solid rgba(245,158,11,0.2)", padding: 28, cursor: "pointer", backdropFilter: "blur(8px)" }}>
+              <div style={{ width: "100%", height: 155, background: "rgba(245,158,11,0.03)", border: "1px solid rgba(245,158,11,0.08)", marginBottom: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 12, color: muted }}>[ Photo ]</span>
+              </div>
+              <div style={{ fontSize: 9, color: amber, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}>{prod.tag}</div>
+              <h3 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: 16, fontWeight: 400, marginBottom: 10, lineHeight: 1.4 }}>{prod.name}</h3>
+              <p style={{ fontSize: 12, color: muted, lineHeight: 1.7, marginBottom: 16, fontWeight: 300 }}>{prod.desc}</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: 11, color: "rgba(245,158,11,0.5)" }}>{prod.size} · {prod.weight}</span>
+                <button style={{ background: "transparent", color: amber, border: "1px solid rgba(245,158,11,0.3)", padding: "6px 16px", fontSize: 10, cursor: "pointer", letterSpacing: 2, textTransform: "uppercase" }}>Enquire</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ margin: "0 52px 52px", padding: "60px", border: "1px solid rgba(245,158,11,0.2)", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(245,158,11,0.04) 0%, transparent 70%)" }} />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <h2 style={{ fontFamily: "'Libre Baskerville', serif", fontSize: 32, fontWeight: 400, fontStyle: "italic", marginBottom: 12, color: amberLight }}>Bulk Orders & Custom Branding</h2>
+          <p style={{ fontSize: 14, color: muted, maxWidth: 460, margin: "0 auto 32px", lineHeight: 1.8, fontWeight: 300 }}>Minimum 500 pieces. Custom weaving, embroidery, packaging. Export to 40+ countries.</p>
+          <button style={{ background: amber, color: "#0C0A09", border: "none", padding: "14px 42px", fontSize: 13, fontWeight: 600, cursor: "pointer", letterSpacing: 2, textTransform: "uppercase" }}>Request a Quote</button>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "28px 52px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontFamily: "'Libre Baskerville', serif", fontSize: 15, color: amber, letterSpacing: 3 }}>PADMALAYA</span>
+        <span style={{ fontSize: 11, color: muted, letterSpacing: 1 }}>Karur, Tamil Nadu, India · © 2025</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── DESIGN 9: TEAL & COPPER ──────────────────────────────────────────────────
+function Design9() {
+  const bg = "#F7F9F8";
+  const teal = "#0D5E5E";
+  const tealLight = "#0F7272";
+  const copper = "#C07840";
+  const text = "#0D1F1F";
+  const muted = "#5A7070";
+  const border = "rgba(13,94,94,0.1)";
+  const highlight = "#EAF2F1";
+
+  return (
+    <div style={{ background: bg, color: text, fontFamily: "'DM Sans', sans-serif", minHeight: "100%" }}>
+      {/* Nav */}
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 48px", background: teal, color: "#fff" }}>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, letterSpacing: 3 }}>
+          PADMALAYA
+          <span style={{ display: "block", fontSize: 9, letterSpacing: 3, color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>TEXTILES</span>
+        </div>
+        <div style={{ display: "flex", gap: 28 }}>
+          {navItems.map(n => <span key={n} style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", cursor: "pointer", letterSpacing: 1, textTransform: "uppercase" }}>{n}</span>)}
+        </div>
+        <button style={{ background: copper, color: "#fff", border: "none", padding: "11px 26px", fontSize: 13, fontWeight: 600, cursor: "pointer", letterSpacing: 1 }}>Request Quote</button>
+      </nav>
+
+      {/* Hero — split 55/45 */}
+      <div style={{ display: "grid", gridTemplateColumns: "55% 45%", minHeight: 500 }}>
+        {/* Left — teal */}
+        <div style={{ background: "linear-gradient(135deg, "+teal+" 0%, "+tealLight+" 100%)", padding: "72px 56px", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", bottom: -60, left: -60, width: 280, height: 280, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <div style={{ display: "inline-block", background: "rgba(192,120,64,0.2)", border: "1px solid rgba(192,120,64,0.4)", padding: "5px 16px", marginBottom: 24, fontSize: 11, color: "#E8A060", letterSpacing: 2, textTransform: "uppercase" }}>
+              Manufacturer & Exporter
+            </div>
+            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 52, fontWeight: 700, lineHeight: 1.1, marginBottom: 22, color: "#fff" }}>
+              India's Premier<br />Terry Towel<br />Manufacturer
+            </h1>
+            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.7)", lineHeight: 1.8, maxWidth: 400, marginBottom: 36 }}>
+              From raw cotton fields to finished luxury — we control every step to deliver exceptional towels for the world's best brands.
+            </p>
+            <div style={{ display: "flex", gap: 14 }}>
+              <button style={{ background: copper, color: "#fff", border: "none", padding: "14px 36px", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>View Products</button>
+              <button style={{ background: "transparent", color: "#fff", border: "1.5px solid rgba(255,255,255,0.35)", padding: "14px 36px", fontSize: 14, cursor: "pointer" }}>Our Process</button>
+            </div>
+          </div>
+        </div>
+        {/* Right — cream stat grid */}
+        <div style={{ background: "#fff", padding: "48px 40px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 20 }}>
+          <div style={{ fontSize: 11, color: copper, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}>By the Numbers</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            {[{ n: "25+", l: "Years in Business" }, { n: "500+", l: "Hotel Partners" }, { n: "50L+", l: "Annual Production" }, { n: "40+", l: "Export Countries" }].map((s, i) => (
+              <div key={i} style={{ background: highlight, padding: "24px 20px", borderTop: "3px solid "+teal }}>
+                <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700, color: teal }}>{s.n}</div>
+                <div style={{ fontSize: 12, color: muted, marginTop: 4 }}>{s.l}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ padding: "18px 20px", background: "rgba(13,94,94,0.04)", border: "1px solid "+border }}>
+            <div style={{ fontSize: 12, color: muted, lineHeight: 1.6 }}>
+              <strong style={{ color: teal }}>ISO 9001</strong> · <strong style={{ color: teal }}>OEKO-TEX®</strong> · <strong style={{ color: teal }}>GOTS</strong> · <strong style={{ color: teal }}>100% Indian Cotton</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Products */}
+      <div style={{ padding: "68px 48px", maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 44 }}>
+          <div>
+            <p style={{ fontSize: 11, color: copper, letterSpacing: 3, textTransform: "uppercase", marginBottom: 8, fontWeight: 600 }}>Our Range</p>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 38, fontWeight: 700 }}>Terry Collection</h2>
+          </div>
+          <span style={{ fontSize: 13, color: teal, cursor: "pointer", borderBottom: "1px solid "+teal, paddingBottom: 2 }}>Full Catalogue →</span>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 22 }}>
+          {products.map((prod, i) => (
+            <div key={i} style={{ background: "#fff", borderTop: "3px solid "+copper, padding: 26, cursor: "pointer", boxShadow: "0 2px 16px rgba(13,94,94,0.06)" }}>
+              <div style={{ width: "100%", height: 150, background: highlight, marginBottom: 18, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 12, color: muted }}>[ Photo ]</span>
+              </div>
+              <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+                <span style={{ fontSize: 10, background: "rgba(192,120,64,0.1)", color: copper, padding: "3px 10px", letterSpacing: 1, textTransform: "uppercase", fontWeight: 600 }}>{prod.tag}</span>
+                <span style={{ fontSize: 10, background: highlight, color: muted, padding: "3px 10px" }}>{prod.weight}</span>
+              </div>
+              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 600, marginBottom: 8 }}>{prod.name}</h3>
+              <p style={{ fontSize: 12, color: muted, lineHeight: 1.6, marginBottom: 14 }}>{prod.desc}</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: 11, color: muted }}>{prod.size}</span>
+                <button style={{ background: teal, color: "#fff", border: "none", padding: "8px 18px", fontSize: 11, cursor: "pointer", letterSpacing: 1 }}>Enquire →</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Process — full width teal */}
+      <div style={{ background: teal, padding: "60px 48px", color: "#fff" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <p style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: 3, textTransform: "uppercase", marginBottom: 10 }}>How We Work</p>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 34, fontWeight: 600 }}>Our Manufacturing Process</h2>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 16 }}>
+            {["Raw Cotton Sourcing", "Spinning & Weaving", "Dyeing & Finishing", "Quality Control", "Packing & Export"].map((step, i) => (
+              <div key={i} style={{ flex: 1, textAlign: "center" }}>
+                <div style={{ width: 52, height: 52, background: copper, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 700 }}>{i + 1}</div>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>{step}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ padding: "64px 48px", textAlign: "center", background: "#fff" }}>
+        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 34, fontWeight: 700, marginBottom: 12, color: teal }}>Partner With Padmalaya</h2>
+        <p style={{ fontSize: 15, color: muted, maxWidth: 480, margin: "0 auto 32px", lineHeight: 1.7 }}>Custom orders from 500 pieces. Your brand, our craftsmanship. Let's build something great together.</p>
+        <button style={{ background: teal, color: "#fff", border: "none", padding: "15px 44px", fontSize: 14, fontWeight: 600, cursor: "pointer", letterSpacing: 1, marginRight: 12 }}>Get a Quote</button>
+        <button style={{ background: "transparent", color: copper, border: "1.5px solid "+copper, padding: "15px 44px", fontSize: 14, cursor: "pointer" }}>Download Catalogue</button>
+      </div>
+
+      {/* Footer */}
+      <div style={{ background: text, padding: "26px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: "#fff", letterSpacing: 2 }}>PADMALAYA TEXTILES</span>
+        <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>Karur, Tamil Nadu · © 2025</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── DESIGN 10: SAPPHIRE ROYALE ───────────────────────────────────────────────
+function Design10() {
+  const bg = "#0F0B2E";
+  const champagne = "#E8D5A3";
+  const champagneLight = "#F5EDD0";
+  const violet = "#7C3AED";
+  const muted = "rgba(232,213,163,0.5)";
+  const border = "rgba(232,213,163,0.12)";
+  const glassBg = "rgba(255,255,255,0.04)";
+  const glassBorder = "rgba(255,255,255,0.1)";
+
+  return (
+    <div className="gradient-shift" style={{ minHeight: "100%", color: "#fff", fontFamily: "'DM Sans', sans-serif" }}>
+      {/* Nav */}
+      <nav style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 52px", background: "rgba(15,11,46,0.7)", backdropFilter: "blur(20px)", borderBottom: "1px solid "+border, position: "sticky", top: 0, zIndex: 50 }}>
+        <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, letterSpacing: 3, color: champagne }}>
+          PADMALAYA
+          <span style={{ display: "block", fontSize: 9, letterSpacing: 5, color: muted, fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>ROYAL TEXTILES</span>
+        </div>
+        <div style={{ display: "flex", gap: 32 }}>
+          {navItems.map(n => <span key={n} style={{ fontSize: 13, color: muted, cursor: "pointer", letterSpacing: 1, textTransform: "uppercase" }}>{n}</span>)}
+        </div>
+        <button style={{ background: "linear-gradient(135deg, "+champagne+", #C8A860)", color: "#0F0B2E", border: "none", padding: "11px 28px", fontSize: 13, fontWeight: 700, cursor: "pointer", letterSpacing: 1 }}>Enquire</button>
+      </nav>
+
+      {/* Hero */}
+      <div style={{ padding: "90px 52px 80px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        {/* Gradient mesh blobs */}
+        <div style={{ position: "absolute", top: -100, left: -100, width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 60%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: -80, right: -80, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(232,213,163,0.08) 0%, transparent 60%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "30%", right: "15%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 60%)", pointerEvents: "none" }} />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ display: "inline-block", background: glassBg, backdropFilter: "blur(12px)", border: "1px solid "+glassBorder, padding: "8px 22px", borderRadius: 40, marginBottom: 30, fontSize: 11, color: champagne, letterSpacing: 3, textTransform: "uppercase" }}>
+            ✦ Est. Since Generations · Karur, India
+          </div>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 66, fontWeight: 700, lineHeight: 1.05, marginBottom: 12, color: champagneLight }}>
+            The Royale
+          </h1>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 66, fontWeight: 400, fontStyle: "italic", lineHeight: 1.05, marginBottom: 28, color: champagne }}>
+            Cotton Experience
+          </h1>
+          <div style={{ width: 100, height: 1, background: "linear-gradient(90deg, transparent, "+champagne+", transparent)", margin: "0 auto 28px" }} />
+          <p style={{ fontSize: 16, color: muted, maxWidth: 540, margin: "0 auto 44px", lineHeight: 1.9, fontWeight: 300 }}>
+            We manufacture the finest terry towels and napkins from pure Indian cotton — supplying luxury hotels, world-class spas, and premium brands across 40+ nations.
+          </p>
+          <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
+            <button style={{ background: "linear-gradient(135deg, "+champagne+", #C8A860)", color: "#0F0B2E", border: "none", padding: "15px 42px", fontSize: 14, fontWeight: 700, cursor: "pointer", letterSpacing: 1 }}>View Collection</button>
+            <button style={{ background: glassBg, color: champagne, border: "1px solid "+border, padding: "15px 42px", fontSize: 14, cursor: "pointer", letterSpacing: 1, backdropFilter: "blur(8px)" }}>Request Sample</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Frosted glass stat cards overlapping hero */}
+      <div style={{ display: "flex", justifyContent: "center", gap: 20, padding: "0 52px 64px", flexWrap: "wrap" }}>
+        {[{ n: "25+", l: "Years of Mastery" }, { n: "500+", l: "Luxury Partners" }, { n: "50L+", l: "Towels Crafted / Year" }, { n: "40+", l: "Countries Served" }].map((s, i) => (
+          <div key={i} style={{ background: glassBg, backdropFilter: "blur(16px)", border: "1px solid "+glassBorder, padding: "28px 36px", textAlign: "center", minWidth: 180, flex: "1 1 180px", maxWidth: 240 }}>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: champagne }}>{s.n}</div>
+            <div style={{ fontSize: 12, color: muted, marginTop: 6, letterSpacing: 1 }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Marquee */}
+      <div style={{ background: "rgba(232,213,163,0.08)", borderTop: "1px solid "+border, borderBottom: "1px solid "+border, padding: "11px 0", overflow: "hidden", marginBottom: 64 }}>
+        <div className="marquee-track" style={{ color: muted, fontSize: 11, letterSpacing: 3, textTransform: "uppercase" }}>
+          {Array(4).fill(null).map((_, i) => (
+            <span key={i} style={{ marginRight: 60 }}>
+              ✦ 100% Indian Cotton &nbsp;&nbsp; ✦ ISO 9001 Certified &nbsp;&nbsp; ✦ OEKO-TEX Standard 100 &nbsp;&nbsp; ✦ GOTS Organic &nbsp;&nbsp; ✦ Hotel Supply &nbsp;&nbsp; ✦ Custom Manufacturing &nbsp;&nbsp; ✦ Global Export &nbsp;&nbsp;
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Products */}
+      <div style={{ padding: "0 52px 80px", maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 52 }}>
+          <p style={{ fontSize: 11, color: champagne, letterSpacing: 4, textTransform: "uppercase", marginBottom: 12, opacity: 0.7 }}>The Collection</p>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 40, fontWeight: 600, color: champagneLight }}>Our Terry Offerings</h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
+          {products.map((prod, i) => (
+            <div key={i} style={{ background: glassBg, backdropFilter: "blur(16px)", border: "1px solid "+glassBorder, padding: 28, cursor: "pointer", transition: "border-color 0.3s" }}>
+              <div style={{ width: "100%", height: 160, background: "rgba(232,213,163,0.04)", border: "1px solid rgba(232,213,163,0.08)", marginBottom: 22, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 12, color: muted }}>[ Product Photo ]</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                <span style={{ fontSize: 10, color: champagne, letterSpacing: 2, textTransform: "uppercase", fontWeight: 600, opacity: 0.8 }}>{prod.tag}</span>
+                <span style={{ fontSize: 10, color: muted }}>{prod.weight}</span>
+              </div>
+              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, fontWeight: 600, marginBottom: 8, color: champagneLight }}>{prod.name}</h3>
+              <p style={{ fontSize: 12, color: muted, lineHeight: 1.7, marginBottom: 16, fontWeight: 300 }}>{prod.desc}</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: 11, color: "rgba(232,213,163,0.35)" }}>{prod.size}</span>
+                <button style={{ background: "transparent", color: champagne, border: "1px solid "+border, padding: "7px 18px", fontSize: 10, cursor: "pointer", letterSpacing: 2, textTransform: "uppercase" }}>Enquire</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ margin: "0 52px 52px", padding: "64px 52px", background: glassBg, backdropFilter: "blur(20px)", border: "1px solid "+glassBorder, textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(232,213,163,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 600, color: champagneLight, marginBottom: 14 }}>Begin Your Partnership</h2>
+          <p style={{ fontSize: 15, color: muted, maxWidth: 480, margin: "0 auto 36px", lineHeight: 1.8, fontWeight: 300 }}>Custom manufacturing, private labeling, bulk orders. Minimum 500 pieces. Export logistics managed end to end.</p>
+          <button style={{ background: "linear-gradient(135deg, "+champagne+", #C8A860)", color: "#0F0B2E", border: "none", padding: "15px 48px", fontSize: 14, fontWeight: 700, cursor: "pointer", letterSpacing: 1 }}>Request a Quote →</button>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{ borderTop: "1px solid "+border, padding: "28px 52px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: champagne, letterSpacing: 3 }}>PADMALAYA TEXTILES</span>
+        <span style={{ fontSize: 12, color: muted, letterSpacing: 1 }}>Karur, Tamil Nadu, India · © 2025</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── ROOT APP ─────────────────────────────────────────────────────────────────
+const designs = [
+  { id: 6, name: "Emerald Majesty", philosophy: "Gold shimmer headings + Marquee ticker + Playfair Display", Comp: Design6 },
+  { id: 7, name: "Coral Horizon", philosophy: "Editorial asymmetric grid + Cormorant Garamond + Magazine layout", Comp: Design7 },
+  { id: 8, name: "Midnight Atelier", philosophy: "Radial glow hero + Libre Baskerville + Amber border-glow cards", Comp: Design8 },
+  { id: 9, name: "Teal & Copper", philosophy: "Split 55/45 hero + Copper card borders + Full-width process strip", Comp: Design9 },
+  { id: 10, name: "Sapphire Royale", philosophy: "Animated gradient-shift bg + Frosted glass + Champagne gold type", Comp: Design10 },
+];
+
+function App() {
+  const [active, setActive] = useState(0);
+  const d = designs[active];
+  const Comp = d.Comp;
+  return (
+    <div style={{ background: "#0a0a0a", color: "#fff", minHeight: "100vh", fontFamily: "'DM Sans', sans-serif" }}>
+      {/* Tab bar */}
+      <div style={{ position: "sticky", top: 0, zIndex: 200, background: "rgba(10,10,10,0.97)", backdropFilter: "blur(16px)", borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "0 24px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6, maxWidth: 1200, margin: "0 auto", height: 54, overflowX: "auto" }}>
+          <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginRight: 8, letterSpacing: 2, textTransform: "uppercase", whiteSpace: "nowrap" }}>Design v2:</span>
+          {designs.map((dd, i) => (
+            <button key={i} onClick={() => setActive(i)} style={{ background: active === i ? "rgba(255,255,255,0.1)" : "transparent", color: active === i ? "#fff" : "rgba(255,255,255,0.45)", border: active === i ? "1px solid rgba(255,255,255,0.18)" : "1px solid transparent", padding: "6px 18px", fontSize: 13, cursor: "pointer", borderRadius: 6, transition: "all 0.2s", whiteSpace: "nowrap", flexShrink: 0 }}>
+              {dd.id}. {dd.name}
+            </button>
+          ))}
+        </div>
+      </div>
+      {/* Meta info */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "20px 24px 14px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
+            <h2 style={{ fontSize: 22, fontWeight: 600, marginBottom: 4 }}>Design {d.id}: {d.name}</h2>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>{d.philosophy}</p>
+          </div>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", textAlign: "right", lineHeight: 1.6 }}>
+            Padmalaya Textiles<br />Design Concepts v2
+          </div>
+        </div>
+      </div>
+      {/* Preview */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px 44px" }}>
+        <div style={{ borderRadius: 10, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)" }}>
+          <Comp />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
