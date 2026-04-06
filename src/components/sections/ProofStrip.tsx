@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { glass, neuIn } from "@/lib/design-tokens";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const stats = [
   { k: "25+",      v: "Years weaving",   blur: 8  },
@@ -14,10 +13,8 @@ const stats = [
 const gradientBorder = "linear-gradient(130deg, rgba(184,149,92,.22), rgba(30,77,63,.12))";
 
 export default function ProofStrip() {
-  const ref = useScrollReveal<HTMLElement>();
-
   return (
-    <section id="proof" ref={ref} style={{ padding: "20px 28px 12px" }}>
+    <section id="proof" style={{ padding: "20px 28px 12px" }}>
       <p className="reveal" style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", textAlign: "center", marginBottom: 14 }}>
         PROOF STRIP
       </p>
