@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { glass, neuIn } from "@/lib/design-tokens";
 
 const stats = [
@@ -20,16 +19,12 @@ export default function ProofStrip() {
       </p>
 
       <div style={{ maxWidth: 920, margin: "0 auto", background: "#F5F8F7", boxShadow: neuIn, borderRadius: 26, padding: 14 }}>
-        {/* 4-column bento */}
         <div
           className="proof-grid"
           style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, alignItems: "stretch" }}
         >
           {stats.map((b) => (
-            <div
-              key={b.k}
-              style={{ borderRadius: 18, padding: 2, background: gradientBorder, display: "flex" }}
-            >
+            <div key={b.k} style={{ borderRadius: 18, padding: 2, background: gradientBorder, display: "flex" }}>
               <div
                 style={{
                   ...glass(b.blur),
@@ -53,7 +48,6 @@ export default function ProofStrip() {
           ))}
         </div>
 
-        {/* Export lead time bar */}
         <div style={{ marginTop: 10, borderRadius: 18, padding: 2, background: gradientBorder }}>
           <div
             style={{

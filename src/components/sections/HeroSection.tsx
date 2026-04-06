@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { glass, neu, goldGradient } from "@/lib/design-tokens";
 
 export default function HeroSection() {
@@ -48,25 +47,8 @@ export default function HeroSection() {
 
         <div style={{ position: "relative", zIndex: 1, padding: "52px 48px 58px" }}>
           {/* Location badge */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "flex-start",
-              marginBottom: 16,
-              flexWrap: "wrap",
-              gap: 10,
-            }}
-          >
-            <div
-              style={{
-                ...glass(10),
-                borderRadius: 50,
-                padding: "12px 22px 13px",
-                lineHeight: 1.45,
-                maxWidth: "100%",
-              }}
-            >
+          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
+            <div style={{ ...glass(10), borderRadius: 50, padding: "12px 22px 13px", lineHeight: 1.45 }}>
               <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.5, color: "#1e4d3f", display: "block", whiteSpace: "nowrap" }}>
                 Solapur, India
               </span>
@@ -136,12 +118,9 @@ export default function HeroSection() {
             >
               View range
             </a>
-            <motion.a
+            <a
               href="#contact"
               className="focus-ring"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.18 }}
               style={{
                 background: "#F5F8F7",
                 boxShadow: neu,
@@ -152,10 +131,15 @@ export default function HeroSection() {
                 fontSize: 14,
                 display: "inline-block",
                 textDecoration: "none",
+                transition: "transform 0.18s ease",
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.04)")}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+              onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.97)")}
+              onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1.04)")}
             >
               Book a call
-            </motion.a>
+            </a>
           </div>
         </div>
       </div>
