@@ -1,97 +1,10 @@
 "use client";
 
 import ProductImage from "@/components/ui/ProductImage";
+import { STATIC_PRODUCTS } from "@/lib/products";
 import type { Product } from "@/lib/supabase-types";
 
-const U = "https://images.unsplash.com";
-const Q = "auto=format&fit=crop&w=960&h=720&q=85&ixlib=rb-4.0.3";
-
-const staticProducts: Product[] = [
-  {
-    id: "1",
-    name: "Classic Terry Bath Towel",
-    slug: "classic-terry-bath-towel",
-    size: "70×140 cm",
-    weight: "500 GSM",
-    tag: "Bestseller",
-    description: "Plush, absorbent, and built to last through hundreds of washes — our signature weave.",
-    image_url: `${U}/photo-1584622650111-993a426fbf0a?${Q}`,
-    is_featured: true,
-    display_order: 0,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "2",
-    name: "Premium Face Towel Set",
-    slug: "premium-face-towel-set",
-    size: "30×30 cm",
-    weight: "450 GSM",
-    tag: "New",
-    description: "Ultra-soft face towels, gentle on skin. Ideal for hotels and spa settings.",
-    image_url: `${U}/photo-1563291074-2bf8677ac8e5?${Q}`,
-    is_featured: false,
-    display_order: 1,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "3",
-    name: "Luxury Hand Towel",
-    slug: "luxury-hand-towel",
-    size: "40×70 cm",
-    weight: "550 GSM",
-    tag: "Premium",
-    description: "Double-loop terry for maximum absorbency and a velvety hand feel.",
-    image_url: `${U}/photo-1556228453-efd6c1ff04f6?${Q}`,
-    is_featured: false,
-    display_order: 2,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "4",
-    name: "Hotel Bath Sheet",
-    slug: "hotel-bath-sheet",
-    size: "90×180 cm",
-    weight: "600 GSM",
-    tag: "Bulk",
-    description: "Oversized bath sheets for 5-star hospitality. Private labeling available.",
-    image_url: `${U}/photo-1600585154340-be6161a56a0c?${Q}`,
-    is_featured: true,
-    display_order: 3,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "5",
-    name: "Terry Kitchen Napkin",
-    slug: "terry-kitchen-napkin",
-    size: "45×65 cm",
-    weight: "350 GSM",
-    tag: "Popular",
-    description: "Lint-free, quick-dry cotton for professional kitchens.",
-    image_url: `${U}/photo-1556910103-1c02745aae4d?${Q}`,
-    is_featured: false,
-    display_order: 4,
-    created_at: "",
-    updated_at: "",
-  },
-  {
-    id: "6",
-    name: "Spa Wrap Towel",
-    slug: "spa-wrap-towel",
-    size: "80×150 cm",
-    weight: "480 GSM",
-    tag: "Luxury",
-    description: "Full-body spa wraps with secure tuck closure. Available in 22 colours.",
-    image_url: `${U}/photo-1507652313519-d4e9174996dd?${Q}`,
-    is_featured: false,
-    display_order: 5,
-    created_at: "",
-    updated_at: "",
-  },
-];
+const neuIn = "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(255,255,255,.75)";
 
 const masonryMeta = [
   { col: "span 2", clip: "none",                                                       h: 232 },
@@ -106,12 +19,13 @@ interface CollectionGridProps {
   products?: Product[];
 }
 
-export default function CollectionGrid({ products = staticProducts }: CollectionGridProps) {
-  const displayProducts = products.length > 0 ? products : staticProducts;
+export default function CollectionGrid({ products }: CollectionGridProps) {
+  // Merge live Supabase products with static enriched data for slugs
+  const displayProducts = (products && products.length > 0 ? products : STATIC_PRODUCTS).slice(0, 6);
 
   return (
-    <section id="collection" style={{ padding: "44px 28px 48px" }}>
-      <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+    <section id="collection" style={{ padding: "44px 40px 48px" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         {/* Header */}
         <div
           style={{
@@ -127,7 +41,7 @@ export default function CollectionGrid({ products = staticProducts }: Collection
             Our range
           </h2>
           <p style={{ fontSize: 13, color: "#2d4a42", maxWidth: 380, lineHeight: 1.55 }}>
-            Every SKU includes photography. Mixed clips; packed rows — no empty column.
+            Click any product to view specs, features, and add to your quote.
           </p>
         </div>
 
@@ -136,20 +50,33 @@ export default function CollectionGrid({ products = staticProducts }: Collection
           className="collection-grid"
           style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, gridAutoFlow: "row" }}
         >
-          {/* Product cards */}
-          {displayProducts.slice(0, 6).map((product, i) => {
+          {displayProducts.map((product, i) => {
             const meta = masonryMeta[i] ?? masonryMeta[0];
+            const slug = ("slug" in product ? product.slug : null) ?? STATIC_PRODUCTS[i]?.slug ?? "";
             return (
-              <div
+              <a
                 key={product.id}
+                href={`/products/${slug}`}
                 className="hover-lift"
                 style={{
                   gridColumn: meta.col,
                   background: "#F5F8F7",
-                  boxShadow: "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(255,255,255,.75)",
+                  boxShadow: neuIn,
                   borderRadius: 26,
                   padding: 9,
                   overflow: "hidden",
+                  textDecoration: "none",
+                  color: "inherit",
+                  display: "block",
+                  transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), box-shadow 0.35s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-5px)";
+                  e.currentTarget.style.boxShadow = "0 22px 50px rgba(13,40,31,.10)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = neuIn;
                 }}
               >
                 <div
@@ -179,45 +106,20 @@ export default function CollectionGrid({ products = staticProducts }: Collection
                   <p style={{ fontSize: 12, color: "#2d4a42", lineHeight: 1.55, marginBottom: 10 }}>
                     {(product.description ?? "").slice(0, 78)}…
                   </p>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: 11, color: "#1e4d3f", fontWeight: 600 }}>
-                      {product.size} · {product.weight}
-                    </span>
-                    <a
-                      href="#contact"
-                      className="focus-ring"
-                      style={{
-                        background: "#F0F4F2",
-                        boxShadow: "2px 2px 6px rgba(13,40,31,.07), -2px -2px 5px rgba(255,255,255,.7)",
-                        padding: "8px 16px",
-                        borderRadius: 40,
-                        fontWeight: 700,
-                        fontSize: 11,
-                        color: "#0d281f",
-                        textDecoration: "none",
-                        display: "inline-block",
-                        transition: "transform 0.18s ease",
-                      }}
-                      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-                      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-                      onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.97)")}
-                      onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-                    >
-                      Enquire
-                    </a>
-                  </div>
+                  <span style={{ fontSize: 11, color: "#1e4d3f", fontWeight: 600 }}>
+                    {product.size} · {product.weight}
+                  </span>
                 </div>
-              </div>
+              </a>
             );
           })}
 
           {/* CTA card */}
           <div
-            className="hover-lift"
             style={{
               gridColumn: "span 2",
               background: "#F5F8F7",
-              boxShadow: "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(255,255,255,.75)",
+              boxShadow: neuIn,
               borderRadius: 26,
               padding: 28,
               display: "flex",
@@ -235,7 +137,6 @@ export default function CollectionGrid({ products = staticProducts }: Collection
             </p>
             <a
               href="#contact"
-              className="focus-ring"
               style={{
                 background: "#0d281f",
                 color: "#fff",
