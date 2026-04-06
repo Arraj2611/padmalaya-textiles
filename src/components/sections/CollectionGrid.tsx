@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import ProductImage from "@/components/ui/ProductImage";
 import { neuIn, neuSm } from "@/lib/design-tokens";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import type { Product } from "@/lib/supabase-types";
 
 const U = "https://images.unsplash.com";
@@ -104,25 +105,20 @@ const masonryMeta = [
   { col: "span 1", clip: "none",                                                       h: 268 },
 ];
 
-const ease = [0.23, 1, 0.32, 1] as [number, number, number, number];
-const vp   = { once: true, amount: 0.05 as const };
-
 interface CollectionGridProps {
   products?: Product[];
 }
 
 export default function CollectionGrid({ products = staticProducts }: CollectionGridProps) {
   const displayProducts = products.length > 0 ? products : staticProducts;
+  const ref = useScrollReveal<HTMLElement>();
 
   return (
-    <section id="collection" style={{ padding: "44px 28px 48px" }}>
+    <section id="collection" ref={ref} style={{ padding: "44px 28px 48px" }}>
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={vp}
-          transition={{ duration: 0.6, ease }}
+        <div
+          className="reveal"
           style={{
             display: "flex",
             alignItems: "baseline",
@@ -145,7 +141,7 @@ export default function CollectionGrid({ products = staticProducts }: Collection
           <p style={{ fontSize: 13, color: "#2d4a42", maxWidth: 380, lineHeight: 1.55 }}>
             Every SKU includes photography. Mixed clips; packed rows — no empty column.
           </p>
-        </motion.div>
+        </div>
 
         {/* Masonry grid */}
         <div
@@ -161,13 +157,9 @@ export default function CollectionGrid({ products = staticProducts }: Collection
           {displayProducts.slice(0, 6).map((product, i) => {
             const meta = masonryMeta[i] ?? masonryMeta[0];
             return (
-              <motion.div
+              <div
                 key={product.id}
-                initial={{ opacity: 0, y: 32, scale: 0.97 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={vp}
-                transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease }}
-                className="hover-lift"
+                className={`reveal reveal-d${Math.min(i + 1, 6)} hover-lift`}
                 style={{
                   gridColumn: meta.col,
                   background: "#F5F8F7",
@@ -263,17 +255,13 @@ export default function CollectionGrid({ products = staticProducts }: Collection
                     </motion.a>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
 
           {/* CTA card */}
-          <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={vp}
-            transition={{ duration: 0.6, delay: 0.65, ease }}
-            className="hover-lift"
+          <div
+            className="reveal reveal-d6 hover-lift"
             style={{
               gridColumn: "span 2",
               background: "#F5F8F7",
@@ -326,7 +314,7 @@ export default function CollectionGrid({ products = staticProducts }: Collection
             >
               Contact
             </motion.a>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
