@@ -91,7 +91,6 @@ export default function ContactSection() {
   return (
     <section id="contact" style={{ padding: "0 28px 64px" }}>
       <div
-        className="reveal"
         style={{
           maxWidth: 860,
           margin: "0 auto",

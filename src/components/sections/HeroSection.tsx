@@ -23,7 +23,6 @@ export default function HeroSection() {
 
       {/* Glass hero card */}
       <div
-        className="hero-reveal"
         style={{
           maxWidth: 860,
           margin: "0 auto 0 max(0px, 5%)",
@@ -50,7 +49,6 @@ export default function HeroSection() {
         <div style={{ position: "relative", zIndex: 1, padding: "52px 48px 58px" }}>
           {/* Location badge */}
           <div
-            className="hero-reveal hero-d1"
             style={{
               display: "flex",
               justifyContent: "flex-end",
@@ -79,16 +77,12 @@ export default function HeroSection() {
           </div>
 
           {/* Label */}
-          <p
-            className="hero-reveal hero-d2"
-            style={{ fontSize: 10, letterSpacing: 4.5, color: "#1e4d3f", fontWeight: 800, marginBottom: 18 }}
-          >
+          <p style={{ fontSize: 10, letterSpacing: 4.5, color: "#1e4d3f", fontWeight: 800, marginBottom: 18 }}>
             PORCELAIN CANOPY
           </p>
 
           {/* Heading */}
           <h1
-            className="hero-reveal hero-d3"
             style={{
               fontFamily: "var(--font-fraunces), serif",
               fontSize: "clamp(2rem, 5vw, 3rem)",
@@ -118,16 +112,13 @@ export default function HeroSection() {
           </h1>
 
           {/* Subtitle */}
-          <p
-            className="hero-reveal hero-d4"
-            style={{ fontSize: 16, color: "#2d4a42", lineHeight: 1.72, maxWidth: 460, marginBottom: 30, fontWeight: 400 }}
-          >
+          <p style={{ fontSize: 16, color: "#2d4a42", lineHeight: 1.72, maxWidth: 460, marginBottom: 30, fontWeight: 400 }}>
             Indian cotton, hotel-grade construction — folds first, frost second, facts where buyers
             expect them.
           </p>
 
           {/* CTAs */}
-          <div className="hero-reveal hero-d5" style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
             <a
               href="#collection"
               className="focus-ring"

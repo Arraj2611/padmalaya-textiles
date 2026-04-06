@@ -116,7 +116,6 @@ export default function CollectionGrid({ products = staticProducts }: Collection
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
         {/* Header */}
         <div
-          className="reveal"
           style={{
             display: "flex",
             alignItems: "baseline",
@@ -157,7 +156,7 @@ export default function CollectionGrid({ products = staticProducts }: Collection
             return (
               <div
                 key={product.id}
-                className={`reveal reveal-d${Math.min(i + 1, 6)} hover-lift`}
+                className="hover-lift"
                 style={{
                   gridColumn: meta.col,
                   background: "#F5F8F7",
@@ -259,7 +258,7 @@ export default function CollectionGrid({ products = staticProducts }: Collection
 
           {/* CTA card */}
           <div
-            className="reveal reveal-d6 hover-lift"
+            className="hover-lift"
             style={{
               gridColumn: "span 2",
               background: "#F5F8F7",
