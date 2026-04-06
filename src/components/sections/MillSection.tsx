@@ -2,18 +2,14 @@
 
 import ProductImage from "@/components/ui/ProductImage";
 import { glass, neu } from "@/lib/design-tokens";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const millImg =
   "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=960&h=720&q=85&ixlib=rb-4.0.3";
 
 export default function MillSection() {
-  const ref = useScrollReveal<HTMLElement>();
-
   return (
     <section
       id="mill"
-      ref={ref}
       style={{ padding: "52px 28px", background: "linear-gradient(180deg, #EEF3F1 0%, #F3F6F4 100%)" }}
     >
       <div
