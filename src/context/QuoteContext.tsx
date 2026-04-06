@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useEffect } from "react";
 
 export interface QuoteItem {
   productId: string;
@@ -18,8 +18,22 @@ interface QuoteContextValue {
 
 const QuoteContext = createContext<QuoteContextValue | null>(null);
 
+const STORAGE_KEY = "padmalaya_quote";
+
 export function QuoteProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<QuoteItem[]>([]);
+  const [items, setItems] = useState<QuoteItem[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const stored = sessionStorage.getItem(STORAGE_KEY);
+      return stored ? (JSON.parse(stored) as QuoteItem[]) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  }, [items]);
 
   const addToQuote = useCallback((item: QuoteItem) => {
     setItems((prev) =>
