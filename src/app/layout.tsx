@@ -3,6 +3,7 @@ import { Fraunces, Outfit } from "next/font/google";
 import "./globals.css";
 import { QuoteProvider } from "@/context/QuoteContext";
 import QuoteIndicator from "@/components/ui/QuoteIndicator";
+import PostHogProvider from "@/components/providers/PostHogProvider";
 
 // ClerkProvider is conditionally rendered: if real keys are present it wraps the app,
 // otherwise we fall back to rendering children directly so the site works without Clerk credentials.
@@ -51,8 +52,10 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <WithClerk>
           <QuoteProvider>
-            {children}
-            <QuoteIndicator />
+            <PostHogProvider>
+              {children}
+              <QuoteIndicator />
+            </PostHogProvider>
           </QuoteProvider>
         </WithClerk>
       </body>
