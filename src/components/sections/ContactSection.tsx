@@ -1,11 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { submitEnquiry } from "@/app/actions/enquiry";
 import { useQuote } from "@/context/QuoteContext";
+
+// ClerkUserReader is only mounted when real Clerk keys are present.
+// Using next/dynamic so the @clerk/nextjs import stays out of the bundle
+// when Clerk is not configured.
+const hasClerkKeys =
+  typeof process !== "undefined" &&
+  !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+  !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes("placeholder");
+
+const ClerkUserReader = hasClerkKeys
+  ? dynamic(() => import("@/components/ui/ClerkUserReader"), { ssr: false })
+  : null;
 
 const schema = z.object({
   name:    z.string().min(2, "At least 2 characters"),
@@ -53,7 +66,12 @@ const labelStyle: React.CSSProperties = {
 
 export default function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [clerkUser, setClerkUser] = useState<{ name: string; email: string } | null>(null);
   const { items, removeFromQuote } = useQuote();
+
+  const handleClerkUser = useCallback((name: string, email: string) => {
+    setClerkUser(name || email ? { name, email } : null);
+  }, []);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -62,14 +80,19 @@ export default function ContactSection() {
   async function onSubmit(data: FormData) {
     setStatus("sending");
     try {
-      // Append selected products to message
       const productNames = items.map((i) => i.productName).join(", ");
       const enrichedMessage = items.length > 0
         ? `Selected products: ${productNames}\n\n${data.message}`
         : data.message;
 
+      // When signed in via Clerk, use the autofilled identity
+      const name  = clerkUser?.name  || data.name;
+      const email = clerkUser?.email || data.email;
+
       const result = await submitEnquiry({
         ...data,
+        name,
+        email,
         company: data.company ?? "",
         phone: "",
         product_interest: productNames || "General enquiry",
@@ -84,6 +107,9 @@ export default function ContactSection() {
 
   return (
     <section id="contact" style={{ padding: "0 40px 64px" }}>
+      {/* Mount Clerk user reader when Clerk is active — passes autofill data up */}
+      {ClerkUserReader && <ClerkUserReader onUser={handleClerkUser} />}
+
       <div style={{ maxWidth: 1100, margin: "0 auto", ...glass16, borderRadius: 32, padding: "48px 48px 40px" }}>
         {/* Heading */}
         <div style={{ marginBottom: 28 }}>
@@ -178,19 +204,43 @@ export default function ContactSection() {
           </div>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            {/* Row 1: Name + Email */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }} className="form-row">
-              <div>
-                <label style={labelStyle}>Name *</label>
-                <input {...register("name")} style={inputStyle} placeholder="Your full name" />
-                {errors.name && <span style={errorStyle}>{errors.name.message}</span>}
+            {/* Row 1: Name + Email (or signed-in banner) */}
+            {clerkUser ? (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  background: "rgba(30,77,63,0.06)",
+                  border: "1px solid rgba(30,77,63,0.14)",
+                  borderRadius: 12,
+                  padding: "12px 16px",
+                  marginBottom: 16,
+                  fontSize: 13,
+                  color: "#1e4d3f",
+                  fontWeight: 600,
+                }}
+              >
+                <span style={{ fontSize: 16 }}>✓</span>
+                Signed in as {clerkUser.name ? `${clerkUser.name} (${clerkUser.email})` : clerkUser.email}
+                {/* Pass values to RHF via hidden inputs so validation still works */}
+                <input type="hidden" {...register("name")} value={clerkUser.name || clerkUser.email} />
+                <input type="hidden" {...register("email")} value={clerkUser.email} />
               </div>
-              <div>
-                <label style={labelStyle}>Email *</label>
-                <input {...register("email")} type="email" style={inputStyle} placeholder="you@company.com" />
-                {errors.email && <span style={errorStyle}>{errors.email.message}</span>}
+            ) : (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }} className="form-row">
+                <div>
+                  <label style={labelStyle}>Name *</label>
+                  <input {...register("name")} style={inputStyle} placeholder="Your full name" />
+                  {errors.name && <span style={errorStyle}>{errors.name.message}</span>}
+                </div>
+                <div>
+                  <label style={labelStyle}>Email *</label>
+                  <input {...register("email")} type="email" style={inputStyle} placeholder="you@company.com" />
+                  {errors.email && <span style={errorStyle}>{errors.email.message}</span>}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Company */}
             <div style={{ marginBottom: 16 }}>

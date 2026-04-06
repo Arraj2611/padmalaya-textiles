@@ -4,6 +4,12 @@ import "./globals.css";
 import { QuoteProvider } from "@/context/QuoteContext";
 import QuoteIndicator from "@/components/ui/QuoteIndicator";
 
+// ClerkProvider is conditionally rendered: if real keys are present it wraps the app,
+// otherwise we fall back to rendering children directly so the site works without Clerk credentials.
+const hasClerkKeys =
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
+  !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes("placeholder");
+
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
@@ -26,6 +32,12 @@ export const metadata: Metadata = {
     "Padmalaya Textiles is a leading terry towel manufacturer offering premium bath towels, hand towels, face towels, and spa wraps for hospitality and retail.",
 };
 
+async function WithClerk({ children }: { children: React.ReactNode }) {
+  if (!hasClerkKeys) return <>{children}</>;
+  const { ClerkProvider } = await import("@clerk/nextjs");
+  return <ClerkProvider>{children}</ClerkProvider>;
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,10 +49,12 @@ export default function RootLayout({
       className={`${fraunces.variable} ${outfit.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <QuoteProvider>
-          {children}
-          <QuoteIndicator />
-        </QuoteProvider>
+        <WithClerk>
+          <QuoteProvider>
+            {children}
+            <QuoteIndicator />
+          </QuoteProvider>
+        </WithClerk>
       </body>
     </html>
   );
