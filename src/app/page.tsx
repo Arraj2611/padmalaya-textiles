@@ -1,12 +1,32 @@
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import HeroSection from "@/components/sections/HeroSection";
+import ProofStrip from "@/components/sections/ProofStrip";
+import CollectionGrid from "@/components/sections/CollectionGrid";
+import MillSection from "@/components/sections/MillSection";
+import ProcessSection from "@/components/sections/ProcessSection";
+import ContactSection from "@/components/sections/ContactSection";
+
 export default function Home() {
   return (
-    <main className="flex flex-1 items-center justify-center min-h-screen silk-drift">
-      <h1
-        style={{ fontFamily: "var(--font-fraunces), serif", color: "#14221e" }}
-        className="text-5xl font-semibold tracking-tight"
-      >
-        Padmalaya Textiles
-      </h1>
-    </main>
+    <div
+      className="silk-drift"
+      style={{
+        fontFamily: "var(--font-outfit), sans-serif",
+        color: "#14221e",
+        minHeight: "100vh",
+      }}
+    >
+      <Navbar />
+      <main>
+        <HeroSection />
+        <ProofStrip />
+        <CollectionGrid />
+        <MillSection />
+        <ProcessSection />
+        <ContactSection />
+      </main>
+      <Footer />
+    </div>
   );
 }

@@ -178,6 +178,27 @@
 }
 
 /* ── Utility helpers ── */
+/* ── Responsive grid overrides ── */
+@media (max-width: 900px) {
+  .grid-mill,
+  .grid-process,
+  .collection-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .collection-grid > * {
+    grid-column: span 1 !important;
+  }
+  .proof-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .proof-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 @layer utilities {
   .hover-lift {
     transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
