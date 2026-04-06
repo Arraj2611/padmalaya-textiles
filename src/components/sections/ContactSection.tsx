@@ -95,7 +95,7 @@ export default function ContactSection() {
         name,
         email,
         company: data.company ?? "",
-        phone: "",
+        selected_products: items.map((i) => i.productName),
         product_interest: productNames || "General enquiry",
         message: enrichedMessage,
       });

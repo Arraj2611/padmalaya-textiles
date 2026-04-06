@@ -7,13 +7,13 @@ import type { Enquiry } from "@/lib/supabase-types";
 
 type Status = Enquiry["status"];
 
-const STATUSES: Status[] = ["new", "read", "responded", "archived"];
+const STATUSES: Status[] = ["new", "contacted", "quoted", "closed"];
 
 const statusColors: Record<Status, { bg: string; color: string }> = {
   new:       { bg: "rgba(184,149,92,.15)", color: "#7a5f32" },
-  read:      { bg: "rgba(45,74,66,.1)",   color: "#2d4a42" },
-  responded: { bg: "rgba(30,77,63,.1)",   color: "#1e4d3f" },
-  archived:  { bg: "#f3f4f6",            color: "#9ca3af" },
+  contacted: { bg: "rgba(45,74,66,.1)",   color: "#2d4a42" },
+  quoted:    { bg: "rgba(30,77,63,.1)",   color: "#1e4d3f" },
+  closed:    { bg: "#f3f4f6",            color: "#9ca3af" },
 };
 
 const card: React.CSSProperties = {
@@ -105,7 +105,7 @@ export default function EnquiriesClient({ enquiries, total, status, page }: Prop
                     </a>
                   </td>
                   <td style={{ padding: "12px 12px", fontSize: 12, color: "#6b7280" }}>{e.email}</td>
-                  <td style={{ padding: "12px 12px", fontSize: 12, color: "#2d4a42" }}>{e.product_interest}</td>
+                  <td style={{ padding: "12px 12px", fontSize: 12, color: "#2d4a42" }}>{e.selected_products?.join(", ") || "—"}</td>
                   <td style={{ padding: "12px 12px", fontSize: 12, color: "#9ca3af", whiteSpace: "nowrap" }}>
                     {new Date(e.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "2-digit" })}
                   </td>
