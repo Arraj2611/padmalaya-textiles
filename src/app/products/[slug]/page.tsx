@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { STATIC_PRODUCTS, getProductBySlug } from "@/lib/products";
 import ProductGallery from "@/components/ui/ProductGallery";
 import AddToQuoteButton from "@/components/ui/AddToQuoteButton";
@@ -49,7 +50,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
       <main style={{ maxWidth: 1400, margin: "0 auto", padding: "32px 40px 80px" }}>
         {/* Back link */}
-        <a
+        <Link
           href="/#collection"
           className="product-back-link"
           style={{
@@ -63,7 +64,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           }}
         >
           ← Back to Collection
-        </a>
+        </Link>
 
         {/* Two-column layout */}
         <div
