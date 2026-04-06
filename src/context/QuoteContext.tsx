@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { capture } from "@/lib/analytics";
 
 export interface QuoteItem {
   productId: string;
@@ -36,13 +37,19 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
   }, [items]);
 
   const addToQuote = useCallback((item: QuoteItem) => {
-    setItems((prev) =>
-      prev.some((i) => i.productId === item.productId) ? prev : [...prev, item]
-    );
+    setItems((prev) => {
+      if (prev.some((i) => i.productId === item.productId)) return prev;
+      capture("product_added_to_quote", { product_name: item.productName, slug: item.slug });
+      return [...prev, item];
+    });
   }, []);
 
   const removeFromQuote = useCallback((productId: string) => {
-    setItems((prev) => prev.filter((i) => i.productId !== productId));
+    setItems((prev) => {
+      const item = prev.find((i) => i.productId === productId);
+      if (item) capture("product_removed_from_quote", { product_name: item.productName, slug: item.slug });
+      return prev.filter((i) => i.productId !== productId);
+    });
   }, []);
 
   const clearQuote = useCallback(() => setItems([]), []);

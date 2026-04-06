@@ -3,6 +3,7 @@ import Link from "next/link";
 import { STATIC_PRODUCTS, getProductBySlug } from "@/lib/products";
 import ProductGallery from "@/components/ui/ProductGallery";
 import AddToQuoteButton from "@/components/ui/AddToQuoteButton";
+import ProductViewTracker from "@/components/ui/ProductViewTracker";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -36,6 +37,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   return (
     <div style={{ backgroundColor: "#F3F6F4", fontFamily: "var(--font-outfit), sans-serif", color: "#14221e", minHeight: "100vh" }}>
+      <ProductViewTracker productName={product.name} slug={product.slug} />
       <Navbar />
 
       <style>{`

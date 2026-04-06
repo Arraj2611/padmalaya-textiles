@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { submitEnquiry } from "@/app/actions/enquiry";
 import { useQuote } from "@/context/QuoteContext";
+import { capture } from "@/lib/analytics";
 
 // ClerkUserReader is only mounted when real Clerk keys are present.
 // Using next/dynamic so the @clerk/nextjs import stays out of the bundle
@@ -98,8 +99,14 @@ export default function ContactSection() {
         product_interest: productNames || "General enquiry",
         message: enrichedMessage,
       });
-      if (result.success) { setStatus("success"); reset(); }
-      else setStatus("error");
+      if (result.success) {
+        capture("quote_form_submitted", {
+          product_count: items.length,
+          products: items.map((i) => i.productName),
+        });
+        setStatus("success");
+        reset();
+      } else setStatus("error");
     } catch {
       setStatus("error");
     }
