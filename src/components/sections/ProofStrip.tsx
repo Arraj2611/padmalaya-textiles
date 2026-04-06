@@ -1,18 +1,29 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { glass, neuIn } from "@/lib/design-tokens";
 
 const stats = [
-  { k: "25+",      v: "Years weaving",    blur: 8  },
-  { k: "500+",     v: "Hotel programs",   blur: 14 },
-  { k: "OEKO-TEX", v: "Certified yarns",  blur: 18 },
-  { k: "MOQ",      v: "From 500 pcs",     blur: 11 },
+  { k: "25+",      v: "Years weaving",   blur: 8  },
+  { k: "500+",     v: "Hotel programs",  blur: 14 },
+  { k: "OEKO-TEX", v: "Certified yarns", blur: 18 },
+  { k: "MOQ",      v: "From 500 pcs",    blur: 11 },
 ];
 
 const gradientBorder = "linear-gradient(130deg, rgba(184,149,92,.22), rgba(30,77,63,.12))";
+const ease = [0.23, 1, 0.32, 1] as [number, number, number, number];
 
 export default function ProofStrip() {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px 0px" });
+
   return (
-    <section id="proof" style={{ padding: "20px 28px 12px" }}>
-      <p
+    <section id="proof" ref={ref} style={{ padding: "20px 28px 12px" }}>
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5, ease }}
         style={{
           fontSize: 10,
           letterSpacing: 3,
@@ -23,10 +34,12 @@ export default function ProofStrip() {
         }}
       >
         PROOF STRIP
-      </p>
+      </motion.p>
 
-      {/* Neumorphic inset container */}
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.1, ease }}
         style={{
           maxWidth: 920,
           margin: "0 auto",
@@ -36,19 +49,22 @@ export default function ProofStrip() {
           padding: 14,
         }}
       >
-        {/* 4-column bento grid */}
+        {/* 4-column bento grid — staggered */}
         <div
+          className="proof-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
             gap: 10,
             alignItems: "stretch",
           }}
-          className="proof-grid"
         >
-          {stats.map((b) => (
-            <div
+          {stats.map((b, i) => (
+            <motion.div
               key={b.k}
+              initial={{ opacity: 0, y: 20, scale: 0.97 }}
+              animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ duration: 0.55, delay: 0.2 + i * 0.1, ease }}
               style={{
                 borderRadius: 18,
                 padding: 2,
@@ -91,12 +107,15 @@ export default function ProofStrip() {
                   {b.v}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
-        {/* Export lead time — full-width bar */}
-        <div
+        {/* Export lead time bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55, delay: 0.65, ease }}
           style={{
             marginTop: 10,
             borderRadius: 18,
@@ -124,8 +143,8 @@ export default function ProofStrip() {
               4–6 weeks · FOB / CIF programs
             </span>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

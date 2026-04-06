@@ -1,76 +1,130 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import ProductImage from "@/components/ui/ProductImage";
 import { neuIn, neuSm } from "@/lib/design-tokens";
+import type { Product } from "@/lib/supabase-types";
 
 const U = "https://images.unsplash.com";
 const Q = "auto=format&fit=crop&w=960&h=720&q=85&ixlib=rb-4.0.3";
 
-const products = [
+const staticProducts: Product[] = [
   {
+    id: "1",
     name: "Classic Terry Bath Towel",
+    slug: "classic-terry-bath-towel",
     size: "70×140 cm",
     weight: "500 GSM",
     tag: "Bestseller",
-    desc: "Plush, absorbent, and built to last through hundreds of washes — our signature weave.",
-    img: `${U}/photo-1584622650111-993a426fbf0a?${Q}`,
+    description: "Plush, absorbent, and built to last through hundreds of washes — our signature weave.",
+    image_url: `${U}/photo-1584622650111-993a426fbf0a?${Q}`,
+    is_featured: true,
+    display_order: 0,
+    created_at: "",
+    updated_at: "",
   },
   {
+    id: "2",
     name: "Premium Face Towel Set",
+    slug: "premium-face-towel-set",
     size: "30×30 cm",
     weight: "450 GSM",
     tag: "New",
-    desc: "Ultra-soft face towels, gentle on skin. Ideal for hotels and spa settings.",
-    img: `${U}/photo-1563291074-2bf8677ac8e5?${Q}`,
+    description: "Ultra-soft face towels, gentle on skin. Ideal for hotels and spa settings.",
+    image_url: `${U}/photo-1563291074-2bf8677ac8e5?${Q}`,
+    is_featured: false,
+    display_order: 1,
+    created_at: "",
+    updated_at: "",
   },
   {
+    id: "3",
     name: "Luxury Hand Towel",
+    slug: "luxury-hand-towel",
     size: "40×70 cm",
     weight: "550 GSM",
     tag: "Premium",
-    desc: "Double-loop terry for maximum absorbency and a velvety hand feel.",
-    img: `${U}/photo-1556228453-efd6c1ff04f6?${Q}`,
+    description: "Double-loop terry for maximum absorbency and a velvety hand feel.",
+    image_url: `${U}/photo-1556228453-efd6c1ff04f6?${Q}`,
+    is_featured: false,
+    display_order: 2,
+    created_at: "",
+    updated_at: "",
   },
   {
+    id: "4",
     name: "Hotel Bath Sheet",
+    slug: "hotel-bath-sheet",
     size: "90×180 cm",
     weight: "600 GSM",
     tag: "Bulk",
-    desc: "Oversized bath sheets for 5-star hospitality. Private labeling available.",
-    img: `${U}/photo-1600585154340-be6161a56a0c?${Q}`,
+    description: "Oversized bath sheets for 5-star hospitality. Private labeling available.",
+    image_url: `${U}/photo-1600585154340-be6161a56a0c?${Q}`,
+    is_featured: true,
+    display_order: 3,
+    created_at: "",
+    updated_at: "",
   },
   {
+    id: "5",
     name: "Terry Kitchen Napkin",
+    slug: "terry-kitchen-napkin",
     size: "45×65 cm",
     weight: "350 GSM",
     tag: "Popular",
-    desc: "Lint-free, quick-dry cotton for professional kitchens.",
-    img: `${U}/photo-1556910103-1c02745aae4d?${Q}`,
+    description: "Lint-free, quick-dry cotton for professional kitchens.",
+    image_url: `${U}/photo-1556910103-1c02745aae4d?${Q}`,
+    is_featured: false,
+    display_order: 4,
+    created_at: "",
+    updated_at: "",
   },
   {
+    id: "6",
     name: "Spa Wrap Towel",
+    slug: "spa-wrap-towel",
     size: "80×150 cm",
     weight: "480 GSM",
     tag: "Luxury",
-    desc: "Full-body spa wraps with secure tuck closure. Available in 22 colours.",
-    img: `${U}/photo-1507652313519-d4e9174996dd?${Q}`,
+    description: "Full-body spa wraps with secure tuck closure. Available in 22 colours.",
+    image_url: `${U}/photo-1507652313519-d4e9174996dd?${Q}`,
+    is_featured: false,
+    display_order: 5,
+    created_at: "",
+    updated_at: "",
   },
 ];
 
-const masonryLayout = [
-  { col: "span 2", clip: "none",                                                       h: 232, p: products[0] },
-  { col: "span 1", clip: "polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 16%)",          h: 292, p: products[1] },
-  { col: "span 1", clip: "circle(50% at 50% 48%)",                                    h: 292, p: products[2] },
-  { col: "span 1", clip: "none",                                                       h: 268, p: products[3] },
-  { col: "span 1", clip: "polygon(0 0, 100% 0, 100% 92%, 88% 100%, 0 100%)",          h: 268, p: products[4] },
-  { col: "span 1", clip: "none",                                                       h: 268, p: products[5] },
-  { col: "span 2", clip: "none",                                                       h: 268, p: null, cta: true },
+const masonryMeta = [
+  { col: "span 2", clip: "none",                                                       h: 232 },
+  { col: "span 1", clip: "polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 16%)",          h: 292 },
+  { col: "span 1", clip: "circle(50% at 50% 48%)",                                    h: 292 },
+  { col: "span 1", clip: "none",                                                       h: 268 },
+  { col: "span 1", clip: "polygon(0 0, 100% 0, 100% 92%, 88% 100%, 0 100%)",          h: 268 },
+  { col: "span 1", clip: "none",                                                       h: 268 },
 ];
 
-export default function CollectionGrid() {
+const ease = [0.23, 1, 0.32, 1] as [number, number, number, number];
+
+interface CollectionGridProps {
+  products?: Product[];
+}
+
+export default function CollectionGrid({ products = staticProducts }: CollectionGridProps) {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px 0px" });
+
+  const displayProducts = products.length > 0 ? products : staticProducts;
+
   return (
-    <section id="collection" style={{ padding: "44px 28px 48px" }}>
+    <section id="collection" ref={ref} style={{ padding: "44px 28px 48px" }}>
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
         {/* Header */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, ease }}
           style={{
             display: "flex",
             alignItems: "baseline",
@@ -88,12 +142,12 @@ export default function CollectionGrid() {
               letterSpacing: -0.5,
             }}
           >
-            Masonry range
+            Our range
           </h2>
           <p style={{ fontSize: 13, color: "#2d4a42", maxWidth: 380, lineHeight: 1.55 }}>
-            Packed rows — no empty column. Mixed clips; every SKU includes photography.
+            Every SKU includes photography. Mixed clips; packed rows — no empty column.
           </p>
-        </div>
+        </motion.div>
 
         {/* Masonry grid */}
         <div
@@ -105,71 +159,18 @@ export default function CollectionGrid() {
             gridAutoFlow: "row",
           }}
         >
-          {masonryLayout.map((m, i) => {
-            if (m.cta) {
-              return (
-                <div
-                  key="cta"
-                  className="hover-lift"
-                  style={{
-                    gridColumn: m.col,
-                    background: "#F5F8F7",
-                    boxShadow: neuIn,
-                    borderRadius: 26,
-                    padding: 28,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "flex-start",
-                    minHeight: m.h,
-                  }}
-                >
-                  <p
-                    style={{
-                      fontFamily: "var(--font-fraunces), serif",
-                      fontSize: 22,
-                      marginBottom: 10,
-                      color: "#14221e",
-                    }}
-                  >
-                    Need a custom program?
-                  </p>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      color: "#2d4a42",
-                      lineHeight: 1.6,
-                      marginBottom: 18,
-                    }}
-                  >
-                    Private label, dye lots, and GSM specs — talk to the export desk.
-                  </p>
-                  <a
-                    href="#contact"
-                    className="focus-ring"
-                    style={{
-                      background: "#0d281f",
-                      color: "#fff",
-                      padding: "12px 26px",
-                      borderRadius: 50,
-                      fontWeight: 700,
-                      fontSize: 13,
-                      textDecoration: "none",
-                    }}
-                  >
-                    Contact
-                  </a>
-                </div>
-              );
-            }
-
-            const product = m.p!;
+          {/* Product cards */}
+          {displayProducts.slice(0, 6).map((product, i) => {
+            const meta = masonryMeta[i] ?? masonryMeta[0];
             return (
-              <div
-                key={product.name + i}
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 32, scale: 0.97 }}
+                animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease }}
                 className="hover-lift"
                 style={{
-                  gridColumn: m.col,
+                  gridColumn: meta.col,
                   background: "#F5F8F7",
                   boxShadow: neuIn,
                   borderRadius: 26,
@@ -181,17 +182,17 @@ export default function CollectionGrid() {
                 <div
                   className="card-media"
                   style={{
-                    borderRadius: m.clip === "none" ? 20 : 0,
+                    borderRadius: meta.clip === "none" ? 20 : 0,
                     overflow: "hidden",
-                    clipPath: m.clip === "none" ? undefined : m.clip,
-                    height: m.h,
+                    clipPath: meta.clip === "none" ? undefined : meta.clip,
+                    height: meta.h,
                     boxShadow: "inset 0 0 0 1px rgba(36,61,54,.08)",
                   }}
                 >
                   <ProductImage
-                    src={product.img}
+                    src={product.image_url ?? ""}
                     alt={product.name}
-                    style={{ minHeight: m.h, width: "100%", height: "100%" }}
+                    style={{ minHeight: meta.h, width: "100%", height: "100%" }}
                   />
                 </div>
 
@@ -227,7 +228,7 @@ export default function CollectionGrid() {
                       marginBottom: 10,
                     }}
                   >
-                    {product.desc.slice(0, 78)}…
+                    {(product.description ?? "").slice(0, 78)}…
                   </p>
                   <div
                     style={{
@@ -241,9 +242,12 @@ export default function CollectionGrid() {
                     <span style={{ fontSize: 11, color: "#1e4d3f", fontWeight: 600 }}>
                       {product.size} · {product.weight}
                     </span>
-                    <a
+                    <motion.a
                       href="#contact"
                       className="focus-ring"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.97 }}
+                      transition={{ duration: 0.18 }}
                       style={{
                         background: "#F0F4F2",
                         boxShadow: neuSm,
@@ -253,15 +257,76 @@ export default function CollectionGrid() {
                         fontSize: 11,
                         color: "#0d281f",
                         textDecoration: "none",
+                        display: "inline-block",
                       }}
                     >
                       Enquire
-                    </a>
+                    </motion.a>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
+
+          {/* CTA card */}
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.65, ease }}
+            className="hover-lift"
+            style={{
+              gridColumn: "span 2",
+              background: "#F5F8F7",
+              boxShadow: neuIn,
+              borderRadius: 26,
+              padding: 28,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              minHeight: 268,
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "var(--font-fraunces), serif",
+                fontSize: 22,
+                marginBottom: 10,
+                color: "#14221e",
+              }}
+            >
+              Need a custom program?
+            </p>
+            <p
+              style={{
+                fontSize: 13,
+                color: "#2d4a42",
+                lineHeight: 1.6,
+                marginBottom: 18,
+              }}
+            >
+              Private label, dye lots, and GSM specs — talk to the export desk.
+            </p>
+            <motion.a
+              href="#contact"
+              className="focus-ring"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.18 }}
+              style={{
+                background: "#0d281f",
+                color: "#fff",
+                padding: "12px 26px",
+                borderRadius: 50,
+                fontWeight: 700,
+                fontSize: 13,
+                textDecoration: "none",
+                display: "inline-block",
+              }}
+            >
+              Contact
+            </motion.a>
+          </motion.div>
         </div>
       </div>
     </section>

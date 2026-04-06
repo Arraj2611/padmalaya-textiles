@@ -1,9 +1,21 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { glass, neuIn } from "@/lib/design-tokens";
 
+const ease = [0.23, 1, 0.32, 1] as [number, number, number, number];
+
 export default function ContactSection() {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px 0px" });
+
   return (
-    <section id="contact" style={{ padding: "0 28px 48px" }}>
-      <div
+    <section id="contact" ref={ref} style={{ padding: "0 28px 48px" }}>
+      <motion.div
+        initial={{ opacity: 0, y: 36, scale: 0.98 }}
+        animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+        transition={{ duration: 0.7, ease }}
         style={{
           maxWidth: 920,
           margin: "0 auto",
@@ -47,9 +59,12 @@ export default function ContactSection() {
           >
             exports@padmalaya.example
           </span>
-          <a
+          <motion.a
             href="mailto:exports@padmalaya.example"
             className="focus-ring"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: 0.18 }}
             style={{
               background: "#0d281f",
               color: "#fff",
@@ -62,9 +77,9 @@ export default function ContactSection() {
             }}
           >
             Email us
-          </a>
+          </motion.a>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
