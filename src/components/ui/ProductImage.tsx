@@ -22,7 +22,7 @@ export default function ProductImage({ src, alt, style, className }: ProductImag
       alt={alt}
       className={className ?? "img-cover"}
       style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", ...style }}
-      loading="lazy"
+      loading="eager"
       decoding="async"
       referrerPolicy="no-referrer"
       onError={() => setUrl((u) => (u === FALLBACK_IMG ? u : FALLBACK_IMG))}

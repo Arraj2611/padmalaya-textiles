@@ -1,10 +1,16 @@
 "use client";
 
 import ProductImage from "@/components/ui/ProductImage";
-import { glass, neu } from "@/lib/design-tokens";
 
 const millImg =
   "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=960&h=720&q=85&ixlib=rb-4.0.3";
+
+const glass14: React.CSSProperties = {
+  background: "rgba(255,255,255,0.45)",
+  backdropFilter: "blur(14px)",
+  WebkitBackdropFilter: "blur(14px)",
+  border: "1px solid rgba(255,255,255,0.6)",
+};
 
 export default function MillSection() {
   return (
@@ -26,7 +32,12 @@ export default function MillSection() {
         {/* Mill image */}
         <div
           className="card-media"
-          style={{ borderRadius: 28, minHeight: 320, boxShadow: neu, overflow: "hidden" }}
+          style={{
+            borderRadius: 28,
+            minHeight: 320,
+            overflow: "hidden",
+            boxShadow: "8px 8px 24px rgba(13,40,31,.10), -4px -4px 16px rgba(255,255,255,.7)",
+          }}
         >
           <ProductImage src={millImg} alt="Terry towels in production context" style={{ minHeight: 320 }} />
         </div>
@@ -47,7 +58,7 @@ export default function MillSection() {
             Our team works with procurement specs daily: bulk MOQs, packaging marks, and compliance
             documentation.
           </p>
-          <div style={{ ...glass(14), borderRadius: 20, padding: "20px 22px", display: "inline-block" }}>
+          <div style={{ ...glass14, borderRadius: 20, padding: "20px 22px", display: "inline-block" }}>
             <p style={{ fontSize: 12, fontWeight: 700, color: "#1e4d3f" }}>
               ISO-aligned · OEKO-TEX yarn classes · India export
             </p>
