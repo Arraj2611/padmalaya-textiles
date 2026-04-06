@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { glass, neuIn } from "@/lib/design-tokens";
 import { submitEnquiry } from "@/app/actions/enquiry";
 
@@ -63,9 +63,9 @@ const labelStyle: React.CSSProperties = {
   textTransform: "uppercase" as const,
 };
 
+const vp = { once: true, amount: 0.05 as const };
+
 export default function ContactSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const inView = useInView(sectionRef, { once: true, margin: "-80px 0px" });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const {
@@ -91,10 +91,11 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" ref={sectionRef} style={{ padding: "0 28px 64px" }}>
+    <section id="contact" style={{ padding: "0 28px 64px" }}>
       <motion.div
         initial={{ opacity: 0, y: 36, scale: 0.98 }}
-        animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={vp}
         transition={{ duration: 0.7, ease }}
         style={{
           maxWidth: 860,
