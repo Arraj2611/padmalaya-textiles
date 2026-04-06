@@ -6,32 +6,30 @@ import CollectionGrid from "@/components/sections/CollectionGrid";
 import MillSection from "@/components/sections/MillSection";
 import ProcessSection from "@/components/sections/ProcessSection";
 import ContactSection from "@/components/sections/ContactSection";
+import { getProducts } from "@/lib/supabase";
 import type { Product } from "@/lib/supabase-types";
 
-async function getProducts(): Promise<Product[]> {
-  // Only attempt Supabase fetch when env vars are present
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!url || !key) return [];
-
-  try {
-    const { createClient } = await import("@supabase/supabase-js");
-    const client = createClient(url, key);
-    const { data, error } = await client
-      .from("products")
-      .select("*")
-      .order("display_order", { ascending: true });
-
-    if (error || !data) return [];
-    return data as Product[];
-  } catch {
-    return [];
-  }
-}
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Padmalaya Textiles",
+  url: "https://padmalayatextiles.com",
+  description: "Premium terry towel manufacturer in Solapur, India. OEKO-TEX certified, 25+ years of weaving excellence.",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Solapur",
+    addressRegion: "Maharashtra",
+    addressCountry: "IN",
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "sales",
+    email: "exports@padmalayatextiles.com",
+  },
+};
 
 export default async function Home() {
-  const products = await getProducts();
+  const products: Product[] = await getProducts();
 
   return (
     <div
@@ -42,6 +40,10 @@ export default async function Home() {
         minHeight: "100vh",
       }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
       <Navbar />
       <main>
         <HeroSection />
