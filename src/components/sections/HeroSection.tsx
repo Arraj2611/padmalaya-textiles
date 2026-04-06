@@ -3,12 +3,6 @@
 import { motion } from "framer-motion";
 import { glass, neu, goldGradient } from "@/lib/design-tokens";
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 28 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease: [0.23, 1, 0.32, 1] as [number, number, number, number] },
-});
-
 export default function HeroSection() {
   return (
     <section id="hero" style={{ padding: "36px 28px 24px", position: "relative" }}>
@@ -28,8 +22,8 @@ export default function HeroSection() {
       />
 
       {/* Glass hero card */}
-      <motion.div
-        {...fadeUp(0.1)}
+      <div
+        className="hero-reveal"
         style={{
           maxWidth: 860,
           margin: "0 auto 0 max(0px, 5%)",
@@ -55,8 +49,8 @@ export default function HeroSection() {
 
         <div style={{ position: "relative", zIndex: 1, padding: "52px 48px 58px" }}>
           {/* Location badge */}
-          <motion.div
-            {...fadeUp(0.2)}
+          <div
+            className="hero-reveal hero-d1"
             style={{
               display: "flex",
               justifyContent: "flex-end",
@@ -75,49 +69,26 @@ export default function HeroSection() {
                 maxWidth: "100%",
               }}
             >
-              <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: 1.5,
-                  color: "#1e4d3f",
-                  display: "block",
-                  whiteSpace: "nowrap",
-                }}
-              >
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.5, color: "#1e4d3f", display: "block", whiteSpace: "nowrap" }}>
                 Solapur, India
               </span>
-              <span
-                style={{
-                  fontSize: 10,
-                  color: "#2d4a42",
-                  fontWeight: 500,
-                  display: "block",
-                  marginTop: 2,
-                }}
-              >
+              <span style={{ fontSize: 10, color: "#2d4a42", fontWeight: 500, display: "block", marginTop: 2 }}>
                 Mill · export desk
               </span>
             </div>
-          </motion.div>
+          </div>
 
           {/* Label */}
-          <motion.p
-            {...fadeUp(0.25)}
-            style={{
-              fontSize: 10,
-              letterSpacing: 4.5,
-              color: "#1e4d3f",
-              fontWeight: 800,
-              marginBottom: 18,
-            }}
+          <p
+            className="hero-reveal hero-d2"
+            style={{ fontSize: 10, letterSpacing: 4.5, color: "#1e4d3f", fontWeight: 800, marginBottom: 18 }}
           >
             PORCELAIN CANOPY
-          </motion.p>
+          </p>
 
           {/* Heading */}
-          <motion.h1
-            {...fadeUp(0.35)}
+          <h1
+            className="hero-reveal hero-d3"
             style={{
               fontFamily: "var(--font-fraunces), serif",
               fontSize: "clamp(2rem, 5vw, 3rem)",
@@ -144,29 +115,19 @@ export default function HeroSection() {
             >
               quiet light
             </span>
-          </motion.h1>
+          </h1>
 
           {/* Subtitle */}
-          <motion.p
-            {...fadeUp(0.42)}
-            style={{
-              fontSize: 16,
-              color: "#2d4a42",
-              lineHeight: 1.72,
-              maxWidth: 460,
-              marginBottom: 30,
-              fontWeight: 400,
-            }}
+          <p
+            className="hero-reveal hero-d4"
+            style={{ fontSize: 16, color: "#2d4a42", lineHeight: 1.72, maxWidth: 460, marginBottom: 30, fontWeight: 400 }}
           >
             Indian cotton, hotel-grade construction — folds first, frost second, facts where buyers
             expect them.
-          </motion.p>
+          </p>
 
           {/* CTAs */}
-          <motion.div
-            {...fadeUp(0.5)}
-            style={{ display: "flex", gap: 14, flexWrap: "wrap" }}
-          >
+          <div className="hero-reveal hero-d5" style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
             <a
               href="#collection"
               className="focus-ring"
@@ -184,9 +145,12 @@ export default function HeroSection() {
             >
               View range
             </a>
-            <a
+            <motion.a
               href="#contact"
               className="focus-ring"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.18 }}
               style={{
                 background: "#F5F8F7",
                 boxShadow: neu,
@@ -200,10 +164,10 @@ export default function HeroSection() {
               }}
             >
               Book a call
-            </a>
-          </motion.div>
+            </motion.a>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

@@ -7,6 +7,7 @@ import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { glass, neuIn } from "@/lib/design-tokens";
 import { submitEnquiry } from "@/app/actions/enquiry";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const schema = z.object({
   name:             z.string().min(2, "At least 2 characters"),
@@ -63,9 +64,8 @@ const labelStyle: React.CSSProperties = {
   textTransform: "uppercase" as const,
 };
 
-const vp = { once: true, amount: 0.05 as const };
-
 export default function ContactSection() {
+  const ref = useScrollReveal<HTMLElement>();
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const {
@@ -91,12 +91,9 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" style={{ padding: "0 28px 64px" }}>
-      <motion.div
-        initial={{ opacity: 0, y: 36, scale: 0.98 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={vp}
-        transition={{ duration: 0.7, ease }}
+    <section id="contact" ref={ref} style={{ padding: "0 28px 64px" }}>
+      <div
+        className="reveal"
         style={{
           maxWidth: 860,
           margin: "0 auto",
@@ -258,7 +255,7 @@ export default function ContactSection() {
             </motion.form>
           )}
         </AnimatePresence>
-      </motion.div>
+      </div>
     </section>
   );
 }
