@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import ProductImage from "@/components/ui/ProductImage";
 import { neuIn, neuSm } from "@/lib/design-tokens";
 import type { Product } from "@/lib/supabase-types";
@@ -125,14 +124,7 @@ export default function CollectionGrid({ products = staticProducts }: Collection
             marginBottom: 22,
           }}
         >
-          <h2
-            style={{
-              fontFamily: "var(--font-fraunces), serif",
-              fontSize: 30,
-              color: "#243D36",
-              letterSpacing: -0.5,
-            }}
-          >
+          <h2 style={{ fontFamily: "var(--font-fraunces), serif", fontSize: 30, color: "#243D36", letterSpacing: -0.5 }}>
             Our range
           </h2>
           <p style={{ fontSize: 13, color: "#2d4a42", maxWidth: 380, lineHeight: 1.55 }}>
@@ -143,12 +135,7 @@ export default function CollectionGrid({ products = staticProducts }: Collection
         {/* Masonry grid */}
         <div
           className="collection-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 18,
-            gridAutoFlow: "row",
-          }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, gridAutoFlow: "row" }}
         >
           {/* Product cards */}
           {displayProducts.slice(0, 6).map((product, i) => {
@@ -166,7 +153,6 @@ export default function CollectionGrid({ products = staticProducts }: Collection
                   overflow: "hidden",
                 }}
               >
-                {/* Image with clip-path */}
                 <div
                   className="card-media"
                   style={{
@@ -184,58 +170,23 @@ export default function CollectionGrid({ products = staticProducts }: Collection
                   />
                 </div>
 
-                {/* Card body */}
                 <div style={{ padding: "18px 16px 20px" }}>
-                  <span
-                    style={{
-                      fontSize: 9,
-                      fontWeight: 800,
-                      letterSpacing: 1.2,
-                      color: "#7a5f32",
-                      textTransform: "uppercase",
-                    }}
-                  >
+                  <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: 1.2, color: "#7a5f32", textTransform: "uppercase" }}>
                     {product.tag}
                   </span>
-                  <h3
-                    style={{
-                      fontFamily: "var(--font-fraunces), serif",
-                      fontSize: 18,
-                      margin: "8px 0 6px",
-                      color: "#14221e",
-                      lineHeight: 1.2,
-                    }}
-                  >
+                  <h3 style={{ fontFamily: "var(--font-fraunces), serif", fontSize: 18, margin: "8px 0 6px", color: "#14221e", lineHeight: 1.2 }}>
                     {product.name}
                   </h3>
-                  <p
-                    style={{
-                      fontSize: 12,
-                      color: "#2d4a42",
-                      lineHeight: 1.55,
-                      marginBottom: 10,
-                    }}
-                  >
+                  <p style={{ fontSize: 12, color: "#2d4a42", lineHeight: 1.55, marginBottom: 10 }}>
                     {(product.description ?? "").slice(0, 78)}…
                   </p>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      gap: 8,
-                      flexWrap: "wrap",
-                    }}
-                  >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                     <span style={{ fontSize: 11, color: "#1e4d3f", fontWeight: 600 }}>
                       {product.size} · {product.weight}
                     </span>
-                    <motion.a
+                    <a
                       href="#contact"
                       className="focus-ring"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.97 }}
-                      transition={{ duration: 0.18 }}
                       style={{
                         background: "#F0F4F2",
                         boxShadow: neuSm,
@@ -246,10 +197,15 @@ export default function CollectionGrid({ products = staticProducts }: Collection
                         color: "#0d281f",
                         textDecoration: "none",
                         display: "inline-block",
+                        transition: "transform 0.18s ease",
                       }}
+                      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                      onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.97)")}
+                      onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
                     >
                       Enquire
-                    </motion.a>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -272,32 +228,15 @@ export default function CollectionGrid({ products = staticProducts }: Collection
               minHeight: 268,
             }}
           >
-            <p
-              style={{
-                fontFamily: "var(--font-fraunces), serif",
-                fontSize: 22,
-                marginBottom: 10,
-                color: "#14221e",
-              }}
-            >
+            <p style={{ fontFamily: "var(--font-fraunces), serif", fontSize: 22, marginBottom: 10, color: "#14221e" }}>
               Need a custom program?
             </p>
-            <p
-              style={{
-                fontSize: 13,
-                color: "#2d4a42",
-                lineHeight: 1.6,
-                marginBottom: 18,
-              }}
-            >
+            <p style={{ fontSize: 13, color: "#2d4a42", lineHeight: 1.6, marginBottom: 18 }}>
               Private label, dye lots, and GSM specs — talk to the export desk.
             </p>
-            <motion.a
+            <a
               href="#contact"
               className="focus-ring"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.18 }}
               style={{
                 background: "#0d281f",
                 color: "#fff",
@@ -307,10 +246,15 @@ export default function CollectionGrid({ products = staticProducts }: Collection
                 fontSize: 13,
                 textDecoration: "none",
                 display: "inline-block",
+                transition: "transform 0.18s ease",
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.04)")}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+              onMouseDown={(e) => (e.currentTarget.style.transform = "scale(0.97)")}
+              onMouseUp={(e) => (e.currentTarget.style.transform = "scale(1.04)")}
             >
               Contact
-            </motion.a>
+            </a>
           </div>
         </div>
       </div>
