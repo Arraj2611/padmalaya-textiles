@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Outfit } from "next/font/google";
 import "./globals.css";
-import { ScrollRevealInit } from "@/components/ScrollRevealInit";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -35,10 +34,7 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${outfit.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <ScrollRevealInit />
-        {children}
-      </body>
+      <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

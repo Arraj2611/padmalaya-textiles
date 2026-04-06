@@ -25,14 +25,14 @@ export default function MillSection() {
       >
         {/* Mill image */}
         <div
-          className="reveal card-media"
+          className="card-media"
           style={{ borderRadius: 28, minHeight: 320, boxShadow: neu, overflow: "hidden" }}
         >
           <ProductImage src={millImg} alt="Terry towels in production context" style={{ minHeight: 320 }} />
         </div>
 
         {/* Text */}
-        <div className="reveal reveal-d1">
+        <div>
           <p style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", marginBottom: 12 }}>
             THE MILL
           </p>
@@ -47,10 +47,7 @@ export default function MillSection() {
             Our team works with procurement specs daily: bulk MOQs, packaging marks, and compliance
             documentation.
           </p>
-          <div
-            className="reveal reveal-d2"
-            style={{ ...glass(14), borderRadius: 20, padding: "20px 22px", display: "inline-block" }}
-          >
+          <div style={{ ...glass(14), borderRadius: 20, padding: "20px 22px", display: "inline-block" }}>
             <p style={{ fontSize: 12, fontWeight: 700, color: "#1e4d3f" }}>
               ISO-aligned · OEKO-TEX yarn classes · India export
             </p>
