@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Outfit } from "next/font/google";
 import "./globals.css";
+import { QuoteProvider } from "@/context/QuoteContext";
+import QuoteIndicator from "@/components/ui/QuoteIndicator";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -34,7 +36,12 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${outfit.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <QuoteProvider>
+          {children}
+          <QuoteIndicator />
+        </QuoteProvider>
+      </body>
     </html>
   );
 }
