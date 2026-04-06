@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import ProductImage from "@/components/ui/ProductImage";
 import { neuIn, neuSm } from "@/lib/design-tokens";
 import type { Product } from "@/lib/supabase-types";
@@ -106,24 +105,23 @@ const masonryMeta = [
 ];
 
 const ease = [0.23, 1, 0.32, 1] as [number, number, number, number];
+const vp   = { once: true, amount: 0.05 as const };
 
 interface CollectionGridProps {
   products?: Product[];
 }
 
 export default function CollectionGrid({ products = staticProducts }: CollectionGridProps) {
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px 0px" });
-
   const displayProducts = products.length > 0 ? products : staticProducts;
 
   return (
-    <section id="collection" ref={ref} style={{ padding: "44px 28px 48px" }}>
+    <section id="collection" style={{ padding: "44px 28px 48px" }}>
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={vp}
           transition={{ duration: 0.6, ease }}
           style={{
             display: "flex",
@@ -166,7 +164,8 @@ export default function CollectionGrid({ products = staticProducts }: Collection
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 32, scale: 0.97 }}
-                animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={vp}
                 transition={{ duration: 0.6, delay: 0.1 + i * 0.08, ease }}
                 className="hover-lift"
                 style={{
@@ -271,7 +270,8 @@ export default function CollectionGrid({ products = staticProducts }: Collection
           {/* CTA card */}
           <motion.div
             initial={{ opacity: 0, y: 32 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={vp}
             transition={{ duration: 0.6, delay: 0.65, ease }}
             className="hover-lift"
             style={{
