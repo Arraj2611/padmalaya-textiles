@@ -15,23 +15,19 @@ const gradientBorder = "linear-gradient(130deg, rgba(184,149,92,.22), rgba(30,77
 export default function ProofStrip() {
   return (
     <section id="proof" style={{ padding: "20px 28px 12px" }}>
-      <p className="reveal" style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", textAlign: "center", marginBottom: 14 }}>
+      <p style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", textAlign: "center", marginBottom: 14 }}>
         PROOF STRIP
       </p>
 
-      <div
-        className="reveal reveal-d1"
-        style={{ maxWidth: 920, margin: "0 auto", background: "#F5F8F7", boxShadow: neuIn, borderRadius: 26, padding: 14 }}
-      >
+      <div style={{ maxWidth: 920, margin: "0 auto", background: "#F5F8F7", boxShadow: neuIn, borderRadius: 26, padding: 14 }}>
         {/* 4-column bento */}
         <div
           className="proof-grid"
           style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, alignItems: "stretch" }}
         >
-          {stats.map((b, i) => (
+          {stats.map((b) => (
             <div
               key={b.k}
-              className={`reveal reveal-d${i + 1}`}
               style={{ borderRadius: 18, padding: 2, background: gradientBorder, display: "flex" }}
             >
               <div
@@ -58,10 +54,7 @@ export default function ProofStrip() {
         </div>
 
         {/* Export lead time bar */}
-        <div
-          className="reveal reveal-d5"
-          style={{ marginTop: 10, borderRadius: 18, padding: 2, background: gradientBorder }}
-        >
+        <div style={{ marginTop: 10, borderRadius: 18, padding: 2, background: gradientBorder }}>
           <div
             style={{
               ...glass(20),
