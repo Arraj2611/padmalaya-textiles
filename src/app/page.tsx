@@ -35,8 +35,8 @@ export default async function Home() {
 
   return (
     <div
-      className="silk-drift"
       style={{
+        backgroundColor: "#F3F6F4",
         fontFamily: "var(--font-outfit), sans-serif",
         color: "#14221e",
         minHeight: "100vh",
