@@ -10,8 +10,8 @@ const neuIn = "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(2
 
 export default function ProcessSection() {
   return (
-    <section id="process" style={{ padding: "52px 28px 60px" }}>
-      <div style={{ maxWidth: 920, margin: "0 auto", textAlign: "center" }}>
+    <section id="process" style={{ padding: "52px 40px 60px" }}>
+      <div style={{ maxWidth: 1400, margin: "0 auto", textAlign: "center" }}>
         <p style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", marginBottom: 10 }}>
           PROCESS
         </p>

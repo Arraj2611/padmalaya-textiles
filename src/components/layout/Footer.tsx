@@ -2,14 +2,14 @@ export default function Footer() {
   return (
     <footer
       style={{
-        padding: "32px 28px 40px",
+        padding: "32px 40px 40px",
         borderTop: "1px solid rgba(13,40,31,.05)",
         background: "transparent",
       }}
     >
       <div
         style={{
-          maxWidth: 1000,
+          maxWidth: 1400,
           margin: "0 auto",
           display: "flex",
           flexWrap: "wrap",

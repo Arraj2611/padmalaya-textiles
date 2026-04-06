@@ -1,11 +1,11 @@
 "use client";
 
-import { glass, neu, goldGradient } from "@/lib/design-tokens";
+import { goldGradient, neu } from "@/lib/design-tokens";
 
 export default function HeroSection() {
   return (
     <section id="hero" style={{ padding: "36px 28px 24px", position: "relative" }}>
-      {/* Gold accent bar */}
+      {/* Gold accent bar — left side */}
       <div
         style={{
           position: "absolute",
@@ -20,14 +20,17 @@ export default function HeroSection() {
         }}
       />
 
-      {/* Glass hero card */}
+      {/* Glass hero card — centered */}
       <div
         style={{
           maxWidth: 860,
-          margin: "0 auto 0 max(0px, 5%)",
+          margin: "0 auto",
           borderRadius: "132px 132px 40px 40px",
           position: "relative",
-          ...glass(24),
+          background: "rgba(255,255,255,0.48)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          border: "1px solid rgba(255,255,255,0.64)",
           overflow: "visible",
           padding: 0,
         }}
@@ -45,10 +48,20 @@ export default function HeroSection() {
           }}
         />
 
-        <div style={{ position: "relative", zIndex: 1, padding: "52px 48px 58px" }}>
-          {/* Location badge */}
-          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
-            <div style={{ ...glass(10), borderRadius: 50, padding: "12px 22px 13px", lineHeight: 1.45 }}>
+        <div style={{ position: "relative", zIndex: 1, padding: "52px 48px 58px", textAlign: "center" }}>
+          {/* Location badge — top-right */}
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 16 }}>
+            <div
+              style={{
+                background: "rgba(255,255,255,0.42)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                border: "1px solid rgba(255,255,255,0.6)",
+                borderRadius: 50,
+                padding: "12px 22px 13px",
+                lineHeight: 1.45,
+              }}
+            >
               <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.5, color: "#1e4d3f", display: "block", whiteSpace: "nowrap" }}>
                 Solapur, India
               </span>
@@ -74,6 +87,7 @@ export default function HeroSection() {
               textShadow: "1px 1px 0 rgba(255,255,255,.75), 0 3px 28px rgba(30,77,63,.06)",
               marginBottom: 20,
               maxWidth: 540,
+              margin: "0 auto 20px",
             }}
           >
             Terry, suspended in
@@ -94,13 +108,13 @@ export default function HeroSection() {
           </h1>
 
           {/* Subtitle */}
-          <p style={{ fontSize: 16, color: "#2d4a42", lineHeight: 1.72, maxWidth: 460, marginBottom: 30, fontWeight: 400 }}>
+          <p style={{ fontSize: 16, color: "#2d4a42", lineHeight: 1.72, maxWidth: 460, marginBottom: 30, fontWeight: 400, margin: "0 auto 30px" }}>
             Indian cotton, hotel-grade construction — folds first, frost second, facts where buyers
             expect them.
           </p>
 
-          {/* CTAs */}
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+          {/* CTAs — centered */}
+          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center" }}>
             <a
               href="#collection"
               className="focus-ring"

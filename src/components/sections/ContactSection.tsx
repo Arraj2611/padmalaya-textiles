@@ -5,28 +5,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { submitEnquiry } from "@/app/actions/enquiry";
+import { useQuote } from "@/context/QuoteContext";
 
 const schema = z.object({
-  name:             z.string().min(2, "At least 2 characters"),
-  email:            z.email("Invalid email"),
-  company:          z.string().optional(),
-  phone:            z.string().optional(),
-  product_interest: z.string().min(1, "Please select a product"),
-  message:          z.string().min(10, "At least 10 characters"),
+  name:    z.string().min(2, "At least 2 characters"),
+  email:   z.email("Invalid email"),
+  company: z.string().optional(),
+  message: z.string().min(10, "At least 10 characters"),
 });
 
 type FormData = z.infer<typeof schema>;
-
-const productList = [
-  "Classic Terry Bath Towel",
-  "Premium Face Towel Set",
-  "Luxury Hand Towel",
-  "Hotel Bath Sheet",
-  "Terry Kitchen Napkin",
-  "Spa Wrap Towel",
-  "Custom / Private Label",
-  "Other",
-];
 
 const glass16: React.CSSProperties = {
   background: "rgba(255,255,255,0.42)",
@@ -51,12 +39,7 @@ const inputStyle: React.CSSProperties = {
   transition: "border-color 0.2s, box-shadow 0.2s",
 };
 
-const errorStyle: React.CSSProperties = {
-  fontSize: 11,
-  color: "#c0392b",
-  marginTop: 4,
-  display: "block",
-};
+const errorStyle: React.CSSProperties = { fontSize: 11, color: "#c0392b", marginTop: 4, display: "block" };
 
 const labelStyle: React.CSSProperties = {
   display: "block",
@@ -70,65 +53,132 @@ const labelStyle: React.CSSProperties = {
 
 export default function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const { items, removeFromQuote } = useQuote();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
 
   async function onSubmit(data: FormData) {
     setStatus("sending");
     try {
-      const result = await submitEnquiry(data);
-      if (result.success) {
-        setStatus("success");
-        reset();
-      } else {
-        setStatus("error");
-      }
+      // Append selected products to message
+      const productNames = items.map((i) => i.productName).join(", ");
+      const enrichedMessage = items.length > 0
+        ? `Selected products: ${productNames}\n\n${data.message}`
+        : data.message;
+
+      const result = await submitEnquiry({
+        ...data,
+        company: data.company ?? "",
+        phone: "",
+        product_interest: productNames || "General enquiry",
+        message: enrichedMessage,
+      });
+      if (result.success) { setStatus("success"); reset(); }
+      else setStatus("error");
     } catch {
       setStatus("error");
     }
   }
 
   return (
-    <section id="contact" style={{ padding: "0 28px 64px" }}>
-      <div style={{ maxWidth: 860, margin: "0 auto", ...glass16, borderRadius: 32, padding: "48px 48px 40px" }}>
+    <section id="contact" style={{ padding: "0 40px 64px" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", ...glass16, borderRadius: 32, padding: "48px 48px 40px" }}>
         {/* Heading */}
-        <div style={{ marginBottom: 32 }}>
+        <div style={{ marginBottom: 28 }}>
           <p style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", marginBottom: 10 }}>
             GET IN TOUCH
           </p>
           <h2 style={{ fontFamily: "var(--font-fraunces), serif", fontSize: 28, color: "#14221e", marginBottom: 10, lineHeight: 1.15 }}>
             Request a quote
           </h2>
-          <p style={{ fontSize: 14, color: "#2d4a42", lineHeight: 1.65, maxWidth: 480 }}>
-            Share your SKU interest, volumes, and destination — we respond with pricing bands and
-            lead times within 24 hours.
+          <p style={{ fontSize: 14, color: "#2d4a42", lineHeight: 1.65, maxWidth: 560 }}>
+            Share your requirements and destination — we respond with pricing bands and lead times within 24 hours.
           </p>
+        </div>
+
+        {/* Selected Products chips */}
+        <div
+          style={{
+            background: "rgba(30,77,63,0.05)",
+            borderRadius: 16,
+            padding: "18px 20px",
+            marginBottom: 28,
+            border: "1px solid rgba(30,77,63,0.10)",
+          }}
+        >
+          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: "#7a5f32", textTransform: "uppercase", marginBottom: 12 }}>
+            Selected Products {items.length > 0 ? `(${items.length})` : ""}
+          </p>
+          {items.length > 0 ? (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {items.map((item) => (
+                <span
+                  key={item.productId}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 7,
+                    background: "rgba(30,77,63,0.08)",
+                    border: "1px solid rgba(30,77,63,0.16)",
+                    borderRadius: 50,
+                    padding: "6px 14px",
+                    fontSize: 12,
+                    color: "#14221e",
+                    fontWeight: 600,
+                  }}
+                >
+                  {item.productName}
+                  <button
+                    onClick={() => removeFromQuote(item.productId)}
+                    aria-label={`Remove ${item.productName}`}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "#7a5f32",
+                      fontSize: 13,
+                      padding: 0,
+                      lineHeight: 1,
+                      display: "flex",
+                    }}
+                  >
+                    ✕
+                  </button>
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p style={{ fontSize: 13, color: "#2d4a42" }}>
+              No products selected.{" "}
+              <a href="#collection" style={{ color: "#1e4d3f", fontWeight: 600, textDecoration: "underline" }}>
+                Browse our collection
+              </a>{" "}
+              to add products to your quote.
+            </p>
+          )}
         </div>
 
         {status === "success" ? (
           <div style={{ background: "#F0F4F2", boxShadow: neuIn, borderRadius: 20, padding: "40px 32px", textAlign: "center" }}>
             <div style={{ fontSize: 36, marginBottom: 16 }}>✓</div>
             <h3 style={{ fontFamily: "var(--font-fraunces), serif", fontSize: 22, color: "#14221e", marginBottom: 10 }}>
-              Enquiry received!
+              Quote request received!
             </h3>
             <p style={{ fontSize: 14, color: "#2d4a42", lineHeight: 1.65, marginBottom: 24 }}>
               We'll respond with pricing bands and lead times within 24 business hours.
-              Check your inbox for a confirmation email.
             </p>
             <button
               onClick={() => setStatus("idle")}
               style={{ background: "#0d281f", color: "#fff", border: "none", padding: "12px 28px", borderRadius: 50, fontWeight: 700, fontSize: 13, cursor: "pointer" }}
             >
-              Send another enquiry
+              Send another request
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            {/* Row 1: Name + Email */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }} className="form-row">
               <div>
                 <label style={labelStyle}>Name *</label>
@@ -142,38 +192,20 @@ export default function ContactSection() {
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }} className="form-row">
-              <div>
-                <label style={labelStyle}>Company</label>
-                <input {...register("company")} style={inputStyle} placeholder="Optional" />
-              </div>
-              <div>
-                <label style={labelStyle}>Phone</label>
-                <input {...register("phone")} style={inputStyle} placeholder="Optional" />
-              </div>
-            </div>
-
+            {/* Company */}
             <div style={{ marginBottom: 16 }}>
-              <label style={labelStyle}>Product interest *</label>
-              <select
-                {...register("product_interest")}
-                style={{ ...inputStyle, appearance: "none", backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%232d4a42'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 14px center" }}
-              >
-                <option value="">Select a product…</option>
-                {productList.map((p) => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </select>
-              {errors.product_interest && <span style={errorStyle}>{errors.product_interest.message}</span>}
+              <label style={labelStyle}>Company / Organisation</label>
+              <input {...register("company")} style={inputStyle} placeholder="Optional" />
             </div>
 
+            {/* Message */}
             <div style={{ marginBottom: 28 }}>
-              <label style={labelStyle}>Message *</label>
+              <label style={labelStyle}>Message / Requirements *</label>
               <textarea
                 {...register("message")}
                 rows={5}
                 style={{ ...inputStyle, resize: "vertical", minHeight: 120 }}
-                placeholder="Share your GSM requirements, MOQ, destination, timeline…"
+                placeholder="GSM requirements, MOQ, destination, timeline, packaging needs…"
               />
               {errors.message && <span style={errorStyle}>{errors.message.message}</span>}
             </div>
@@ -196,7 +228,7 @@ export default function ContactSection() {
                 onMouseEnter={(e) => { if (status !== "sending") e.currentTarget.style.transform = "scale(1.04)"; }}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
               >
-                {status === "sending" ? "Sending…" : "Send enquiry"}
+                {status === "sending" ? "Sending…" : "Send Quote Request"}
               </button>
               {status === "error" && (
                 <p style={{ fontSize: 13, color: "#c0392b" }}>

@@ -16,12 +16,12 @@ export default function MillSection() {
   return (
     <section
       id="mill"
-      style={{ padding: "52px 28px", background: "linear-gradient(180deg, #EEF3F1 0%, #F3F6F4 100%)" }}
+      style={{ padding: "52px 40px", background: "linear-gradient(180deg, #EEF3F1 0%, #F3F6F4 100%)" }}
     >
       <div
         className="grid-mill"
         style={{
-          maxWidth: 1000,
+          maxWidth: 1400,
           margin: "0 auto",
           display: "grid",
           gridTemplateColumns: "minmax(0,1fr) minmax(0,1.05fr)",
