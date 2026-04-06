@@ -12,21 +12,17 @@ export default function ProcessSection() {
   return (
     <section id="process" style={{ padding: "52px 28px 60px" }}>
       <div style={{ maxWidth: 920, margin: "0 auto", textAlign: "center" }}>
-        <p className="reveal" style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", marginBottom: 10 }}>
+        <p style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", marginBottom: 10 }}>
           PROCESS
         </p>
-        <h2
-          className="reveal reveal-d1"
-          style={{ fontFamily: "var(--font-fraunces), serif", fontSize: 28, color: "#243D36", marginBottom: 36 }}
-        >
+        <h2 style={{ fontFamily: "var(--font-fraunces), serif", fontSize: 28, color: "#243D36", marginBottom: 36 }}>
           From yarn to carton
         </h2>
 
         <div className="grid-process" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
-          {steps.map((s, i) => (
+          {steps.map((s) => (
             <div
               key={s.step}
-              className={`reveal reveal-d${i + 2}`}
               style={{ background: "#F5F8F7", boxShadow: neuIn, borderRadius: 24, padding: "28px 22px", textAlign: "left" }}
             >
               <span style={{ fontFamily: "var(--font-fraunces), serif", fontSize: 36, color: "#b8955c", opacity: 0.85, display: "block" }}>
