@@ -6,12 +6,14 @@ import { resend, FROM_EMAIL, ADMIN_EMAIL } from "@/lib/resend";
 import { customerAutoResponse, adminNotification } from "@/lib/email-templates";
 
 const schema = z.object({
-  name:             z.string().min(2, "Name must be at least 2 characters"),
-  email:            z.email("Invalid email address"),
-  company:          z.string().optional(),
-  phone:            z.string().optional(),
-  product_interest: z.string().min(1, "Please select a product"),
-  message:          z.string().min(10, "Message must be at least 10 characters"),
+  name:              z.string().min(2, "Name must be at least 2 characters"),
+  email:             z.email("Invalid email address"),
+  company:           z.string().optional(),
+  phone:             z.string().optional(),
+  product_interest:  z.string().optional(), // kept for email templates; derived from selected_products
+  selected_products: z.array(z.string()).optional(),
+  message:           z.string().min(10, "Message must be at least 10 characters"),
+  clerk_user_id:     z.string().optional(),
 });
 
 export type EnquiryInput = z.infer<typeof schema>;
@@ -34,7 +36,9 @@ export async function submitEnquiry(data: EnquiryInput): Promise<EnquiryResult> 
     return { success: false, fieldErrors };
   }
 
-  const { name, email, company, phone, product_interest, message } = parsed.data;
+  const { name, email, company, phone, message, selected_products, clerk_user_id } = parsed.data;
+  const product_interest = parsed.data.product_interest
+    ?? (selected_products?.join(", ") || "General enquiry");
 
   // 2. Insert into Supabase
   try {
@@ -42,11 +46,11 @@ export async function submitEnquiry(data: EnquiryInput): Promise<EnquiryResult> 
     const { error: dbError } = await supabase.from("enquiries").insert({
       name,
       email,
-      company:          company ?? null,
-      phone:            phone ?? null,
-      product_interest,
+      company:           company ?? null,
       message,
-      status: "new",
+      selected_products: selected_products ?? [],
+      clerk_user_id:     clerk_user_id ?? null,
+      status:            "new",
     });
 
     if (dbError) {
@@ -58,18 +62,14 @@ export async function submitEnquiry(data: EnquiryInput): Promise<EnquiryResult> 
   }
 
   // 3. Send emails (best-effort — don't fail form if emails fail)
-  const emailsEnabled = Boolean(process.env.RESEND_API_KEY);
-
-  if (emailsEnabled) {
+  if (process.env.RESEND_API_KEY) {
     await Promise.allSettled([
-      // Auto-response to customer
       resend.emails.send({
         from:    FROM_EMAIL,
         to:      email,
-        subject: `Enquiry received — Padmalaya Textiles`,
+        subject: "Enquiry received — Padmalaya Textiles",
         html:    customerAutoResponse({ name, product_interest, message }),
       }),
-      // Admin notification
       resend.emails.send({
         from:    FROM_EMAIL,
         to:      ADMIN_EMAIL,

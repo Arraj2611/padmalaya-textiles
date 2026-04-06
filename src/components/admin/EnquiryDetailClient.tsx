@@ -9,12 +9,12 @@ type Status = Enquiry["status"];
 
 const statusColors: Record<Status, { bg: string; color: string }> = {
   new:       { bg: "rgba(184,149,92,.15)", color: "#7a5f32" },
-  read:      { bg: "rgba(45,74,66,.1)",   color: "#2d4a42" },
-  responded: { bg: "rgba(30,77,63,.1)",   color: "#1e4d3f" },
-  archived:  { bg: "#f3f4f6",            color: "#9ca3af" },
+  contacted: { bg: "rgba(45,74,66,.1)",   color: "#2d4a42" },
+  quoted:    { bg: "rgba(30,77,63,.1)",   color: "#1e4d3f" },
+  closed:    { bg: "#f3f4f6",            color: "#9ca3af" },
 };
 
-const STATUSES: Status[] = ["new", "read", "responded", "archived"];
+const STATUSES: Status[] = ["new", "contacted", "quoted", "closed"];
 
 const card: React.CSSProperties = {
   background: "#fff",
@@ -72,8 +72,8 @@ export default function EnquiryDetailClient({ enquiry }: { enquiry: Enquiry }) {
         <Row label="Name"    value={enquiry.name} />
         <Row label="Email"   value={enquiry.email} />
         {enquiry.company && <Row label="Company" value={enquiry.company} />}
-        {enquiry.phone   && <Row label="Phone"   value={enquiry.phone}   />}
-        <Row label="Product" value={enquiry.product_interest ?? "—"} />
+        {enquiry.clerk_user_id && <Row label="Clerk ID" value={enquiry.clerk_user_id} />}
+        <Row label="Products" value={enquiry.selected_products?.join(", ") || "—"} />
         <Row label="Date"    value={new Date(enquiry.created_at).toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" })} />
       </div>
 
@@ -108,7 +108,7 @@ export default function EnquiryDetailClient({ enquiry }: { enquiry: Enquiry }) {
 
         <div style={{ marginTop: 20 }}>
           <a
-            href={`mailto:${enquiry.email}?subject=Re: Enquiry about ${encodeURIComponent(enquiry.product_interest ?? "your enquiry")}`}
+            href={`mailto:${enquiry.email}?subject=Re: Enquiry about ${encodeURIComponent(enquiry.selected_products?.join(", ") || "your enquiry")}`}
             style={{
               display: "inline-block", padding: "12px 28px",
               background: "#1e4d3f", color: "#fff",
