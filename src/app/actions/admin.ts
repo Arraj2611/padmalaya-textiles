@@ -4,7 +4,17 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createServerClient } from "@/lib/supabase-server";
 import { verifyPassword, createSession, clearSession } from "@/lib/auth";
-import type { AdminUser } from "@/lib/supabase-types";
+
+// Local shape for the legacy password-based admin_users table.
+// The global AdminUser type now uses clerk_user_id; this interface
+// covers the older columns queried by the password login flow.
+interface LegacyAdminUser {
+  id: string;
+  email: string;
+  password_hash: string;
+  role: "admin" | "super_admin";
+  name: string | null;
+}
 
 const loginSchema = z.object({
   email:    z.email("Invalid email"),
@@ -32,7 +42,7 @@ export async function adminLogin(data: { email: string; password: string }): Pro
       .eq("email", email)
       .single();
 
-    const user = rawUser as AdminUser | null;
+    const user = rawUser as LegacyAdminUser | null;
 
     if (error || !rawUser || !user) {
       return { success: false, error: "Invalid credentials" };

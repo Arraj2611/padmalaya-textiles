@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { STATIC_PRODUCTS, getProductBySlug } from "@/lib/products";
 import ProductGallery from "@/components/ui/ProductGallery";
 import AddToQuoteButton from "@/components/ui/AddToQuoteButton";
@@ -7,17 +8,36 @@ import ProductViewTracker from "@/components/ui/ProductViewTracker";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
+const SITE_URL = "https://padmalayatextiles.com";
+
 export function generateStaticParams() {
   return STATIC_PRODUCTS.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) return { title: "Product not found" };
+  const description = product.description.slice(0, 160);
   return {
-    title: `${product.name} — Padmalaya Textiles`,
-    description: product.description.slice(0, 160),
+    title: product.name,
+    description,
+    openGraph: {
+      title: `${product.name} — Padmalaya Textiles`,
+      description,
+      url: `${SITE_URL}/products/${product.slug}`,
+      siteName: "Padmalaya Textiles",
+      images: product.image_url ? [{ url: product.image_url, width: 960, height: 720, alt: product.name }] : [],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} — Padmalaya Textiles`,
+      description,
+      images: product.image_url ? [product.image_url] : [],
+    },
   };
 }
 
@@ -35,8 +55,27 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   const neuIn = "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(255,255,255,.75)";
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: product.images,
+    brand: { "@type": "Brand", name: "Padmalaya Textiles" },
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      priceCurrency: "USD",
+      seller: { "@type": "Organization", name: "Padmalaya Textiles" },
+    },
+  };
+
   return (
     <div style={{ backgroundColor: "#F3F6F4", fontFamily: "var(--font-outfit), sans-serif", color: "#14221e", minHeight: "100vh" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <ProductViewTracker productName={product.name} slug={product.slug} />
       <Navbar />
 
