@@ -1,7 +1,6 @@
 "use client";
 
 import { neuIn } from "@/lib/design-tokens";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const steps = [
   { step: "01", title: "Spin & dye",    body: "Cotton lots matched to your GSM and colour standard." },
@@ -10,10 +9,8 @@ const steps = [
 ];
 
 export default function ProcessSection() {
-  const ref = useScrollReveal<HTMLElement>();
-
   return (
-    <section id="process" ref={ref} style={{ padding: "52px 28px 60px" }}>
+    <section id="process" style={{ padding: "52px 28px 60px" }}>
       <div style={{ maxWidth: 920, margin: "0 auto", textAlign: "center" }}>
         <p className="reveal" style={{ fontSize: 10, letterSpacing: 3, fontWeight: 800, color: "#7a5f32", marginBottom: 10 }}>
           PROCESS

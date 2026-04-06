@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import ProductImage from "@/components/ui/ProductImage";
 import { neuIn, neuSm } from "@/lib/design-tokens";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
 import type { Product } from "@/lib/supabase-types";
 
 const U = "https://images.unsplash.com";
@@ -111,10 +110,9 @@ interface CollectionGridProps {
 
 export default function CollectionGrid({ products = staticProducts }: CollectionGridProps) {
   const displayProducts = products.length > 0 ? products : staticProducts;
-  const ref = useScrollReveal<HTMLElement>();
 
   return (
-    <section id="collection" ref={ref} style={{ padding: "44px 28px 48px" }}>
+    <section id="collection" style={{ padding: "44px 28px 48px" }}>
       <div style={{ maxWidth: 1000, margin: "0 auto" }}>
         {/* Header */}
         <div
