@@ -1,13 +1,23 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import ProductImage from "@/components/ui/ProductImage";
 import { glass, neu } from "@/lib/design-tokens";
 
 const millImg =
   "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=960&h=720&q=85&ixlib=rb-4.0.3";
 
+const ease = [0.23, 1, 0.32, 1] as [number, number, number, number];
+
 export default function MillSection() {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px 0px" });
+
   return (
     <section
       id="mill"
+      ref={ref}
       style={{
         padding: "52px 28px",
         background: "linear-gradient(180deg, #EEF3F1 0%, #F3F6F4 100%)",
@@ -24,8 +34,11 @@ export default function MillSection() {
           alignItems: "center",
         }}
       >
-        {/* Mill image */}
-        <div
+        {/* Mill image — slides in from left */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.7, ease }}
           className="card-media"
           style={{ borderRadius: 28, minHeight: 320, boxShadow: neu, overflow: "hidden" }}
         >
@@ -34,10 +47,14 @@ export default function MillSection() {
             alt="Terry towels in production context"
             style={{ minHeight: 320 }}
           />
-        </div>
+        </motion.div>
 
-        {/* Text */}
-        <div>
+        {/* Text — slides in from right */}
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.1, ease }}
+        >
           <p
             style={{
               fontSize: 10,
@@ -84,7 +101,10 @@ export default function MillSection() {
             Our team works with procurement specs daily: bulk MOQs, packaging marks, and compliance
             documentation.
           </p>
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.35, ease }}
             style={{
               ...glass(14),
               borderRadius: 20,
@@ -95,8 +115,8 @@ export default function MillSection() {
             <p style={{ fontSize: 12, fontWeight: 700, color: "#1e4d3f" }}>
               ISO-aligned · OEKO-TEX yarn classes · India export
             </p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

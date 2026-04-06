@@ -1,17 +1,19 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { glass, neuIn } from "@/lib/design-tokens";
 
 const navLinks = [
-  { label: "Home", href: "#hero" },
-  { label: "Products", href: "#collection" },
-  { label: "About", href: "#mill" },
-  { label: "Process", href: "#process" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home",    href: "#hero"       },
+  { label: "Products",href: "#collection" },
+  { label: "About",   href: "#mill"       },
+  { label: "Process", href: "#process"    },
+  { label: "Contact", href: "#contact"    },
 ];
 
 export default function Navbar() {
   return (
     <header
-      className="site-nav"
       style={{
         position: "sticky",
         top: 0,
@@ -33,8 +35,10 @@ export default function Navbar() {
         }}
       >
         {/* Logo */}
-        <a
+        <motion.a
           href="#hero"
+          whileHover={{ scale: 1.03 }}
+          transition={{ duration: 0.2 }}
           style={{
             ...glass(8),
             padding: "10px 22px",
@@ -48,7 +52,7 @@ export default function Navbar() {
           }}
         >
           PADMALAYA
-        </a>
+        </motion.a>
 
         {/* Neumorphic pill nav */}
         <nav
@@ -65,9 +69,11 @@ export default function Navbar() {
           }}
         >
           {navLinks.map((n) => (
-            <a
+            <motion.a
               key={n.href}
               href={n.href}
+              whileHover={{ color: "#1e4d3f", backgroundColor: "rgba(255,255,255,0.6)" }}
+              transition={{ duration: 0.2 }}
               style={{
                 padding: "8px 14px",
                 fontSize: 11,
@@ -75,18 +81,20 @@ export default function Navbar() {
                 color: "#2d4a42",
                 borderRadius: 40,
                 textDecoration: "none",
-                transition: "color 0.2s",
               }}
             >
               {n.label}
-            </a>
+            </motion.a>
           ))}
         </nav>
 
         {/* Quote CTA */}
-        <a
+        <motion.a
           href="#contact"
           className="focus-ring"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.96 }}
+          transition={{ duration: 0.18 }}
           style={{
             background: "#0d281f",
             color: "#fff",
@@ -99,7 +107,7 @@ export default function Navbar() {
           }}
         >
           Quote
-        </a>
+        </motion.a>
       </div>
     </header>
   );
