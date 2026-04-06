@@ -18,7 +18,7 @@ export default function ProofStrip() {
         PROOF STRIP
       </p>
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", background: "#F5F8F7", boxShadow: neuIn, borderRadius: 26, padding: 14 }}>
+      <div style={{ maxWidth: 1400, margin: "0 auto", background: "#F5F8F7", boxShadow: neuIn, borderRadius: 26, padding: 14 }}>
         <div
           className="proof-grid"
           style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, alignItems: "stretch" }}

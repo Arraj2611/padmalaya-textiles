@@ -1,31 +1,49 @@
 "use client";
 
+import Link from "next/link";
+import { useState } from "react";
 import ProductImage from "@/components/ui/ProductImage";
 import { STATIC_PRODUCTS } from "@/lib/products";
 import type { Product } from "@/lib/supabase-types";
 
 const neuIn = "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(255,255,255,.75)";
-
-const masonryMeta = [
-  { col: "span 2", clip: "none",                                                       h: 232 },
-  { col: "span 1", clip: "polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 16%)",          h: 292 },
-  { col: "span 1", clip: "circle(50% at 50% 48%)",                                    h: 292 },
-  { col: "span 1", clip: "none",                                                       h: 268 },
-  { col: "span 1", clip: "polygon(0 0, 100% 0, 100% 92%, 88% 100%, 0 100%)",          h: 268 },
-  { col: "span 1", clip: "none",                                                       h: 268 },
-];
+const INITIAL_SHOW = 6;
+const COLLAPSE_THRESHOLD = 9; // show "View all" button only if more than this many products
 
 interface CollectionGridProps {
   products?: Product[];
 }
 
 export default function CollectionGrid({ products }: CollectionGridProps) {
-  // Merge live Supabase products with static enriched data for slugs
-  const displayProducts = (products && products.length > 0 ? products : STATIC_PRODUCTS).slice(0, 6);
+  const allProducts = (products && products.length > 0 ? products : STATIC_PRODUCTS);
+  const needsCollapse = allProducts.length > COLLAPSE_THRESHOLD;
+  const [showAll, setShowAll] = useState(false);
+  const displayProducts = needsCollapse && !showAll ? allProducts.slice(0, INITIAL_SHOW) : allProducts;
 
   return (
     <section id="collection" style={{ padding: "44px 40px 48px" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+      <style>{`
+        .collection-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 18px;
+        }
+        .collection-cta-card { grid-column: span 2; }
+        @media (max-width: 900px) {
+          .collection-grid { grid-template-columns: repeat(2, 1fr); }
+          .collection-cta-card { grid-column: span 2; }
+        }
+        @media (max-width: 560px) {
+          .collection-grid { grid-template-columns: 1fr; }
+          .collection-cta-card { grid-column: span 1; }
+        }
+        .collection-card { transition: transform 0.35s cubic-bezier(0.23,1,0.32,1), box-shadow 0.35s ease; }
+        .collection-card:hover { transform: translateY(-5px); box-shadow: 0 22px 50px rgba(13,40,31,.10) !important; }
+        .view-all-btn { transition: transform 0.18s ease, background 0.2s; }
+        .view-all-btn:hover { transform: scale(1.04); }
+      `}</style>
+
+      <div style={{ maxWidth: 1400, margin: "0 auto" }}>
         {/* Header */}
         <div
           style={{
@@ -45,21 +63,19 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
           </p>
         </div>
 
-        {/* Masonry grid */}
-        <div
-          className="collection-grid"
-          style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, gridAutoFlow: "row" }}
-        >
-          {displayProducts.map((product, i) => {
-            const meta = masonryMeta[i] ?? masonryMeta[0];
-            const slug = ("slug" in product ? product.slug : null) ?? STATIC_PRODUCTS[i]?.slug ?? "";
+        {/* Grid */}
+        <div className="collection-grid">
+          {displayProducts.map((product) => {
+            const slug =
+              ("slug" in product ? (product as { slug?: string }).slug : null) ??
+              STATIC_PRODUCTS.find((s) => s.id === product.id)?.slug ??
+              "";
             return (
-              <a
+              <Link
                 key={product.id}
                 href={`/products/${slug}`}
-                className="hover-lift"
+                className="collection-card"
                 style={{
-                  gridColumn: meta.col,
                   background: "#F5F8F7",
                   boxShadow: neuIn,
                   borderRadius: 26,
@@ -68,31 +84,20 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                   textDecoration: "none",
                   color: "inherit",
                   display: "block",
-                  transition: "transform 0.35s cubic-bezier(0.23,1,0.32,1), box-shadow 0.35s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-5px)";
-                  e.currentTarget.style.boxShadow = "0 22px 50px rgba(13,40,31,.10)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = neuIn;
                 }}
               >
                 <div
-                  className="card-media"
                   style={{
-                    borderRadius: meta.clip === "none" ? 20 : 0,
+                    borderRadius: 20,
                     overflow: "hidden",
-                    clipPath: meta.clip === "none" ? undefined : meta.clip,
-                    height: meta.h,
+                    height: 260,
                     boxShadow: "inset 0 0 0 1px rgba(36,61,54,.08)",
                   }}
                 >
                   <ProductImage
                     src={product.image_url ?? ""}
                     alt={product.name}
-                    style={{ minHeight: meta.h, width: "100%", height: "100%" }}
+                    style={{ width: "100%", height: "100%", minHeight: 260 }}
                   />
                 </div>
 
@@ -110,14 +115,14 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
                     {product.size} · {product.weight}
                   </span>
                 </div>
-              </a>
+              </Link>
             );
           })}
 
           {/* CTA card */}
           <div
+            className="collection-cta-card"
             style={{
-              gridColumn: "span 2",
               background: "#F5F8F7",
               boxShadow: neuIn,
               borderRadius: 26,
@@ -157,6 +162,29 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
             </a>
           </div>
         </div>
+
+        {/* View all / collapse button */}
+        {needsCollapse && (
+          <div style={{ textAlign: "center", marginTop: 28 }}>
+            <button
+              onClick={() => setShowAll((s) => !s)}
+              className="view-all-btn"
+              style={{
+                background: showAll ? "transparent" : "#0d281f",
+                color: showAll ? "#0d281f" : "#fff",
+                border: "2px solid #0d281f",
+                padding: "13px 32px",
+                borderRadius: 50,
+                fontWeight: 700,
+                fontSize: 13,
+                cursor: "pointer",
+                fontFamily: "inherit",
+              }}
+            >
+              {showAll ? "Show less" : `View all ${allProducts.length} products`}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
