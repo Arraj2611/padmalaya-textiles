@@ -1,7 +1,6 @@
 "use client";
 
 import ProductImage from "@/components/ui/ProductImage";
-import { neuIn, neuSm } from "@/lib/design-tokens";
 import type { Product } from "@/lib/supabase-types";
 
 const U = "https://images.unsplash.com";
@@ -147,7 +146,7 @@ export default function CollectionGrid({ products = staticProducts }: Collection
                 style={{
                   gridColumn: meta.col,
                   background: "#F5F8F7",
-                  boxShadow: neuIn,
+                  boxShadow: "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(255,255,255,.75)",
                   borderRadius: 26,
                   padding: 9,
                   overflow: "hidden",
@@ -189,7 +188,7 @@ export default function CollectionGrid({ products = staticProducts }: Collection
                       className="focus-ring"
                       style={{
                         background: "#F0F4F2",
-                        boxShadow: neuSm,
+                        boxShadow: "2px 2px 6px rgba(13,40,31,.07), -2px -2px 5px rgba(255,255,255,.7)",
                         padding: "8px 16px",
                         borderRadius: 40,
                         fontWeight: 700,
@@ -218,7 +217,7 @@ export default function CollectionGrid({ products = staticProducts }: Collection
             style={{
               gridColumn: "span 2",
               background: "#F5F8F7",
-              boxShadow: neuIn,
+              boxShadow: "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(255,255,255,.75)",
               borderRadius: 26,
               padding: 28,
               display: "flex",

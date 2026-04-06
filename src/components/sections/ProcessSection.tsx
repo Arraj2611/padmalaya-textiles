@@ -1,12 +1,12 @@
 "use client";
 
-import { neuIn } from "@/lib/design-tokens";
-
 const steps = [
   { step: "01", title: "Spin & dye",    body: "Cotton lots matched to your GSM and colour standard." },
   { step: "02", title: "Weave terry",   body: "Double-loop construction for absorbency and hand feel." },
   { step: "03", title: "Finish & pack", body: "Inspection, folding, and export-ready cartons." },
 ];
+
+const neuIn = "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(255,255,255,.75)";
 
 export default function ProcessSection() {
   return (
