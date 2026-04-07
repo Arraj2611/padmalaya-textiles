@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.*
 .yarn/*
@@ -35,6 +35,18 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# local design reference screenshots
+/reference-screenshots/
+
+# local HTML design prototypes
+/design/
+
+# local deployment guide (docx)
+/docs/Padmalaya-Deployment-Guide.docx
+
+# claude
+.claude
 
 # typescript
 *.tsbuildinfo
