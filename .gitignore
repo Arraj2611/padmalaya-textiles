@@ -45,8 +45,8 @@ yarn-error.log*
 # local deployment guide (docx)
 /docs/Padmalaya-Deployment-Guide.docx
 
-# claude
-.claude
+# Claude — local agent config, skills, sessions (entire directory)
+.claude/
 
 # typescript
 *.tsbuildinfo
