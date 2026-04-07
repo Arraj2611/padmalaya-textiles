@@ -1,29 +1,13 @@
 "use client";
 
+import { useAuth, UserButton, SignInButton } from "@clerk/nextjs";
 import { neuIn } from "@/lib/design-tokens";
 import { glass } from "@/lib/design-tokens";
 
-// Clerk auth components — only rendered when real keys are present
-let UserButton: React.ComponentType<{ afterSignOutUrl?: string }> | null = null;
-let SignInButton: React.ComponentType<{ children?: React.ReactNode; mode?: string }> | null = null;
-let useAuth: (() => { isSignedIn?: boolean; isLoaded?: boolean }) | null = null;
-
-const hasClerkKeys =
-  typeof process !== "undefined" &&
+const hasClerkKeys = Boolean(
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
-  !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes("placeholder");
-
-if (hasClerkKeys) {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const clerk = require("@clerk/nextjs");
-    UserButton = clerk.UserButton;
-    SignInButton = clerk.SignInButton;
-    useAuth = clerk.useAuth;
-  } catch {
-    // Clerk not available — degrade gracefully
-  }
-}
+  !process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.includes("placeholder")
+);
 
 const navLinks = [
   { label: "Home",     href: "#hero"       },
@@ -33,50 +17,47 @@ const navLinks = [
   { label: "Contact",  href: "#contact"    },
 ];
 
-function AuthControls() {
-  const auth = useAuth ? useAuth() : { isSignedIn: false, isLoaded: true };
+/**
+ * Rendered only when ClerkProvider is present (hasClerkKeys is true).
+ * Calling useAuth() unconditionally here is correct — this component
+ * is only mounted when ClerkProvider wraps the tree.
+ */
+function ClerkAuthControls() {
+  const { isSignedIn, isLoaded } = useAuth();
+  if (!isLoaded) return null;
 
-  if (!hasClerkKeys) return null;
-  if (!auth.isLoaded) return null;
-
-  if (auth.isSignedIn && UserButton) {
-    return (
-      <UserButton afterSignOutUrl="/" />
-    );
+  if (isSignedIn) {
+    return <UserButton />;
   }
 
-  if (SignInButton) {
-    return (
-      <SignInButton mode="modal">
-        <button
-          style={{
-            background: "transparent",
-            color: "#0d281f",
-            padding: "11px 22px",
-            borderRadius: 50,
-            fontWeight: 700,
-            fontSize: 13,
-            border: "2px solid rgba(13,40,31,0.3)",
-            cursor: "pointer",
-            transition: "border-color 0.2s, transform 0.18s",
-            fontFamily: "inherit",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = "#0d281f";
-            e.currentTarget.style.transform = "scale(1.04)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = "rgba(13,40,31,0.3)";
-            e.currentTarget.style.transform = "scale(1)";
-          }}
-        >
-          Sign In
-        </button>
-      </SignInButton>
-    );
-  }
-
-  return null;
+  return (
+    <SignInButton mode="modal">
+      <button
+        style={{
+          background: "transparent",
+          color: "#0d281f",
+          padding: "11px 22px",
+          borderRadius: 50,
+          fontWeight: 700,
+          fontSize: 13,
+          border: "2px solid rgba(13,40,31,0.3)",
+          cursor: "pointer",
+          transition: "border-color 0.2s, transform 0.18s",
+          fontFamily: "inherit",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = "#0d281f";
+          e.currentTarget.style.transform = "scale(1.04)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = "rgba(13,40,31,0.3)";
+          e.currentTarget.style.transform = "scale(1)";
+        }}
+      >
+        Sign In
+      </button>
+    </SignInButton>
+  );
 }
 
 export default function Navbar() {
@@ -167,7 +148,7 @@ export default function Navbar() {
 
         {/* Right side: auth + quote CTA */}
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <AuthControls />
+          {hasClerkKeys && <ClerkAuthControls />}
 
           <a
             href="#contact"

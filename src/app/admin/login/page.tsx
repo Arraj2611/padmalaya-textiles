@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { adminLogin } from "@/app/actions/admin";
+import { capture } from "@/lib/analytics";
 
 const inputStyle: React.CSSProperties = {
   width: "100%",
@@ -31,12 +32,15 @@ export default function AdminLoginPage() {
     try {
       const result = await adminLogin({ email, password });
       if (result.success) {
+        capture("admin_logged_in", { email });
         router.push("/admin");
         router.refresh();
       } else {
+        capture("admin_login_failed", { email, reason: result.error ?? "Login failed" });
         setError(result.error ?? "Login failed");
       }
     } catch {
+      capture("admin_login_failed", { email, reason: "unexpected_error" });
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);

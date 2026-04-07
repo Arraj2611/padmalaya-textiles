@@ -5,6 +5,7 @@ import { STATIC_PRODUCTS, getProductBySlug } from "@/lib/products";
 import ProductGallery from "@/components/ui/ProductGallery";
 import AddToQuoteButton from "@/components/ui/AddToQuoteButton";
 import ProductViewTracker from "@/components/ui/ProductViewTracker";
+import SampleRequestLink from "@/components/ui/SampleRequestLink";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -233,24 +234,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             {/* Actions */}
             <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
               <AddToQuoteButton product={{ productId: product.id, productName: product.name, slug: product.slug }} />
-              <a
-                href="#contact"
-                className="product-sample-btn"
-                style={{
-                  padding: "15px 28px",
-                  borderRadius: 50,
-                  fontWeight: 700,
-                  fontSize: 14,
-                  color: "#0d281f",
-                  border: "2px solid rgba(13,40,31,0.2)",
-                  background: "transparent",
-                  textDecoration: "none",
-                  display: "inline-flex",
-                  alignItems: "center",
-                }}
-              >
-                Request Sample
-              </a>
+              <SampleRequestLink productName={product.name} slug={product.slug} />
             </div>
           </div>
         </div>

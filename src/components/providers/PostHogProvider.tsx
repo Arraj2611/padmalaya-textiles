@@ -12,9 +12,13 @@ const isReal = key && !key.includes("placeholder");
 
 if (isReal && typeof window !== "undefined") {
   posthog.init(key, {
-    api_host: host,
+    api_host: "/ingest",
+    ui_host: host,
+    defaults: "2026-01-30",
     capture_pageview: false, // captured manually in PostHogPageview
     capture_pageleave: true,
+    capture_exceptions: true,
+    debug: process.env.NODE_ENV === "development",
   });
   // Expose instance for the safe capture() helper
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

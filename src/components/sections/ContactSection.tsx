@@ -106,8 +106,12 @@ export default function ContactSection() {
         });
         setStatus("success");
         reset();
-      } else setStatus("error");
+      } else {
+        capture("quote_form_error", { product_count: items.length, reason: "server_error" });
+        setStatus("error");
+      }
     } catch {
+      capture("quote_form_error", { product_count: items.length, reason: "network_error" });
       setStatus("error");
     }
   }

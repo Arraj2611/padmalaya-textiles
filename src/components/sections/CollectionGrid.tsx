@@ -5,6 +5,7 @@ import { useState } from "react";
 import ProductImage from "@/components/ui/ProductImage";
 import { STATIC_PRODUCTS } from "@/lib/products";
 import type { Product } from "@/lib/supabase-types";
+import { capture } from "@/lib/analytics";
 
 const neuIn = "inset 4px 4px 10px rgba(13,40,31,.07), inset -3px -3px 8px rgba(255,255,255,.75)";
 const INITIAL_SHOW = 6;
@@ -167,7 +168,11 @@ export default function CollectionGrid({ products }: CollectionGridProps) {
         {needsCollapse && (
           <div style={{ textAlign: "center", marginTop: 28 }}>
             <button
-              onClick={() => setShowAll((s) => !s)}
+              onClick={() => {
+                const next = !showAll;
+                setShowAll(next);
+                if (next) capture("collection_expanded", { total_products: allProducts.length });
+              }}
               className="view-all-btn"
               style={{
                 background: showAll ? "transparent" : "#0d281f",

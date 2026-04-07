@@ -4,6 +4,7 @@ import { z } from "zod";
 import { createServerClient } from "@/lib/supabase-server";
 import { resend, FROM_EMAIL, ADMIN_EMAIL } from "@/lib/resend";
 import { customerAutoResponse, adminNotification } from "@/lib/email-templates";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 const schema = z.object({
   name:              z.string().min(2, "Name must be at least 2 characters"),
@@ -78,6 +79,22 @@ export async function submitEnquiry(data: EnquiryInput): Promise<EnquiryResult> 
       }),
     ]);
   }
+
+  // 4. Track server-side enquiry_submitted event
+  const posthog = getPostHogClient();
+  posthog.capture({
+    distinctId: email,
+    event: "enquiry_submitted",
+    properties: {
+      name,
+      company: company ?? null,
+      product_interest,
+      product_count: selected_products?.length ?? 0,
+      selected_products: selected_products ?? [],
+      has_clerk_user: Boolean(clerk_user_id),
+    },
+  });
+  await posthog.shutdown();
 
   return { success: true };
 }
